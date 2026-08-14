@@ -1,0 +1,38 @@
+---
+title: Network Information - BNB NewL1
+---
+
+# Network Information
+
+| Name | Value |
+|---|---|
+| Network Name | BNB NewL1 |
+| Description | High-performance EVM Layer 1 in the BNB Chain ecosystem. |
+| RPC Endpoint | Local devnet only — see [Run a Local Devnet](./local-devnet.md) |
+| Chain ID | `48879` (`0xBEEF`, devnet) |
+| Currency Symbol | BNB |
+| Block Explorer | Not available yet |
+| Bridge | BNB NewL1 ↔ BSC bridge in development |
+
+!!! note "Devnet stage"
+    There is no public testnet or mainnet endpoint, faucet, or hosted explorer yet. The values below reflect the current devnet client and may change — public network details will land on this page once they exist.
+
+## Protocol parameters
+
+| Parameter | Value |
+|---|---|
+| Consensus | Parlia (PoA turn rotation + BLS fast finality) |
+| Block interval | 200 ms |
+| Turn length (blocks per validator, per rotation) | 16 |
+| Epoch length (validator-set rotation) | 1,000 blocks |
+| EVM | Full Prague from genesis, no fork ramp |
+| Base fee | Pinned to `0` (BEP-222) — the priority fee is the entire price |
+| Fee model | Charged on the declared gas limit, not gas used ([details](./migrate-from-bsc.md#you-pay-for-your-declared-gas-limit)) |
+| Per-transaction gas cap | 16,777,216 (BEP-652 / EIP-7825) |
+| Block gas limit | 600,000,000 (devnet genesis) |
+
+## Local devnet endpoints
+
+Node 0 (the validator) serves JSON-RPC at `http://127.0.0.1:8545` and WebSocket at `ws://127.0.0.1:8546`. Each subsequent node adds 10 to both ports (node 1 → `8555`/`8556`, and so on).
+
+To bring one up: [Run a Local Devnet](./local-devnet.md). For the method list: [JSON-RPC Reference](../developers/json-rpc.md).
