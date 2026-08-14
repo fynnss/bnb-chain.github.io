@@ -11,6 +11,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # The repository's default GITHUB_TOKEN is read-only, so the gh-pages push
+    # needs write access granted explicitly for this workflow.
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
