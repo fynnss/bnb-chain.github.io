@@ -11,7 +11,7 @@ Yes at the execution layer — revm semantics are a hard design invariant, so ex
 Same Parlia PoA + BLS fast-finality consensus family, but with a faster block interval, decoupled ordering/execution, and several new protocol features not present on BSC: [native account abstraction](./core-concepts/account-abstraction.md), [transaction pre-confirmation](./core-concepts/tx-preconfirmation.md), [multi-lane blockspace](./core-concepts/multi-lane.md), and a native [shielded pool](./core-concepts/privacy.md). See [Overview](./overview.md) for the full comparison.
 
 **Is BNB NewL1 live on mainnet?**
-Not yet — it currently runs as a multi-validator devnet. See [Run a Local Devnet](./get-started/local-devnet.md).
+Not yet — it currently runs as an internal multi-validator devnet. Endpoints will be published on [Network Information](./get-started/network-info.md) once a network is available.
 
 **Do I need to use ERC-4337 tooling (bundlers, paymasters) for account abstraction?**
 No. BNB NewL1's account abstraction is native — enforced by consensus, not by a deployed EntryPoint contract — so there's no bundler or paymaster contract involved. See [Account Abstraction](./core-concepts/account-abstraction.md).

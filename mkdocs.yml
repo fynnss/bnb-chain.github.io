@@ -158,7 +158,6 @@ nav:
     - Overview: ./bnb-newl1/overview.md
     - Get Started:
       - Network Information: ./bnb-newl1/get-started/network-info.md
-      - Run a Local Devnet: ./bnb-newl1/get-started/local-devnet.md
       - Migrating from BSC: ./bnb-newl1/get-started/migrate-from-bsc.md
     - Developers:
       - Quick Guide: ./bnb-newl1/developers/quick-guide.md
