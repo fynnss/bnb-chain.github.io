@@ -1,6 +1,6 @@
 # Project information
 site_name: Documentation
-site_url: https://docs.bnbchain.org
+site_url: https://fynnss.github.io/bnb-chain.github.io/
 site_author: BNB Chain
 site_description: >-
   Get started with BNB Chain Docs. Explore the documentation for BNB Chain
@@ -152,6 +152,29 @@ nav:
     - Cross Chain Bridge: ./bnb-smart-chain/cross-chain-bridge.md
     - Benchmark: ./bnb-smart-chain/benchmark/design-reference.md
     - FAQ:  ./bnb-smart-chain/faq/index.md
+  - BNB NewL1:
+    - BNB NewL1: ./bnb-newl1/index.md
+    - Overview: ./bnb-newl1/overview.md
+    - Get Started:
+      - Network Information: ./bnb-newl1/get-started/network-info.md
+      - Run a Local Devnet: ./bnb-newl1/get-started/local-devnet.md
+      - Migrating from BSC: ./bnb-newl1/get-started/migrate-from-bsc.md
+    - Developers:
+      - Quick Guide: ./bnb-newl1/developers/quick-guide.md
+      - Transaction Types: ./bnb-newl1/developers/transaction-types.md
+      - Examples: ./bnb-newl1/developers/examples.md
+      - JSON-RPC Reference: ./bnb-newl1/developers/json-rpc.md
+    - Core Concepts:
+      - Consensus: ./bnb-newl1/core-concepts/consensus.md
+      - Async Execution: ./bnb-newl1/core-concepts/async-execution.md
+      - Multi-Lane Blockspace: ./bnb-newl1/core-concepts/multi-lane.md
+      - Pre-confirmation: ./bnb-newl1/core-concepts/tx-preconfirmation.md
+      - Account Abstraction: ./bnb-newl1/core-concepts/account-abstraction.md
+      - Privacy: ./bnb-newl1/core-concepts/privacy.md
+    - Governance:
+      - Overview: ./bnb-newl1/governance/overview.md
+      - System Contracts: ./bnb-newl1/governance/system-contracts.md
+    - FAQ: ./bnb-newl1/faq.md
   - opBNB:
     - opBNB: ./bnb-opbnb/index.md
     - Overview: ./bnb-opbnb/overview.md
