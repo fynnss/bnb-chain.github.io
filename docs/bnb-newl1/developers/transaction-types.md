@@ -97,4 +97,4 @@ Useful reads: `merkleRoot()`, `nullifierSpent(uint256)`, `pendingCount()` / `pen
 
 ### Tooling
 
-Producing proofs and notes requires the circuit tooling, not just an RPC client: `crates/shielded-circuits/scripts/newl1-shield.js` handles note encryption and scanning, and `cargo run -p newl1-engine --example shielded_encode -- <fixture> <chain-id>` encodes a signed `0x77` payload from a fixture using the node's own codec. The `e2e/cases/privacy.sh` and `e2e/cases/shielded-native.sh` scenarios run both paths end-to-end against a live devnet and are the most reliable worked examples.
+A `0x77` transaction needs more than an RPC client: note encryption and scanning, PLONK proof generation, and encoding the envelope itself all require the shielded-pool circuit tooling, which ships with the client rather than with any general-purpose SDK.

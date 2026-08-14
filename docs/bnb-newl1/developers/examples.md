@@ -4,14 +4,14 @@ title: Examples - BNB NewL1
 
 # Examples
 
-Plain JSON-RPC demonstrations of what this chain does differently. Paste this setup once — it points at a [local devnet](../get-started/local-devnet.md) and pulls its two pre-funded accounts — and every snippet below runs as written:
+Plain JSON-RPC demonstrations of what this chain does differently. Fill in an endpoint and a funded key, and every snippet below runs as written:
 
 ```bash
-RPC=http://127.0.0.1:8545          # validator node
-WS=ws://127.0.0.1:8556             # observer node (see the pre-confirmation note below)
-SK=$(jq -r '.test_eoas[0].sk'   scripts/genesis.conf)
-FROM=$(jq -r '.test_eoas[0].addr' scripts/genesis.conf)
-TO=$(jq -r '.test_eoas[1].addr'   scripts/genesis.conf)
+RPC=      # node HTTP endpoint
+WS=       # node WebSocket endpoint
+SK=       # funded private key
+FROM=     # its address
+TO=       # any recipient
 
 rpc() { curl -s $RPC -H 'content-type: application/json' \
   -d "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"$1\",\"params\":${2:-[]}}" \
@@ -20,8 +20,8 @@ rpc() { curl -s $RPC -H 'content-type: application/json' \
 
 Needs `curl` and `jq`. Sending transactions uses Foundry's `cast`; the subscription uses any WebSocket client.
 
-!!! note
-    Developer demos, not an ecosystem showcase — there is no public network yet, so no live dApps to point at.
+!!! note "No endpoint yet"
+    BNB NewL1 has no public network, so there is nothing to point `RPC` at today — see [Network Information](../get-started/network-info.md). These are protocol demonstrations, not an ecosystem showcase.
 
 ## Ordering, execution, and finality move separately
 
@@ -47,7 +47,7 @@ Each notification is a `newl1_preconfirmation` frame: `{txHash, blockNumber, par
 Filter to a single transaction with `"params":[{"txHash":"0x…"}]`. Chain tips instead: `newl1_subscribeNewHeads`, or standard `eth_subscribe` with `["newHeads"]`.
 
 !!! warning "Subscribe from a non-producing node"
-    Sub-blocks travel by P2P gossip and a producer does **not** loop its own broadcast back to its own subscribers. That's why `WS` above points at the observer node, not the validator.
+    Sub-blocks travel by P2P gossip and a producer does **not** loop its own broadcast back to its own subscribers. Point `WS` at a node that is not the one producing your transaction's block.
 
 ## Follow one transaction through every stage
 

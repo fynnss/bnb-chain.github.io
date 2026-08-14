@@ -8,7 +8,7 @@ title: Network Information - BNB NewL1
 |---|---|
 | Network Name | BNB NewL1 |
 | Description | High-performance EVM Layer 1 in the BNB Chain ecosystem. |
-| RPC Endpoint | Local devnet only — see [Run a Local Devnet](./local-devnet.md) |
+| RPC Endpoint | Not available yet |
 | Chain ID | `48879` (`0xBEEF`, devnet) |
 | Currency Symbol | BNB |
 | Block Explorer | Not available yet |
@@ -31,8 +31,6 @@ title: Network Information - BNB NewL1
 | Per-transaction gas cap | 16,777,216 (BEP-652 / EIP-7825) |
 | Block gas limit | 600,000,000 (devnet genesis) |
 
-## Local devnet endpoints
+## Endpoints
 
-Node 0 (the validator) serves JSON-RPC at `http://127.0.0.1:8545` and WebSocket at `ws://127.0.0.1:8546`. Each subsequent node adds 10 to both ports (node 1 → `8555`/`8556`, and so on).
-
-To bring one up: [Run a Local Devnet](./local-devnet.md). For the method list: [JSON-RPC Reference](../developers/json-rpc.md).
+Public endpoints, faucet, and explorer will be listed here once a network is deployed. For the method set a node serves, see the [JSON-RPC Reference](../developers/json-rpc.md).

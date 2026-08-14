@@ -7,7 +7,7 @@ title: Migrating from BSC - BNB NewL1
 Same gas asset, same Parlia consensus family, same staking and governance contracts at the same addresses, unmodified EVM. Contracts deploy unchanged and standard tooling connects unchanged. The differences are almost all **above** the EVM — fees, mempool, block cadence, and how state is committed.
 
 !!! note "No public network yet"
-    There is no public testnet or mainnet endpoint, so migrating today means porting against a [local devnet](./local-devnet.md). A native BNB NewL1 ↔ BSC bridge is designed and under development but not live; the `CrossChain` address currently holds a placeholder (see [System Contracts](../governance/system-contracts.md)).
+    There is no public testnet or mainnet endpoint yet, so treat this as a porting checklist to work through ahead of one. A native BNB NewL1 ↔ BSC bridge is designed and under development but not live; the `CrossChain` address currently holds a placeholder (see [System Contracts](../governance/system-contracts.md)).
 
 ## You pay for your declared gas limit
 

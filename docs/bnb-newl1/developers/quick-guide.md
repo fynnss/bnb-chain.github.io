@@ -13,10 +13,7 @@ This page is the orientation: how to get a chain running, what behaves different
 
 ## Getting started
 
-1. **Run a chain.** Build the `newl1` client and boot a local devnet — one validator plus one observer is enough for everything except load testing. → [Run a Local Devnet](../get-started/local-devnet.md)
-2. **Point your tools at it.** Node 0 serves JSON-RPC at `http://127.0.0.1:8545` and WebSocket at `ws://127.0.0.1:8546`. Pre-funded test accounts come from `scripts/genesis.conf`.
-3. **Deploy something.** The [contract walkthrough](../get-started/local-devnet.md#deploy-your-first-contract) goes deploy → read → write with `cast`, verified end-to-end.
-4. **Read the differences below** before you port anything real.
+There is no endpoint to connect to yet — [Network Information](../get-started/network-info.md) is where one will be published. Until then, use this section to prepare: read the differences below, and work through [Migrating from BSC](../get-started/migrate-from-bsc.md) if you're bringing an existing app, since most of what it lists is decided in your submission path rather than in your contracts.
 
 ## What's different from a typical EVM chain
 
@@ -50,7 +47,6 @@ None of these are required to run a standard EVM app — they're additive, and t
 - **[Transaction Types](./transaction-types.md)** — the two native EIP-2718 types (`0x76` account abstraction, `0x77` shielded), their fields, how to sign them, and what trips people up.
 - **[JSON-RPC Reference](./json-rpc.md)** — every method the node serves: the standard `eth_*` surface and its differences, the `newl1_*` namespace, WebSocket subscriptions, the `parlia_*` compatibility methods, and the error codes.
 - **[Network Information](../get-started/network-info.md)** — chain id, protocol parameters, endpoints.
-- **[Run a Local Devnet](../get-started/local-devnet.md)** — building the client, booting a devnet, deploying a contract, connecting an SDK.
 - **[System Contracts](../governance/system-contracts.md)** — every system contract and precompile address, including the BSC carry-overs and the BNB NewL1–original ones.
 - **[Governance](../governance/overview.md)** — the propose → vote → queue → execute lifecycle that controls protocol parameters.
 - **[FAQ](../faq.md)**
