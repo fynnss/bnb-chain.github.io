@@ -851,8 +851,6 @@
       
         
       
-        
-      
     
     
     
@@ -918,34 +916,6 @@
     
   
     Network Information
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../get-started/local-devnet/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Run a Local Devnet
   
 
     
@@ -2418,7 +2388,7 @@ cast<span class="w"> </span>send<span class="w"> </span><span class="nv">$POOL</
 <li><strong>The proof blob length is validated at decode.</strong> Anything other than 864 bytes is rejected before execution, so a truncated proof costs a decode, not a transaction.</li>
 </ul>
 <h3 id="tooling">Tooling<a class="headerlink" href="#tooling" title="Link to this section">¶</a></h3>
-<p>Producing proofs and notes requires the circuit tooling, not just an RPC client: <code>crates/shielded-circuits/scripts/newl1-shield.js</code> handles note encryption and scanning, and <code>cargo run -p newl1-engine --example shielded_encode -- &lt;fixture&gt; &lt;chain-id&gt;</code> encodes a signed <code>0x77</code> payload from a fixture using the node’s own codec. The <code>e2e/cases/privacy.sh</code> and <code>e2e/cases/shielded-native.sh</code> scenarios run both paths end-to-end against a live devnet and are the most reliable worked examples.</p></div>
+<p>A <code>0x77</code> transaction needs more than an RPC client: note encryption and scanning, PLONK proof generation, and encoding the envelope itself all require the shielded-pool circuit tooling, which ships with the client rather than with any general-purpose SDK.</p></div>
 
 
 
@@ -2439,7 +2409,7 @@ cast<span class="w"> </span>send<span class="w"> </span><span class="nv">$POOL</
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 14, 2026 06:51:29 UTC">August 14, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 14, 2026 07:31:28 UTC">August 14, 2026</span>
   </span>
 
     

@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://fynnss.github.io/bnb-chain.github.io/bnb-newl1/get-started/migrate-from-bsc/">
       
       
-        <link rel="prev" href="../local-devnet/">
+        <link rel="prev" href="../network-info/">
       
       
         <link rel="next" href="../../developers/quick-guide/">
@@ -853,8 +853,6 @@
       
         
       
-        
-      
     
     
     
@@ -920,34 +918,6 @@
     
   
     Network Information
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../local-devnet/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Run a Local Devnet
   
 
     
@@ -2173,7 +2143,7 @@
 <p>Same gas asset, same Parlia consensus family, same staking and governance contracts at the same addresses, unmodified EVM. Contracts deploy unchanged and standard tooling connects unchanged. The differences are almost all <strong>above</strong> the EVM — fees, mempool, block cadence, and how state is committed.</p>
 <div class="admonition note">
 <p class="admonition-title">No public network yet</p>
-<p>There is no public testnet or mainnet endpoint, so migrating today means porting against a <a href="../local-devnet/">local devnet</a>. A native BNB NewL1 ↔ BSC bridge is designed and under development but not live; the <code>CrossChain</code> address currently holds a placeholder (see <a href="../../governance/system-contracts/">System Contracts</a>).</p>
+<p>There is no public testnet or mainnet endpoint yet, so treat this as a porting checklist to work through ahead of one. A native BNB NewL1 ↔ BSC bridge is designed and under development but not live; the <code>CrossChain</code> address currently holds a placeholder (see <a href="../../governance/system-contracts/">System Contracts</a>).</p>
 </div>
 <h2 id="you-pay-for-your-declared-gas-limit">You pay for your declared gas limit<a class="headerlink" href="#you-pay-for-your-declared-gas-limit" title="Link to this section">¶</a></h2>
 <p><strong>A transaction pays its full declared <code>gas_limit</code>, regardless of gas used.</strong> No unused-gas refund, and EIP-3529 refunds are void. Blocks are packed by <em>declared</em> gas before execution, so declared gas is the block space actually sold.</p>
@@ -2272,7 +2242,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 14, 2026 06:51:29 UTC">August 14, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 14, 2026 07:31:28 UTC">August 14, 2026</span>
   </span>
 
     
