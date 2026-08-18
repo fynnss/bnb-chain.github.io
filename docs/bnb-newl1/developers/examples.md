@@ -84,7 +84,7 @@ Estimation runs with charge-by-limit disabled, so it measures real usage. [Detai
 ## Read the chain's own features
 
 ```bash
-rpc newl1_laneConfig                                    # live multi-lane quota + routes
+rpc newl1_laneConfig                                    # live Multi-Lane quota + routes
 rpc newl1_getKey "[\"$ACCOUNT\",\"$KEY_ID\"]"           # AA delegated-key state
 rpc newl1_getSystemReceiptsByBlock '["latest"]'         # slashing/reward/validator-set txs
 rpc eth_getProof '[]'                                   # -32004: LtHash, not an MPT
@@ -92,4 +92,4 @@ rpc eth_getProof '[]'                                   # -32004: LtHash, not an
 
 `newl1_getSystemReceiptsByBlock` is the only way to see system transactions — they never appear in `eth_getBlockReceipts` or the block's transaction list.
 
-Full method list and response shapes: [JSON-RPC Reference](./json-rpc.md).
+Full method list, parameters, and response shapes: [BNB NewL1 API List](./json_rpc/newl1-api-list.md).

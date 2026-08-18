@@ -21,6 +21,6 @@ Finality here is a statement about **ordering** — which block comes next — n
 
 ## For developers
 
-- Validator admission and rotation are on-chain and queryable (see [`newl1_getValidatorSchedule`](../developers/json-rpc.md#newl1_getvalidatorschedule)).
+- Validator admission and rotation are on-chain and queryable (see [`newl1_getValidatorSchedule`](../developers/json_rpc/newl1-api-list.md#newl1_getvalidatorschedule)).
 - Block interval, turn length, and epoch length are chain parameters, not assumptions to hardcode into client code.
 - Applications that need a hard guarantee before acting irreversibly (e.g. a bridge release, a large settlement) should wait for **finalized**, not just **ordered/imported** — see [Transaction Pre-confirmation](./tx-preconfirmation.md) for the faster, best-effort signal available before finality.

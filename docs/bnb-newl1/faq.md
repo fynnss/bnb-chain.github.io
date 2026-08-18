@@ -5,10 +5,10 @@ title: FAQ - BNB NewL1
 # FAQ
 
 **Is BNB NewL1 EVM-compatible?**
-Yes at the execution layer — revm semantics are a hard design invariant, so existing Solidity contracts and standard transaction flows work unmodified. The RPC surface above that has a few explicit differences (no `eth_getProof`, no global mempool, no EIP-4844/EIP-7702 transactions) that some wallets or infra tooling may need to account for. See [Overview](./overview.md) and [JSON-RPC Reference](./developers/json-rpc.md).
+Yes at the execution layer — revm semantics are a hard design invariant, so existing Solidity contracts and standard transaction flows work unmodified. The RPC surface above that has a few explicit differences (no `eth_getProof`, no global mempool, no EIP-4844/EIP-7702 transactions) that some wallets or infra tooling may need to account for. See [Overview](./overview.md) and [JSON-RPC Endpoint](./developers/json_rpc/json-rpc-endpoint.md).
 
 **How is it different from BNB Smart Chain?**
-Same Parlia PoA + BLS fast-finality consensus family, but with a faster block interval, decoupled ordering/execution, and several new protocol features not present on BSC: [native account abstraction](./core-concepts/account-abstraction.md), [transaction pre-confirmation](./core-concepts/tx-preconfirmation.md), [multi-lane blockspace](./core-concepts/multi-lane.md), and a native [shielded pool](./core-concepts/privacy.md). See [Overview](./overview.md) for the full comparison.
+Same Parlia PoA + BLS fast-finality consensus family, but with a faster block interval, decoupled ordering/execution, and several new protocol features not present on BSC: [native account abstraction](./core-concepts/account-abstraction.md), [transaction pre-confirmation](./core-concepts/tx-preconfirmation.md), [Multi-Lane](./core-concepts/multi-lane.md), and a native [shielded pool](./core-concepts/privacy.md). See [Overview](./overview.md) for the full comparison.
 
 **Is BNB NewL1 live on mainnet?**
 Not yet — it currently runs as an internal multi-validator devnet. Endpoints will be published on [Network Information](./get-started/network-info.md) once a network is available.
@@ -23,10 +23,10 @@ No. Pre-confirmation is a fast (~20ms), best-effort signal that can still be rev
 No — it currently runs on a single-contributor development trusted setup, meaning proofs can be forged, and the feature is unaudited. See the warning in [Privacy](./core-concepts/privacy.md).
 
 **Why doesn't `eth_getProof` work?**
-BNB NewL1 commits state with a cumulative hash accumulator instead of a Merkle-Patricia trie, so there's no trie-based proof to serve. See [JSON-RPC Reference](./developers/json-rpc.md).
+BNB NewL1 commits state with a cumulative hash accumulator instead of a Merkle-Patricia trie, so there's no trie-based proof to serve. See [JSON-RPC Endpoint](./developers/json_rpc/json-rpc-endpoint.md).
 
-**How do I get my contract reserved blockspace?**
-Register your contract's address in the `LaneRegistry` system contract with a basis-point gas reservation, via [governance](./governance/overview.md). See [Multi-Lane Blockspace](./core-concepts/multi-lane.md).
+**How do I get my contract reserved capacity?**
+Register your contract's address in the `LaneRegistry` system contract with a basis-point gas reservation, via [governance](./governance/overview.md). See [Multi-Lane](./core-concepts/multi-lane.md).
 
 **What asset is used for gas and staking?**
 BNB, bridged in from BNB Smart Chain — the same gas asset as BSC and opBNB.

@@ -61,8 +61,8 @@ Where [async execution](../core-concepts/async-execution.md) shows up — the bi
 
 ## Indexers and explorers
 
-- **System transactions are invisible in the block body.** Slashing, deposits, finality rewards, validator-set updates, and shielded drains are not in the transaction list and not counted in `header.gasUsed`. Read them via [`newl1_getSystemReceiptsByBlock`](../developers/json-rpc.md#newl1_getsystemreceiptsbyblock) — they never appear in `eth_getBlockReceipts`.
+- **System transactions are invisible in the block body.** Slashing, deposits, finality rewards, validator-set updates, and shielded drains are not in the transaction list and not counted in `header.gasUsed`. Read them via [`newl1_getSystemReceiptsByBlock`](../developers/json_rpc/newl1-api-list.md#newl1_getsystemreceiptsbyblock) — they never appear in `eth_getBlockReceipts`.
 - **Blocks carry `systemTransactionsRoot` and `commitments`**, and `stateRoot` / `receiptsRoot` / `logsBloom` / `gasUsed` are `null` while a block is ordered but unexecuted. Strict deserializers fail at the tip.
 - **`newl1_subscribeNewHeads`** delivers head, justified, and finalized numbers and hashes in one frame per canonical advance.
 
-Once you're ported, the [Quick Guide](../developers/quick-guide.md) covers what BNB NewL1 adds on top: pre-confirmation, multi-lane blockspace, native account abstraction, and the shielded pool.
+Once you're ported, the [Quick Guide](../developers/quick-guide.md) covers what BNB NewL1 adds on top: pre-confirmation, Multi-Lane, native account abstraction, and the shielded pool.

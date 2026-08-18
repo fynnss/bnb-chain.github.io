@@ -23,7 +23,7 @@ Five things account for nearly every surprise. Each links to the page that cover
 |---|---|---|
 | **You pay for your declared gas limit** | Unused gas is never refunded, so SDK gas padding is money spent, and receipts report `gasUsed` equal to the limit. | [Migrating from BSC](../get-started/migrate-from-bsc.md#you-pay-for-your-declared-gas-limit) |
 | **`latest` means executed, not ordered** | Ordering and execution are decoupled; state reads resolve to the executed tip, and an explicit block number that hasn't executed yet returns `-38004` rather than stale data. | [Async Execution](../core-concepts/async-execution.md) |
-| **No global mempool** | Transactions route straight to the current and next block producer. No `txpool_*`, no public pending-transaction feed, and replace-by-fee only affects the pools holding the transaction. | [JSON-RPC Reference](./json-rpc.md) |
+| **No global mempool** | Transactions route straight to the current and next block producer. No `txpool_*`, no public pending-transaction feed, and replace-by-fee only affects the pools holding the transaction. | [JSON-RPC Endpoint](./json_rpc/json-rpc-endpoint.md) |
 | **No `eth_getProof`** | State is committed with an LtHash accumulator, not a Merkle-Patricia trie, so there is no trie proof to serve. Anything proof-based needs a different design. | [Async Execution](../core-concepts/async-execution.md) |
 | **200 ms blocks** | `block.number` advances about five times a second, and `block.timestamp` (still whole seconds) repeats across consecutive blocks. Block-count and timestamp math both need review. | [Migrating from BSC](../get-started/migrate-from-bsc.md#contracts) |
 
@@ -37,7 +37,7 @@ None of these are required to run a standard EVM app — they're additive, and t
 |---|---|
 | [Transaction pre-confirmation](../core-concepts/tx-preconfirmation.md) | A validator-signed inclusion signal in ~20 ms, long before the block lands. Advisory and revocable — never treat it as finality. |
 | [Native account abstraction](../core-concepts/account-abstraction.md) | The `0x76` transaction envelope: atomic call batches, session and admin keys, passkey (WebAuthn/P256) signing, and gas sponsorship — no bundler, no EntryPoint contract. |
-| [Multi-lane blockspace](../core-concepts/multi-lane.md) | Governance-configured reserved gas quota per traffic class, so latency-sensitive flows aren't crowded out by unrelated load. |
+| [Multi-Lane](../core-concepts/multi-lane.md) | Governance-configured reserved gas quota per traffic class, so latency-sensitive flows aren't crowded out by unrelated load. |
 | [Shielded pool](../core-concepts/privacy.md) | An opt-in native system contract for private transfers, alongside ordinary transparent ones. |
 | [BLS fast finality](../core-concepts/consensus.md) | Irreversibility in roughly one block interval, instead of waiting on confirmation depth. |
 
@@ -45,7 +45,8 @@ None of these are required to run a standard EVM app — they're additive, and t
 
 - **[Examples](./examples.md)** — runnable demos: watch a pre-confirmation land, find the current leader, drive load, run the end-to-end scenario suite.
 - **[Transaction Types](./transaction-types.md)** — the two native EIP-2718 types (`0x76` account abstraction, `0x77` shielded), their fields, how to sign them, and what trips people up.
-- **[JSON-RPC Reference](./json-rpc.md)** — every method the node serves: the standard `eth_*` surface and its differences, the `newl1_*` namespace, WebSocket subscriptions, the `parlia_*` compatibility methods, and the error codes.
+- **[JSON-RPC Endpoint](./json_rpc/json-rpc-endpoint.md)** — endpoints, transports, and how the API surface maps onto Geth's.
+- **[BNB NewL1 API List](./json_rpc/newl1-api-list.md)** — every method that goes beyond or differs from Geth, with parameters and `curl` examples.
 - **[Network Information](../get-started/network-info.md)** — chain id, protocol parameters, endpoints.
 - **[System Contracts](../governance/system-contracts.md)** — every system contract and precompile address, including the BSC carry-overs and the BNB NewL1–original ones.
 - **[Governance](../governance/overview.md)** — the propose → vote → queue → execute lifecycle that controls protocol parameters.

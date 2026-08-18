@@ -33,4 +33,4 @@ title: Network Information - BNB NewL1
 
 ## Endpoints
 
-Public endpoints, faucet, and explorer will be listed here once a network is deployed. For the method set a node serves, see the [JSON-RPC Reference](../developers/json-rpc.md).
+Public endpoints, faucet, and explorer will be listed here once a network is deployed. For the method set a node serves, see the [JSON-RPC Endpoint](../developers/json_rpc/json-rpc-endpoint.md).

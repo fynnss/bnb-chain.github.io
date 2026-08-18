@@ -48,7 +48,7 @@ One transaction, signed by an account or by a delegated key, carrying a batch of
 - **`nonce_key` must be zero.** Parallel nonce lanes are reserved but not enabled.
 - **One nonce per transaction.** An inline `key_authorization` is prepended as a call, so combining it with a `CREATE` in the same transaction is rejected — do the authorization first, or deploy from a standalone transaction.
 - **Session-key spend limits count gas too**, charged at the declared gas limit like everything else.
-- **Key state is readable** at any time via [`newl1_getKey(account, keyId)`](./json-rpc.md#newl1_getkey), and keys can be managed from an ordinary transaction by calling `authorizeKey` / `revokeKey` on the `AccountKeychain` precompile at `0x…4000` — you don't need an AA transaction to bootstrap one.
+- **Key state is readable** at any time via [`newl1_getKey(account, keyId)`](./json_rpc/newl1-api-list.md#newl1_getkey), and keys can be managed from an ordinary transaction by calling `authorizeKey` / `revokeKey` on the `AccountKeychain` precompile at `0x…4000` — you don't need an AA transaction to bootstrap one.
 
 ## `0x77` shielded transaction
 
