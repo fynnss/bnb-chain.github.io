@@ -46,7 +46,7 @@ Ethereum's ERC-4337 account abstraction relies on a separate mempool, a bundler,
 4. **Submit** the assembled, signed transaction via standard `eth_sendRawTransaction`.
 5. **Authorize a secondary key** either inline (via `key_authorization` in an AA transaction, atomic with its first use — up to 32 scopes) or directly via `authorizeKey` on the `AccountKeychain` precompile (up to 256 scopes, 64 selectors per scope) — the latter is callable even from a plain, non-AA transaction.
 6. **Revoke a key** with `revokeKey` — permanent, no un-revoke.
-7. **Read key state** via the [`newl1_getKey`](../developers/json-rpc.md#newl1_getkey) RPC method: `{sigType, expiry, isRevoked, isAdmin, scoped, spendLimit, spendPeriod, spent}`.
+7. **Read key state** via the [`newl1_getKey`](../developers/json_rpc/newl1-api-list.md#newl1_getkey) RPC method: `{sigType, expiry, isRevoked, isAdmin, scoped, spendLimit, spendPeriod, spent}`.
 
 ### Example flows
 

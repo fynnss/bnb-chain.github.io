@@ -14,7 +14,7 @@ title: BNB NewL1 - High-Performance EVM L1
 <div class="section-head">
     <div class="left">
         <h1>BNB NewL1</h1>
-        <p>BNB NewL1 is a high-performance, EVM-compatible Layer 1 built for latency-sensitive on-chain activity — with sub-second finality, native account abstraction, transaction pre-confirmation, reserved blockspace lanes, and an on-chain shielded (privacy) pool.</p>
+        <p>BNB NewL1 is a high-performance, EVM-compatible Layer 1 built for latency-sensitive on-chain activity — with sub-second finality, native account abstraction, transaction pre-confirmation, Multi-Lane reserved capacity, and an on-chain shielded (privacy) pool.</p>
     </div>
 </div>
 
@@ -43,7 +43,7 @@ title: BNB NewL1 - High-Performance EVM L1
         <p>Sub-second, best-effort inclusion signals ahead of finality</p>
     </a>
     <a href="./core-concepts/multi-lane">
-        <div>Multi-Lane Blockspace</div>
+        <div>Multi-Lane</div>
         <p>Reserved gas capacity for latency-sensitive transaction classes</p>
     </a>
     <a href="./core-concepts/privacy">
@@ -54,7 +54,7 @@ title: BNB NewL1 - High-Performance EVM L1
         <div>Governance</div>
         <p>On-chain, token-weighted parameter and validator-set governance</p>
     </a>
-    <a href="./developers/json-rpc">
+    <a href="./developers/json_rpc/json-rpc-endpoint">
         <div>JSON-RPC Reference</div>
         <p>Standard eth_* methods plus BNB NewL1 extensions</p>
     </a>

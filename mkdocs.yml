@@ -163,11 +163,13 @@ nav:
       - Quick Guide: ./bnb-newl1/developers/quick-guide.md
       - Transaction Types: ./bnb-newl1/developers/transaction-types.md
       - Examples: ./bnb-newl1/developers/examples.md
-      - JSON-RPC Reference: ./bnb-newl1/developers/json-rpc.md
+      - JSON-RPC:
+        - Endpoint: ./bnb-newl1/developers/json_rpc/json-rpc-endpoint.md
+        - API List: ./bnb-newl1/developers/json_rpc/newl1-api-list.md
     - Core Concepts:
       - Consensus: ./bnb-newl1/core-concepts/consensus.md
       - Async Execution: ./bnb-newl1/core-concepts/async-execution.md
-      - Multi-Lane Blockspace: ./bnb-newl1/core-concepts/multi-lane.md
+      - Multi-Lane: ./bnb-newl1/core-concepts/multi-lane.md
       - Pre-confirmation: ./bnb-newl1/core-concepts/tx-preconfirmation.md
       - Account Abstraction: ./bnb-newl1/core-concepts/account-abstraction.md
       - Privacy: ./bnb-newl1/core-concepts/privacy.md
