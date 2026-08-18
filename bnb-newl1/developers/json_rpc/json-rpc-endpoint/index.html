@@ -12,31 +12,31 @@
         <meta name="author" content="BNB Chain">
       
       
-        <link rel="canonical" href="https://fynnss.github.io/bnb-chain.github.io/bnb-newl1/get-started/migrate-from-bsc/">
+        <link rel="canonical" href="https://fynnss.github.io/bnb-chain.github.io/bnb-newl1/developers/json_rpc/json-rpc-endpoint/">
       
       
-        <link rel="prev" href="../network-info/">
+        <link rel="prev" href="../../examples/">
       
       
-        <link rel="next" href="../../developers/quick-guide/">
+        <link rel="next" href="../newl1-api-list/">
       
       
         
       
       
-      <link rel="icon" href="../../../assets/bnb.svg">
+      <link rel="icon" href="../../../../assets/bnb.svg">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
     
-        <title>Migrating from BSC - BNB NewL1</title>
+        <title>JSON-RPC Endpoint - BNB NewL1</title>
     
 
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -57,25 +57,25 @@
     
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap">
     
-      <link rel="stylesheet" href="../../../assets/style/index.css">
+      <link rel="stylesheet" href="../../../../assets/style/index.css">
     
-      <link rel="stylesheet" href="../../../assets/style/components/banner.css">
+      <link rel="stylesheet" href="../../../../assets/style/components/banner.css">
     
-      <link rel="stylesheet" href="../../../assets/style/components/nav.css">
+      <link rel="stylesheet" href="../../../../assets/style/components/nav.css">
     
-      <link rel="stylesheet" href="../../../assets/style/components/sidebar.css">
+      <link rel="stylesheet" href="../../../../assets/style/components/sidebar.css">
     
-      <link rel="stylesheet" href="../../../assets/style/components/content.css">
+      <link rel="stylesheet" href="../../../../assets/style/components/content.css">
     
-      <link rel="stylesheet" href="../../../assets/style/components/footer-nav.css">
+      <link rel="stylesheet" href="../../../../assets/style/components/footer-nav.css">
     
-      <link rel="stylesheet" href="../../../assets/style/components/footer.css">
+      <link rel="stylesheet" href="../../../../assets/style/components/footer.css">
     
       <link rel="stylesheet" href="https://unpkg.com/katex@0.16.10/dist/katex.min.css">
     
-      <link rel="stylesheet" href="../../../assets/style/components/superintern.css">
+      <link rel="stylesheet" href="../../../../assets/style/components/superintern.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
   
@@ -146,7 +146,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#migrating-from-bnb-smart-chain" class="md-skip">
+        <a href="#json-rpc-endpoint" class="md-skip">
           Skip to content
         </a>
       
@@ -197,7 +197,7 @@
                 data-md-component="logo"
         >
             
-  <img src="../../../assets/logo.svg" alt="logo">
+  <img src="../../../../assets/logo.svg" alt="logo">
 
         </a>
 
@@ -334,7 +334,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../.." class="md-tabs__link">
+      <a href="../../../.." class="md-tabs__link">
         
   
   
@@ -355,7 +355,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../announce/" class="md-tabs__link">
+        <a href="../../../../announce/" class="md-tabs__link">
           
   
   
@@ -377,7 +377,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../bnb-smart-chain/" class="md-tabs__link">
+        <a href="../../../../bnb-smart-chain/" class="md-tabs__link">
           
   
   
@@ -401,7 +401,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../../" class="md-tabs__link">
+        <a href="../../../" class="md-tabs__link">
           
   
   
@@ -423,7 +423,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../bnb-opbnb/" class="md-tabs__link">
+        <a href="../../../../bnb-opbnb/" class="md-tabs__link">
           
   
   
@@ -445,7 +445,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../bnb-greenfield/" class="md-tabs__link">
+        <a href="../../../../bnb-greenfield/" class="md-tabs__link">
           
   
   
@@ -467,7 +467,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../developer-kit/" class="md-tabs__link">
+        <a href="../../../../developer-kit/" class="md-tabs__link">
           
   
   
@@ -489,7 +489,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../bc-fusion/" class="md-tabs__link">
+        <a href="../../../../bc-fusion/" class="md-tabs__link">
           
   
   
@@ -533,7 +533,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="https://www.bnbchain.org" title="Documentation" class="md-nav__button md-logo" aria-label="Documentation" data-md-component="logo">
       
-  <img src="../../../assets/logo.svg" alt="logo">
+  <img src="../../../../assets/logo.svg" alt="logo">
 
     </a>
     Documentation
@@ -560,7 +560,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../../../.." class="md-nav__link">
         
   
   
@@ -617,7 +617,7 @@
   
   
   
-    <a href="../../../announce/" class="md-nav__link">
+    <a href="../../../../announce/" class="md-nav__link">
       
   
   
@@ -698,7 +698,7 @@
   
   
   
-    <a href="../../../bnb-smart-chain/" class="md-nav__link">
+    <a href="../../../../bnb-smart-chain/" class="md-nav__link">
       
   
   
@@ -773,7 +773,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../" class="md-nav__link ">
+            <a href="../../../" class="md-nav__link ">
               
   
   
@@ -817,7 +817,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../overview/" class="md-nav__link">
+      <a href="../../../overview/" class="md-nav__link">
         
   
   
@@ -842,8 +842,6 @@
                 
   
   
-    
-  
   
   
     
@@ -867,11 +865,11 @@
     
       
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
         
           
           <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
@@ -892,7 +890,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -910,7 +908,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../network-info/" class="md-nav__link">
+      <a href="../../../get-started/network-info/" class="md-nav__link">
         
   
   
@@ -935,37 +933,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Migrating from BSC
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../get-started/migrate-from-bsc/" class="md-nav__link">
         
   
   
@@ -981,92 +952,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#you-pay-for-your-declared-gas-limit" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        You pay for your declared gas limit
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#carries-over-unchanged" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Carries over unchanged
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#contracts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Contracts
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#submitting-transactions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Submitting transactions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#reading-state-and-receipts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Reading state and receipts
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#indexers-and-explorers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Indexers and explorers
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1084,6 +969,8 @@
                 
   
   
+    
+  
   
   
     
@@ -1111,11 +998,11 @@
     
       
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" checked>
         
           
           <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
@@ -1136,7 +1023,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1154,7 +1041,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../developers/quick-guide/" class="md-nav__link">
+      <a href="../../quick-guide/" class="md-nav__link">
         
   
   
@@ -1182,7 +1069,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../developers/transaction-types/" class="md-nav__link">
+      <a href="../../transaction-types/" class="md-nav__link">
         
   
   
@@ -1210,7 +1097,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../developers/examples/" class="md-nav__link">
+      <a href="../../examples/" class="md-nav__link">
         
   
   
@@ -1235,37 +1122,37 @@
                 
   
   
-  
-  
     
-    
-      
-        
-      
-        
-      
-    
-    
-    
-      
-      
-        
-      
-    
-    
-      
-        
-        
-      
-    
-    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
-      
-        
   
   
   
-    <a href="../../developers/json_rpc/json-rpc-endpoint/" class="md-nav__link">
+    
+    
       
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_4_4" id="__nav_4_4_4_label" tabindex="0">
+            
   
   
   <span class="md-ellipsis">
@@ -1279,12 +1166,241 @@
   
   
 
-      
-        <span class="md-nav__icon md-icon"></span>
-      
-    </a>
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_4_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    JSON-RPC
   
 
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Endpoint
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Endpoint
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#rpc-endpoints-for-bnb-newl1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RPC Endpoints for BNB NewL1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#json-rpc-api-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JSON-RPC API List
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JSON-RPC API List">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#geth-go-ethereum-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Geth (Go-Ethereum) API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#block-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Block tags
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pre-confirmation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-confirmation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#account-abstraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Account abstraction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-lane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Lane
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transaction-pool-and-system-transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transaction pool and system transactions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#finality-and-other-bsc-compatible-apis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finality and other BSC-compatible APIs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../newl1-api-list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API List
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
       
     </li>
   
@@ -1377,7 +1493,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../core-concepts/consensus/" class="md-nav__link">
+      <a href="../../../core-concepts/consensus/" class="md-nav__link">
         
   
   
@@ -1405,7 +1521,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../core-concepts/async-execution/" class="md-nav__link">
+      <a href="../../../core-concepts/async-execution/" class="md-nav__link">
         
   
   
@@ -1433,7 +1549,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../core-concepts/multi-lane/" class="md-nav__link">
+      <a href="../../../core-concepts/multi-lane/" class="md-nav__link">
         
   
   
@@ -1461,7 +1577,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../core-concepts/tx-preconfirmation/" class="md-nav__link">
+      <a href="../../../core-concepts/tx-preconfirmation/" class="md-nav__link">
         
   
   
@@ -1489,7 +1605,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../core-concepts/account-abstraction/" class="md-nav__link">
+      <a href="../../../core-concepts/account-abstraction/" class="md-nav__link">
         
   
   
@@ -1517,7 +1633,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../core-concepts/privacy/" class="md-nav__link">
+      <a href="../../../core-concepts/privacy/" class="md-nav__link">
         
   
   
@@ -1616,7 +1732,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../governance/overview/" class="md-nav__link">
+      <a href="../../../governance/overview/" class="md-nav__link">
         
   
   
@@ -1644,7 +1760,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../governance/system-contracts/" class="md-nav__link">
+      <a href="../../../governance/system-contracts/" class="md-nav__link">
         
   
   
@@ -1680,7 +1796,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../faq/" class="md-nav__link">
+      <a href="../../../faq/" class="md-nav__link">
         
   
   
@@ -1753,7 +1869,7 @@
   
   
   
-    <a href="../../../bnb-opbnb/" class="md-nav__link">
+    <a href="../../../../bnb-opbnb/" class="md-nav__link">
       
   
   
@@ -1826,7 +1942,7 @@
   
   
   
-    <a href="../../../bnb-greenfield/" class="md-nav__link">
+    <a href="../../../../bnb-greenfield/" class="md-nav__link">
       
   
   
@@ -1899,7 +2015,7 @@
   
   
   
-    <a href="../../../developer-kit/" class="md-nav__link">
+    <a href="../../../../developer-kit/" class="md-nav__link">
       
   
   
@@ -1962,7 +2078,7 @@
   
   
   
-    <a href="../../../bc-fusion/" class="md-nav__link">
+    <a href="../../../../bc-fusion/" class="md-nav__link">
       
   
   
@@ -2015,10 +2131,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#you-pay-for-your-declared-gas-limit" class="md-nav__link">
+  <a href="#rpc-endpoints-for-bnb-newl1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        You pay for your declared gas limit
+        RPC Endpoints for BNB NewL1
       
     </span>
   </a>
@@ -2026,10 +2142,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#carries-over-unchanged" class="md-nav__link">
+  <a href="#transports" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Carries over unchanged
+        Transports
       
     </span>
   </a>
@@ -2037,46 +2153,96 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#contracts" class="md-nav__link">
+  <a href="#json-rpc-api-list" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Contracts
+        JSON-RPC API List
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JSON-RPC API List">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#geth-go-ethereum-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Geth (Go-Ethereum) API
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#submitting-transactions" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#block-tags" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Submitting transactions
+        Block tags
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#reading-state-and-receipts" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#pre-confirmation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Reading state and receipts
+        Pre-confirmation
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#indexers-and-explorers" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#account-abstraction" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Indexers and explorers
+        Account abstraction
       
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-lane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Lane
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transaction-pool-and-system-transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transaction pool and system transactions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#finality-and-other-bsc-compatible-apis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finality and other BSC-compatible APIs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2105,7 +2271,7 @@
   
   
     <li class="md-path__item">
-      <a href="../../.." class="md-path__link">
+      <a href="../../../.." class="md-path__link">
         
   <span class="md-ellipsis">
     Home
@@ -2123,7 +2289,7 @@
     
     
       <li class="md-path__item">
-        <a href="../../" class="md-path__link">
+        <a href="../../../" class="md-path__link">
           
   <span class="md-ellipsis">
     BNB NewL1
@@ -2141,10 +2307,28 @@
     
     
       <li class="md-path__item">
-        <a href="../network-info/" class="md-path__link">
+        <a href="../../quick-guide/" class="md-path__link">
           
   <span class="md-ellipsis">
-    Get Started
+    Developers
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="./" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    JSON-RPC
   </span>
 
         </a>
@@ -2163,7 +2347,7 @@
 
 
   
-    <a href="https://github.com/bnb-chain/bnb-chain.github.io/edit/main/docs/bnb-newl1/get-started/migrate-from-bsc.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/bnb-chain/bnb-chain.github.io/edit/main/docs/bnb-newl1/developers/json_rpc/json-rpc-endpoint.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -2171,89 +2355,38 @@
   
 
 
-<div><h1 id="migrating-from-bnb-smart-chain">Migrating from BNB Smart Chain<a class="headerlink" href="#migrating-from-bnb-smart-chain" title="Link to this section">¶</a></h1>
-<p>Same gas asset, same Parlia consensus family, same staking and governance contracts at the same addresses, unmodified EVM. Contracts deploy unchanged and standard tooling connects unchanged. The differences are almost all <strong>above</strong> the EVM — fees, mempool, block cadence, and how state is committed.</p>
+<div><h1 id="json-rpc-endpoint">JSON-RPC Endpoint<a class="headerlink" href="#json-rpc-endpoint" title="Link to this section">¶</a></h1>
+<p>JSON-RPC endpoints refer to the network location where a program sends its RPC requests to access node data. Once you connect an application to an RPC endpoint, you can read chain state, submit transactions, and subscribe to live events. This section lists the endpoints for connecting to BNB NewL1 and explains how its API surface differs from a standard Ethereum client.</p>
+<h2 id="rpc-endpoints-for-bnb-newl1">RPC Endpoints for BNB NewL1<a class="headerlink" href="#rpc-endpoints-for-bnb-newl1" title="Link to this section">¶</a></h2>
 <div class="admonition note">
-<p class="admonition-title">No public network yet</p>
-<p>There is no public testnet or mainnet endpoint yet, so treat this as a porting checklist to work through ahead of one. A native BNB NewL1 ↔ BSC bridge is designed and under development but not live; the <code>CrossChain</code> address currently holds a placeholder (see <a href="../../governance/system-contracts/">System Contracts</a>).</p>
+<p class="admonition-title">No public endpoint yet</p>
+<p>BNB NewL1 has no public testnet or mainnet, so there are no hosted RPC endpoints, faucet, or explorer to list here yet. Endpoints will be published on this page and on <a href="../../../get-started/network-info/">Network Information</a> once a network is deployed.</p>
 </div>
-<h2 id="you-pay-for-your-declared-gas-limit">You pay for your declared gas limit<a class="headerlink" href="#you-pay-for-your-declared-gas-limit" title="Link to this section">¶</a></h2>
-<p><strong>A transaction pays its full declared <code>gas_limit</code>, regardless of gas used.</strong> No unused-gas refund, and EIP-3529 refunds are void. Blocks are packed by <em>declared</em> gas before execution, so declared gas is the block space actually sold.</p>
-<ul>
-<li><strong>Padding costs money.</strong> <code>gasLimit = estimate * 1.5</code>, ethers’ default padding, and hardcoded <code>500000</code> are all pure waste here.</li>
-<li><strong><code>eth_estimateGas</code> still measures real usage</strong> — simulation runs with charge-by-limit disabled. Declare its result plus only the headroom your call path genuinely needs.</li>
-<li><strong><code>gasUsed</code> in receipts equals the declared limit</strong>, and so does <code>header.gasUsed</code>. You were charged <code>effectiveGasPrice × gasUsed</code>; actual consumption needs a trace.</li>
-<li><strong>Limit is capped at 16,777,216</strong> (2²⁴, BEP-652 / EIP-7825).</li>
-<li><strong>Same model for <a href="../../developers/transaction-types/"><code>0x76</code> AA transactions</a></strong>, including sponsor charges and session-key spend limits.</li>
-</ul>
-<p>System transactions and read-only simulation keep stock refund behavior.</p>
-<h2 id="carries-over-unchanged">Carries over unchanged<a class="headerlink" href="#carries-over-unchanged" title="Link to this section">¶</a></h2>
-<table>
-<thead>
-<tr>
-<th>Area</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>EVM semantics</td>
-<td>Full <strong>Prague</strong> from genesis — no fork ramp.</td>
-</tr>
-<tr>
-<td>Gas asset</td>
-<td>BNB.</td>
-</tr>
-<tr>
-<td>Staking &amp; governance contracts</td>
-<td><code>ValidatorSet</code>, <code>SlashIndicator</code>, <code>SystemReward</code>, <code>StakeHub</code>, <code>StakeCredit</code>, <code>Governor</code>, <code>GovToken</code>, <code>Timelock</code> at their BSC addresses (<a href="../../governance/system-contracts/">details</a>).</td>
-</tr>
-<tr>
-<td>Consensus</td>
-<td>Parlia + BLS fast finality, with <code>parlia_getSnapshot</code> / <code>parlia_getValidators</code> / <code>parlia_getJustifiedNumber</code>.</td>
-</tr>
-<tr>
-<td>BSC-flavored RPC</td>
-<td><code>eth_getFinalizedHeader</code>, <code>eth_getFinalizedBlock</code>, <code>eth_getTransactionReceiptsByBlockNumber</code>, <code>eth_getTransactionsByBlockNumber</code>.</td>
-</tr>
-<tr>
-<td>Millisecond timestamps</td>
-<td>As on BSC: seconds in <code>header.timestamp</code>, milliseconds in the low 8 bytes of <code>mixHash</code>.</td>
-</tr>
-</tbody>
-</table>
-<h2 id="contracts">Contracts<a class="headerlink" href="#contracts" title="Link to this section">¶</a></h2>
-<p>Bytecode runs as-is. What changes meaning is anything reasoning about <strong>time or block cadence</strong>.</p>
-<ul>
-<li><strong><code>block.number</code> advances ~5×/second.</strong> Every block-count constant — vesting, <code>blocksPerDay</code>, TWAP windows, auction durations — is off by ~3.75× versus BSC. Recompute them, or switch to timestamp math.</li>
-<li><strong><code>block.timestamp</code> repeats</strong> across roughly five consecutive blocks. <code>require(block.timestamp &gt; lastUpdate)</code>, per-block rate limiting, and timestamp-as-unique-key all break.</li>
-<li><strong><code>block.prevrandao</code> is not randomness</strong> — it’s the millisecond part of the timestamp, <code>0–999</code>. <code>block.difficulty</code> is Parlia’s <code>2</code>/<code>1</code>.</li>
-<li><strong>The fee payer may not be the sender</strong>, and one transaction can carry up to 64 atomic calls (<code>0x76</code>).</li>
-<li><strong>EIP-7702 and EIP-4844 transactions are rejected.</strong> For smart accounts, use the native <a href="../../developers/transaction-types/"><code>0x76</code> envelope</a> and the <code>AccountKeychain</code> precompile instead.</li>
-</ul>
-<h2 id="submitting-transactions">Submitting transactions<a class="headerlink" href="#submitting-transactions" title="Link to this section">¶</a></h2>
-<ul>
-<li><strong>Base fee is pinned to zero (BEP-222), so the tip is the price</strong> — <code>min(maxFeePerGas, maxPriorityFeePerGas)</code>. Tipping <code>0</code> pays nothing and is rejected. Fees route through the system address to <code>ValidatorSet</code>, with BEP-95 burning its share.</li>
-<li><strong>No global mempool.</strong> Transactions go straight to the current and next producer. No <code>txpool_*</code>, and <code>eth_subscribe("newPendingTransactions")</code> shows only this node’s admissions.</li>
-<li><strong>Replace-by-fee needs a 10% bump and is local only</strong> — it displaces the incumbent just in the pools holding it.</li>
-<li><strong>Pooled transactions expire</strong> after 60 s, and a nonce more than 256 ahead is rejected at submission.</li>
-<li><strong><code>eth_getTransactionCount(addr, "latest")</code> returns the ordered-tip nonce</strong> and does not look ahead. Track nonces client-side when pipelining.</li>
-</ul>
-<h2 id="reading-state-and-receipts">Reading state and receipts<a class="headerlink" href="#reading-state-and-receipts" title="Link to this section">¶</a></h2>
-<p>Where <a href="../../core-concepts/async-execution/">async execution</a> shows up — the biggest behavioral gap versus BSC.</p>
-<ul>
-<li><strong><code>latest</code> means executed, not ordered.</strong> State reads trail the head you see on a <code>newHeads</code> subscription. Expected, not a lagging node.</li>
-<li><strong><code>-38004</code> is retryable, <code>-38001</code> is not.</strong> Ordered-but-unexecuted versus no-such-block. <code>eth_getTransactionReceipt</code> uses <code>-38004</code> for “block not executed yet” and <code>null</code> for “unknown transaction” — keep polling on the former.</li>
-<li><strong><code>eth_getProof</code> rejects with <code>-32004</code>.</strong> State is committed with an LtHash accumulator, not an MPT. Light clients, proof-based bridges, and similar need a different design; an accumulator-native proof scheme is planned.</li>
-<li><strong><code>eth_syncing</code> is always <code>false</code></strong> — use <code>eth_health</code> plus block-number progress. Snap sync doesn’t exist.</li>
-</ul>
-<h2 id="indexers-and-explorers">Indexers and explorers<a class="headerlink" href="#indexers-and-explorers" title="Link to this section">¶</a></h2>
-<ul>
-<li><strong>System transactions are invisible in the block body.</strong> Slashing, deposits, finality rewards, validator-set updates, and shielded drains are not in the transaction list and not counted in <code>header.gasUsed</code>. Read them via <a href="../../developers/json_rpc/newl1-api-list/#newl1_getsystemreceiptsbyblock"><code>newl1_getSystemReceiptsByBlock</code></a> — they never appear in <code>eth_getBlockReceipts</code>.</li>
-<li><strong>Blocks carry <code>systemTransactionsRoot</code> and <code>commitments</code></strong>, and <code>stateRoot</code> / <code>receiptsRoot</code> / <code>logsBloom</code> / <code>gasUsed</code> are <code>null</code> while a block is ordered but unexecuted. Strict deserializers fail at the tip.</li>
-<li><strong><code>newl1_subscribeNewHeads</code></strong> delivers head, justified, and finalized numbers and hashes in one frame per canonical advance.</li>
-</ul>
-<p>Once you’re ported, the <a href="../../developers/quick-guide/">Quick Guide</a> covers what BNB NewL1 adds on top: pre-confirmation, Multi-Lane, native account abstraction, and the shielded pool.</p></div>
+<p>Chain ID is <code>48879</code> (<code>0xBEEF</code>) on the current devnet; a public network will use its own registered value.</p>
+<h2 id="transports">Transports<a class="headerlink" href="#transports" title="Link to this section">¶</a></h2>
+<p>HTTP and WebSocket serve the <strong>same method set</strong>, with one exception: <strong>subscriptions are WebSocket-only</strong>. A node operator enables or disables each transport with <code>--http.addr</code> / <code>--ws.addr</code> (passing <code>none</code> disables it).</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># HTTP</span>
+curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">"</span><span class="nv">$RPC</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--data<span class="w"> </span><span class="s1">'{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'</span>
+</code></pre></div>
+<h2 id="json-rpc-api-list">JSON-RPC API List<a class="headerlink" href="#json-rpc-api-list" title="Link to this section">¶</a></h2>
+<p>BNB NewL1 is EVM-compatible and strives to be as compatible as possible with the Go-Ethereum API. It also has features of its own — decoupled ordering and execution, transaction pre-confirmation, native account abstraction, Multi-Lane reserved capacity, and a shielded pool — which require their own specialized APIs under a <code>newl1_*</code> namespace.</p>
+<h3 id="geth-go-ethereum-api">Geth (Go-Ethereum) API<a class="headerlink" href="#geth-go-ethereum-api" title="Link to this section">¶</a></h3>
+<p>The standard <code>eth_*</code>, <code>net_*</code>, and <code>web3_*</code> methods behave as in Geth, so existing tooling (ethers.js, viem, web3.py, wallets, explorers) connects without modification. If you’re looking for detailed usage of a standard method, you’ll most likely find the answer here:</p>
+<p><a href="https://geth.ethereum.org/docs/interacting-with-geth/rpc">Geth JSON-RPC API documentation</a></p>
+<p>Exceptions and incompatibilities are explicitly listed in <a href="../newl1-api-list/#divergences-from-geth">Divergences from Geth</a> — the short version is no <code>eth_getProof</code>, no public mempool introspection, no EIP-4844/EIP-7702 transactions, and receipts that report the declared gas limit rather than gas consumed.</p>
+<h3 id="block-tags">Block tags<a class="headerlink" href="#block-tags" title="Link to this section">¶</a></h3>
+<p>Because ordering and execution are decoupled, the node tracks two heights and <code>latest</code> resolves to the <strong>executed</strong> one. There are no custom tag strings on the wire, but the standard tags do not mean quite what they mean on a synchronous chain, and two extra error codes distinguish “not executed yet” from “no such block”. Read this before anything else: <a href="../newl1-api-list/#block-tags-and-the-two-tips">Block Tags and the Two Tips</a>.</p>
+<h3 id="pre-confirmation">Pre-confirmation<a class="headerlink" href="#pre-confirmation" title="Link to this section">¶</a></h3>
+<p>A validator-signed, sub-block-level signal that the current block producer has committed to including a transaction, available roughly 20 ms after submission — well before the block itself. Advisory and revocable; see <a href="../newl1-api-list/#pre-confirmation-api">Pre-confirmation API</a>.</p>
+<h3 id="account-abstraction">Account abstraction<a class="headerlink" href="#account-abstraction" title="Link to this section">¶</a></h3>
+<p>Delegated-key state for the native <code>0x76</code> transaction type — session keys, admin keys, passkey signers, spend limits — is readable on chain. See <a href="../newl1-api-list/#account-abstraction-api">Account Abstraction API</a>.</p>
+<h3 id="multi-lane">Multi-Lane<a class="headerlink" href="#multi-lane" title="Link to this section">¶</a></h3>
+<p>The live, governance-resolved reserved-capacity configuration: <a href="../newl1-api-list/#multi-lane-api">Multi-Lane API</a>.</p>
+<h3 id="transaction-pool-and-system-transactions">Transaction pool and system transactions<a class="headerlink" href="#transaction-pool-and-system-transactions" title="Link to this section">¶</a></h3>
+<p>Pool-plane transaction status, a per-sender debug snapshot, and the receipts for system transactions that never appear in a block’s transaction list: <a href="../newl1-api-list/#transaction-pool-api">Transaction Pool API</a> and <a href="../newl1-api-list/#system-transaction-api">System Transaction API</a>.</p>
+<h3 id="finality-and-other-bsc-compatible-apis">Finality and other BSC-compatible APIs<a class="headerlink" href="#finality-and-other-bsc-compatible-apis" title="Link to this section">¶</a></h3>
+<p>BNB NewL1 keeps Parlia’s BLS fast finality, and serves the <code>parlia_*</code> snapshot methods plus the explicit-finality and batch-receipt methods BSC tooling expects: <a href="../newl1-api-list/#finality-api">Finality API</a> and <a href="../newl1-api-list/#others">Others</a>.</p></div>
 
 
 
@@ -2410,19 +2543,19 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["search.suggest", "search.highlight", "search.share", "navigation.instant", "navigation.tracking", "navigation.integration", "navigation.tabs", "navigation.tabs.sticky", "navigation.indexes", "navigation.sections", "navigation.prune", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "content.code.copy", "content.action.edit", "content.tooltips"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["search.suggest", "search.highlight", "search.share", "navigation.instant", "navigation.tracking", "navigation.integration", "navigation.tabs", "navigation.tabs.sticky", "navigation.indexes", "navigation.sections", "navigation.prune", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "content.code.copy", "content.action.edit", "content.tooltips"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
 
-      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
-        <script src="../../../assets/js/mathjax.js"></script>
+        <script src="../../../../assets/js/mathjax.js"></script>
       
-        <script src="../../../assets/js/custom.js"></script>
+        <script src="../../../../assets/js/custom.js"></script>
       
-        <script src="../../../assets/js/superintern.js"></script>
+        <script src="../../../../assets/js/superintern.js"></script>
       
-        <script src="../../../assets/js/footer-menu.js"></script>
+        <script src="../../../../assets/js/footer-menu.js"></script>
       
     
 <script src="https://unpkg.com/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha384-Wuix6BuhrWbjDBs24bXrjf4ZQ5aFeFWBuKkFekO2t8xFU0iNaLQfp2K6/1Nxveei" crossorigin="anonymous"></script>

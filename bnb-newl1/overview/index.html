@@ -1213,15 +1213,41 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../developers/json-rpc/" class="md-nav__link">
+    
+    
+      
         
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../developers/json_rpc/json-rpc-endpoint/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
     
   
-    JSON-RPC Reference
+    JSON-RPC
   
 
     
@@ -1229,7 +1255,13 @@
   
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1384,7 +1416,7 @@
   <span class="md-ellipsis">
     
   
-    Multi-Lane Blockspace
+    Multi-Lane
   
 
     
@@ -2076,8 +2108,8 @@
 
 
 <div><h1 id="bnb-newl1-high-performance-evm-l1">BNB NewL1 — High-Performance EVM L1<a class="headerlink" href="#bnb-newl1-high-performance-evm-l1" title="Link to this section">¶</a></h1>
-<p>BNB NewL1 is a new, high-performance Layer 1 blockchain in the BNB Chain ecosystem. The EVM execution layer itself is unchanged — existing Solidity contracts run without modification, and standard wallet flows (sign a legacy/EIP-1559 transaction, submit it, read back the receipt) work as on any EVM chain. Everything above the EVM — consensus, node architecture, mempool, blockspace policy — has been rebuilt for higher throughput and faster finality, and that rebuild does introduce a handful of concrete RPC-surface differences (no <code>eth_getProof</code>, no global mempool, no EIP-4844/EIP-7702 transactions — see <a href="../developers/json-rpc/">JSON-RPC Reference</a> for the full list) that some wallets or infra tooling built against those specific behaviors would need to account for.</p>
-<p>It’s built for latency-sensitive on-chain activity — DEX/AMM trading, liquidations, and other flows where waiting a full block for any signal is too slow. 200ms blocks and BLS fast finality mean transactions finalize in roughly one block interval instead of accumulating confirmations, and two features unique to BNB NewL1 build on top of that: sub-20ms transaction pre-confirmation and reserved blockspace lanes, so latency-sensitive trades don’t have to compete with unrelated traffic for inclusion. (Under the hood it builds on <a href="https://github.com/paradigmxyz/reth">reth</a> and <a href="https://github.com/bluealloy/revm">revm</a> for the execution layer.)</p>
+<p>BNB NewL1 is a new, high-performance Layer 1 blockchain in the BNB Chain ecosystem. The EVM execution layer itself is unchanged — existing Solidity contracts run without modification, and standard wallet flows (sign a legacy/EIP-1559 transaction, submit it, read back the receipt) work as on any EVM chain. Everything above the EVM — consensus, node architecture, mempool, blockspace policy — has been rebuilt for higher throughput and faster finality, and that rebuild does introduce a handful of concrete RPC-surface differences (no <code>eth_getProof</code>, no global mempool, no EIP-4844/EIP-7702 transactions — see <a href="../developers/json_rpc/json-rpc-endpoint/">JSON-RPC Endpoint</a> for the full list) that some wallets or infra tooling built against those specific behaviors would need to account for.</p>
+<p>It’s built for latency-sensitive on-chain activity — DEX/AMM trading, liquidations, and other flows where waiting a full block for any signal is too slow. 200ms blocks and BLS fast finality mean transactions finalize in roughly one block interval instead of accumulating confirmations, and two features unique to BNB NewL1 build on top of that: sub-20ms transaction pre-confirmation and Multi-Lane reserved capacity, so latency-sensitive trades don’t have to compete with unrelated traffic for inclusion. (Under the hood it builds on <a href="https://github.com/paradigmxyz/reth">reth</a> and <a href="https://github.com/bluealloy/revm">revm</a> for the execution layer.)</p>
 <h2 id="whats-new">What’s new<a class="headerlink" href="#whats-new" title="Link to this section">¶</a></h2>
 <p>BNB NewL1 keeps Parlia — the same proof-of-authority-with-BLS-fast-finality consensus family that secures BNB Smart Chain — but adds several protocol-level features that are new to the BNB Chain ecosystem:</p>
 <table>
@@ -2105,9 +2137,9 @@
 <td><a href="../core-concepts/tx-preconfirmation/">Pre-confirmation</a></td>
 </tr>
 <tr>
-<td><strong>Multi-lane blockspace</strong></td>
+<td><strong>Multi-Lane</strong></td>
 <td>Reserved gas capacity per transaction class (e.g. AMM, liquidation) so latency-sensitive traffic can’t be crowded out by unrelated load</td>
-<td><a href="../core-concepts/multi-lane/">Multi-Lane Blockspace</a></td>
+<td><a href="../core-concepts/multi-lane/">Multi-Lane</a></td>
 </tr>
 <tr>
 <td><strong>Native account abstraction</strong></td>
@@ -2121,7 +2153,7 @@
 </tr>
 <tr>
 <td><strong>On-chain governance</strong></td>
-<td>Token-weighted (govBNB) proposal/vote/timelock governance controlling protocol parameters, including the multi-lane configuration</td>
+<td>Token-weighted (govBNB) proposal/vote/timelock governance controlling protocol parameters, including the Multi-Lane configuration</td>
 <td><a href="../governance/overview/">Governance</a></td>
 </tr>
 </tbody>
@@ -2129,9 +2161,9 @@
 <h2 id="design-principles">Design principles<a class="headerlink" href="#design-principles" title="Link to this section">¶</a></h2>
 <ul>
 <li><strong>EVM compatibility is non-negotiable.</strong> revm’s execution semantics are never forked at the behavioral level — contracts, opcodes, and per-operation gas costs behave exactly as on any other EVM chain. What <em>is</em> different is how the resulting gas is billed: a transaction pays for its declared gas limit rather than its gas used, because block space is sold by declared gas before execution runs (see <a href="../get-started/migrate-from-bsc/#you-pay-for-your-declared-gas-limit">Migrating from BSC</a>).</li>
-<li><strong>No global mempool.</strong> Transactions are routed directly to the current and next block producer (see <a href="../developers/json-rpc/">JSON-RPC Reference</a>) rather than gossiped through a shared pending-transaction pool, which is part of what makes pre-confirmation and multi-lane packing possible.</li>
+<li><strong>No global mempool.</strong> Transactions are routed directly to the current and next block producer (see <a href="../developers/json_rpc/json-rpc-endpoint/">JSON-RPC Endpoint</a>) rather than gossiped through a shared pending-transaction pool, which is part of what makes pre-confirmation and Multi-Lane packing possible.</li>
 <li><strong>Ordering and execution are decoupled.</strong> Blocks are ordered (and can be voted on for fast finality) before execution fully catches up, which keeps consensus liveness independent of EVM execution speed — see <a href="../core-concepts/async-execution/">Async Execution &amp; State Commitment</a> for how this works and what it changes about <code>eth_getProof</code> and reading state.</li>
-<li><strong>New features are additive.</strong> Account abstraction, pre-confirmation, multi-lane, and the shielded pool all run alongside standard transactions and standard EVM execution — none of them change how an existing contract or a plain transaction behaves.</li>
+<li><strong>New features are additive.</strong> Account abstraction, pre-confirmation, Multi-Lane, and the shielded pool all run alongside standard transactions and standard EVM execution — none of them change how an existing contract or a plain transaction behaves.</li>
 </ul>
 <h2 id="network-parameters">Network parameters<a class="headerlink" href="#network-parameters" title="Link to this section">¶</a></h2>
 <table>
@@ -2166,7 +2198,7 @@
 </table>
 <h2 id="current-status">Current status<a class="headerlink" href="#current-status" title="Link to this section">¶</a></h2>
 <p>BNB NewL1 runs today as a multi-validator devnet with real block production, P2P gossip, and end-to-end finality. Consult each feature page in this manual for what’s shipped versus still in progress — this manual calls that out explicitly per feature, since BNB NewL1 is under active development ahead of a public testnet/mainnet launch.</p>
-<p>Every interface documented in this manual — the core <code>eth_*</code>/<code>newl1_*</code> RPC surface, the full governance lifecycle (stake → propose → vote → queue → execute) activating a multi-lane quota, account-abstraction key management and the <code>0x76</code> envelope itself (secp256k1, P256, and WebAuthn signers, sponsorship, validity windows), and the complete shielded-pool flow (deposit, deferred batch insertion, withdraw with a real Groth16 proof, nullifier burn) — has been exercised directly against a locally-run single-validator devnet built from source, with zero discrepancies found beyond minor RPC response-shape corrections already reflected on this manual’s pages. The client has moved on since that pass: the <a href="../developers/json-rpc/">JSON-RPC Reference</a> is kept current against the client source, so methods added after that devnet run are documented from the implementation rather than from a live call.</p></div>
+<p>Every interface documented in this manual — the core <code>eth_*</code>/<code>newl1_*</code> RPC surface, the full governance lifecycle (stake → propose → vote → queue → execute) activating a Multi-Lane quota, account-abstraction key management and the <code>0x76</code> envelope itself (secp256k1, P256, and WebAuthn signers, sponsorship, validity windows), and the complete shielded-pool flow (deposit, deferred batch insertion, withdraw with a real Groth16 proof, nullifier burn) — has been exercised directly against a locally-run single-validator devnet built from source, with zero discrepancies found beyond minor RPC response-shape corrections already reflected on this manual’s pages. The client has moved on since that pass: the <a href="../developers/json_rpc/json-rpc-endpoint/">JSON-RPC Endpoint</a> is kept current against the client source, so methods added after that devnet run are documented from the implementation rather than from a live call.</p></div>
 
 
 
@@ -2187,7 +2219,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 14, 2026 06:51:29 UTC">August 14, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 18, 2026 06:27:40 UTC">August 18, 2026</span>
   </span>
 
     

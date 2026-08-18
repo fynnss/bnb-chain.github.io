@@ -1122,15 +1122,41 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../../developers/json-rpc/" class="md-nav__link">
+    
+    
+      
         
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../developers/json_rpc/json-rpc-endpoint/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
     
   
-    JSON-RPC Reference
+    JSON-RPC
   
 
     
@@ -1138,7 +1164,13 @@
   
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1408,7 +1440,7 @@
   <span class="md-ellipsis">
     
   
-    Multi-Lane Blockspace
+    Multi-Lane
   
 
     
@@ -2157,7 +2189,7 @@
 <li><strong><code>eth_getProof</code> is not supported</strong> (rejected with <code>-32004</code>) — there’s no trie to produce a Merkle inclusion proof from. An LtHash-native inclusion proof scheme is a planned follow-up, not available today.</li>
 <li><strong>Snap sync is not supported.</strong> A new node backfills over the chain’s own P2P protocol rather than replicating a trie.</li>
 </ul>
-<p>See <a href="../../developers/json-rpc/">JSON-RPC Reference</a> for the full list of RPC differences this causes.</p>
+<p>See <a href="../../developers/json_rpc/json-rpc-endpoint/">JSON-RPC Endpoint</a> for the full list of RPC differences this causes.</p>
 <h2 id="correctness-enforcement">Correctness enforcement<a class="headerlink" href="#correctness-enforcement" title="Link to this section">¶</a></h2>
 <p>Because ordering and execution are decoupled, a block’s fast-finality vote is fundamentally a vote on ordering, not on someone else’s claimed execution result. The correctness check happens somewhere else: a validator abstains from voting for a head whose published execution commitments it has locally computed to a <strong>different</strong> result. Since the state commitment is cumulative, any divergence at one block propagates into every descendant commitment, so this check reliably catches a bad result within a bounded number of blocks. The practical effect is that an incorrect execution result cannot gather the two-thirds vote quorum needed to finalize — even though block <em>import</em> itself doesn’t reject it outright (rejecting at import would break the ability for later blocks to resolve their parent while execution is still catching up).</p>
 <h2 id="for-developers">For developers<a class="headerlink" href="#for-developers" title="Link to this section">¶</a></h2>
@@ -2216,7 +2248,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 14, 2026 06:51:29 UTC">August 14, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 18, 2026 06:27:40 UTC">August 18, 2026</span>
   </span>
 
     

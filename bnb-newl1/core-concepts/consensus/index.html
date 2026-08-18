@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://fynnss.github.io/bnb-chain.github.io/bnb-newl1/core-concepts/consensus/">
       
       
-        <link rel="prev" href="../../developers/json-rpc/">
+        <link rel="prev" href="../../developers/json_rpc/newl1-api-list/">
       
       
         <link rel="next" href="../async-execution/">
@@ -1122,15 +1122,41 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../../developers/json-rpc/" class="md-nav__link">
+    
+    
+      
         
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../developers/json_rpc/json-rpc-endpoint/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
     
   
-    JSON-RPC Reference
+    JSON-RPC
   
 
     
@@ -1138,7 +1164,13 @@
   
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1375,7 +1407,7 @@
   <span class="md-ellipsis">
     
   
-    Multi-Lane Blockspace
+    Multi-Lane
   
 
     
@@ -2087,7 +2119,7 @@
 <p>Finality here is a statement about <strong>ordering</strong> — which block comes next — not about the result of executing it. Block execution itself runs on a separate, decoupled track; see <a href="../async-execution/">Async Execution</a> for how that works and what it means for reading state, receipts, and <code>eth_getProof</code>.</p>
 <h2 id="for-developers">For developers<a class="headerlink" href="#for-developers" title="Link to this section">¶</a></h2>
 <ul>
-<li>Validator admission and rotation are on-chain and queryable (see <a href="../../developers/json-rpc/#newl1_getvalidatorschedule"><code>newl1_getValidatorSchedule</code></a>).</li>
+<li>Validator admission and rotation are on-chain and queryable (see <a href="../../developers/json_rpc/newl1-api-list/#newl1_getvalidatorschedule"><code>newl1_getValidatorSchedule</code></a>).</li>
 <li>Block interval, turn length, and epoch length are chain parameters, not assumptions to hardcode into client code.</li>
 <li>Applications that need a hard guarantee before acting irreversibly (e.g. a bridge release, a large settlement) should wait for <strong>finalized</strong>, not just <strong>ordered/imported</strong> — see <a href="../tx-preconfirmation/">Transaction Pre-confirmation</a> for the faster, best-effort signal available before finality.</li>
 </ul></div>
@@ -2111,7 +2143,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 14, 2026 06:51:29 UTC">August 14, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 18, 2026 06:27:40 UTC">August 18, 2026</span>
   </span>
 
     

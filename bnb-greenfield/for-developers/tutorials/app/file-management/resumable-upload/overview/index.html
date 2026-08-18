@@ -3542,7 +3542,7 @@
 <span class="w">    </span><span class="nx">ctx</span><span class="p">,</span>
 <span class="w">    </span><span class="nx">bucketName</span><span class="p">,</span>
 <span class="w">    </span><span class="nx">objectName</span><span class="p">,</span>
-<span class="w">    </span><span class="nb">int64</span><span class="p">(</span><span class="nx">buffer</span><span class="p">.</span><span class="nx">Len</span><span class="p">()),</span>
+<span class="w">    </span><span class="kt">int64</span><span class="p">(</span><span class="nx">buffer</span><span class="p">.</span><span class="nx">Len</span><span class="p">()),</span>
 <span class="w">    </span><span class="nx">bytes</span><span class="p">.</span><span class="nx">NewReader</span><span class="p">(</span><span class="nx">buffer</span><span class="p">.</span><span class="nx">Bytes</span><span class="p">()),</span>
 <span class="w">    </span><span class="nx">types</span><span class="p">.</span><span class="nx">PutObjectOptions</span><span class="p">{</span>
 <span class="w">        </span><span class="nx">PartSize</span><span class="p">:</span><span class="w">        </span><span class="mi">1024</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="c1">// 16 MB</span>

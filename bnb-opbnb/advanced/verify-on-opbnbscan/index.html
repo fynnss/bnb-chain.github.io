@@ -2657,7 +2657,7 @@
 <span class="nx">require</span><span class="p">(</span><span class="s2">"@nomicfoundation/hardhat-verify"</span><span class="p">);</span>
 <span class="cm">/** @type import('hardhat/config').HardhatUserConfig */</span>
 
-<span class="kr">module</span><span class="nx">.exports</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="nx">solidity</span><span class="o">:</span><span class="w"> </span><span class="s2">"0.8.19"</span><span class="p">,</span><span class="w"> </span><span class="c1">//replace your own solidity compiler version</span>
 <span class="w">  </span><span class="nx">networks</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nx">opbnb</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
@@ -2689,7 +2689,7 @@
 <h2 id="truffle"><strong>Truffle</strong><a class="headerlink" href="#truffle" title="Link to this section">¶</a></h2>
 <p>You can also use truffle to verify your smart contract on opBNBScan.</p>
 <p>Please make sure the truffle-plugin-verify is installed correctly, and in the plugin, add the ‘truffle-plugin-verify’</p>
-<div class="highlight"><pre><span></span><code><span class="kr">module</span><span class="nx">.exports</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<div class="highlight"><pre><span></span><code><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 <span class="w"> </span><span class="nx">plugins</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">  </span><span class="s1">'truffle-plugin-verify'</span>
 <span class="w"> </span><span class="p">],</span>

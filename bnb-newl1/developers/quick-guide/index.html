@@ -1226,15 +1226,41 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../json-rpc/" class="md-nav__link">
+    
+    
+      
         
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../json_rpc/json-rpc-endpoint/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
     
   
-    JSON-RPC Reference
+    JSON-RPC
   
 
     
@@ -1242,7 +1268,13 @@
   
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1397,7 +1429,7 @@
   <span class="md-ellipsis">
     
   
-    Multi-Lane Blockspace
+    Multi-Lane
   
 
     
@@ -2150,7 +2182,7 @@
 <tr>
 <td><strong>No global mempool</strong></td>
 <td>Transactions route straight to the current and next block producer. No <code>txpool_*</code>, no public pending-transaction feed, and replace-by-fee only affects the pools holding the transaction.</td>
-<td><a href="../json-rpc/">JSON-RPC Reference</a></td>
+<td><a href="../json_rpc/json-rpc-endpoint/">JSON-RPC Endpoint</a></td>
 </tr>
 <tr>
 <td><strong>No <code>eth_getProof</code></strong></td>
@@ -2184,7 +2216,7 @@
 <td>The <code>0x76</code> transaction envelope: atomic call batches, session and admin keys, passkey (WebAuthn/P256) signing, and gas sponsorship — no bundler, no EntryPoint contract.</td>
 </tr>
 <tr>
-<td><a href="../../core-concepts/multi-lane/">Multi-lane blockspace</a></td>
+<td><a href="../../core-concepts/multi-lane/">Multi-Lane</a></td>
 <td>Governance-configured reserved gas quota per traffic class, so latency-sensitive flows aren’t crowded out by unrelated load.</td>
 </tr>
 <tr>
@@ -2201,7 +2233,8 @@
 <ul>
 <li><strong><a href="../examples/">Examples</a></strong> — runnable demos: watch a pre-confirmation land, find the current leader, drive load, run the end-to-end scenario suite.</li>
 <li><strong><a href="../transaction-types/">Transaction Types</a></strong> — the two native EIP-2718 types (<code>0x76</code> account abstraction, <code>0x77</code> shielded), their fields, how to sign them, and what trips people up.</li>
-<li><strong><a href="../json-rpc/">JSON-RPC Reference</a></strong> — every method the node serves: the standard <code>eth_*</code> surface and its differences, the <code>newl1_*</code> namespace, WebSocket subscriptions, the <code>parlia_*</code> compatibility methods, and the error codes.</li>
+<li><strong><a href="../json_rpc/json-rpc-endpoint/">JSON-RPC Endpoint</a></strong> — endpoints, transports, and how the API surface maps onto Geth’s.</li>
+<li><strong><a href="../json_rpc/newl1-api-list/">BNB NewL1 API List</a></strong> — every method that goes beyond or differs from Geth, with parameters and <code>curl</code> examples.</li>
 <li><strong><a href="../../get-started/network-info/">Network Information</a></strong> — chain id, protocol parameters, endpoints.</li>
 <li><strong><a href="../../governance/system-contracts/">System Contracts</a></strong> — every system contract and precompile address, including the BSC carry-overs and the BNB NewL1–original ones.</li>
 <li><strong><a href="../../governance/overview/">Governance</a></strong> — the propose → vote → queue → execute lifecycle that controls protocol parameters.</li>
@@ -2234,7 +2267,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 14, 2026 07:31:28 UTC">August 14, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 18, 2026 06:27:40 UTC">August 18, 2026</span>
   </span>
 
     

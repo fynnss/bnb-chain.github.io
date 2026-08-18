@@ -3201,7 +3201,7 @@ It is only used to verify wallet personal signature when registering EdDSA accou
 <h3 id="secondary-development-examples">Secondary Development Examples<a class="headerlink" href="#secondary-development-examples" title="Link to this section">¶</a></h3>
 <p>Customize interface</p>
 <div class="highlight"><pre><span></span><code><span class="c1">// new your own CustomizedPieceStore instance that implement the PieceStore interface</span>
-<span class="nx">pieceStore</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">NewCustomizedPieceStore</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="nx">pieceStore</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">NewCustomizedPieceStore</span><span class="p">(...)</span>
 
 <span class="c1">// new GfSp framework app</span>
 <span class="nx">gfsp</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">NewGfSpBaseApp</span><span class="p">(</span><span class="nx">GfSpConfig</span><span class="p">,</span><span class="w"> </span><span class="nx">CustomizePieceStore</span><span class="p">(</span><span class="nx">pieceStore</span><span class="p">))</span>
