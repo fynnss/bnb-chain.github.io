@@ -8,7 +8,7 @@ BNB NewL1 uses fully on-chain, token-weighted governance — the same Compound/O
 
 ## What's governable
 
-Protocol and system parameters — for example staking and slashing constants, and BNB NewL1–specific configuration such as the [multi-lane blockspace](../core-concepts/multi-lane.md) quotas in `LaneRegistry`. Validator-set **membership** itself is not a governance vote; it's decided automatically by stake-weighted election each epoch (see below), while the parameters that shape staking and elections are governable.
+Protocol and system parameters — for example staking and slashing constants, and BNB NewL1–specific configuration such as the [Multi-Lane](../core-concepts/multi-lane.md) quotas in `LaneRegistry`. Validator-set **membership** itself is not a governance vote; it's decided automatically by stake-weighted election each epoch (see below), while the parameters that shape staking and elections are governable.
 
 ## Voting power
 
@@ -28,7 +28,7 @@ Protocol and system parameters — for example staking and slashing constants, a
 Two access-control gates make this the only path to change anything governed: every governed target only accepts calls from `GovHub`, and `GovHub` only accepts calls from the `Timelock`.
 
 !!! note
-    Some parameters (for example, [multi-lane](../core-concepts/multi-lane.md) quota changes) take effect only after an additional short activation delay on top of the timelock delay, since node clients read that configuration from a slightly-lagged executed-state checkpoint rather than the very latest block.
+    Some parameters (for example, [Multi-Lane](../core-concepts/multi-lane.md) quota changes) take effect only after an additional short activation delay on top of the timelock delay, since node clients read that configuration from a slightly-lagged executed-state checkpoint rather than the very latest block.
 
 ## How to participate
 

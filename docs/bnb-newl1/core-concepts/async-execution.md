@@ -27,7 +27,7 @@ Two concrete consequences for anyone integrating with the chain:
 - **`eth_getProof` is not supported** (rejected with `-32004`) — there's no trie to produce a Merkle inclusion proof from. An LtHash-native inclusion proof scheme is a planned follow-up, not available today.
 - **Snap sync is not supported.** A new node backfills over the chain's own P2P protocol rather than replicating a trie.
 
-See [JSON-RPC Reference](../developers/json-rpc.md) for the full list of RPC differences this causes.
+See [JSON-RPC Endpoint](../developers/json_rpc/json-rpc-endpoint.md) for the full list of RPC differences this causes.
 
 ## Correctness enforcement
 

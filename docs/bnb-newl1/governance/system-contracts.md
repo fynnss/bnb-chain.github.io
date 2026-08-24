@@ -4,7 +4,7 @@ title: System Contracts - BNB NewL1
 
 # System Contracts
 
-BNB NewL1 predeploys a set of system contracts at genesis, at fixed addresses, covering staking, governance, and the chain's own novel features (multi-lane blockspace, the shielded pool, and account abstraction). Most of the staking/governance contracts reuse BNB Smart Chain's audited bytecode directly; the rest are new to BNB NewL1.
+BNB NewL1 predeploys a set of system contracts at genesis, at fixed addresses, covering staking, governance, and the chain's own novel features (Multi-Lane, the shielded pool, and account abstraction). Most of the staking/governance contracts reuse BNB Smart Chain's audited bytecode directly; the rest are new to BNB NewL1.
 
 | Contract | Address | Responsibility |
 |---|---|---|
@@ -18,7 +18,7 @@ BNB NewL1 predeploys a set of system contracts at genesis, at fixed addresses, c
 | `Governor` | `0x0000000000000000000000000000000000002004` | Governance proposal lifecycle: propose, vote, determine success. |
 | `GovToken` | `0x0000000000000000000000000000000000002005` | govBNB — the non-transferable voting-power token, minted 1:1 by `StakeHub`. |
 | `Timelock` | `0x0000000000000000000000000000000000002006` | Enforces the mandatory delay between a passed vote and execution. |
-| `LaneRegistry` | `0x0000000000000000000000000000000000003000` | [Multi-lane blockspace](../core-concepts/multi-lane.md) quotas and address routing. |
+| `LaneRegistry` | `0x0000000000000000000000000000000000003000` | [Multi-Lane](../core-concepts/multi-lane.md) quotas and address routing. |
 | `AccountKeychain` (precompile) | `0x0000000000000000000000000000000000004000` | [Account abstraction](../core-concepts/account-abstraction.md) key registry — authorize/revoke/read delegated keys. |
 | `SignatureVerifier` (precompile) | `0x0000000000000000000000000000000000004001` | Verifies AA signatures (secp256k1 / P256 / WebAuthn) on behalf of the AA pipeline. |
 | `ShieldedPool` | `0x0000000000000000000000000000000000005000` | [Privacy](../core-concepts/privacy.md) system contract — deposit / withdraw / transfer / atomic-call, with an embedded zk-proof verifier. |

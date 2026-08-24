@@ -1,18 +1,18 @@
 ---
-title: Multi-Lane Blockspace - BNB NewL1
+title: Multi-Lane - BNB NewL1
 ---
 
-# Multi-Lane Blockspace Reservation
+# Multi-Lane
 
-Multi-lane blockspace reserves guaranteed gas capacity inside every block for specific, latency-sensitive transaction classes — called **lanes** — so a burst of unrelated traffic can't crowd them out. It's a BNB NewL1–specific mechanism with no equivalent on BNB Smart Chain.
+Multi-Lane reserves guaranteed gas capacity inside every block for specific, latency-sensitive transaction classes — called **lanes** — so a burst of unrelated traffic can't crowd them out. It's a BNB NewL1–specific mechanism with no equivalent on BNB Smart Chain.
 
 ## Guarantees
 
-Multi-lane is a **capacity guarantee, not an inclusion guarantee**:
+Multi-Lane is a **capacity guarantee, not an inclusion guarantee**:
 
 - A lane's reserved gas share can never be exceeded by other traffic.
 - When eligible transactions for that lane are available, its reserved share is preserved for them.
-- Multi-lane does **not** guarantee that any specific transaction gets included, and it does **not** provide first-in-first-out fairness within a lane — ordering within a lane still follows normal fee-priority rules.
+- Multi-Lane does **not** guarantee that any specific transaction gets included, and it does **not** provide first-in-first-out fairness within a lane — ordering within a lane still follows normal fee-priority rules.
 
 ## Lane assignment
 
@@ -34,7 +34,7 @@ Lane-to-address mappings and reserved shares live in the on-chain `LaneRegistry`
 
 Lane configuration is read from a fixed, slightly-lagged checkpoint of executed state rather than the very latest block. A governance-approved change to lane quotas therefore takes effect after a short delay (on the order of the execution lag), not on the very next block. Don't assume same-block activation when testing a quota change.
 
-You can read the live, governance-resolved lane configuration via the [`newl1_laneConfig`](../developers/json-rpc.md#newl1_laneconfig) RPC method.
+You can read the live, governance-resolved lane configuration via the [`newl1_laneConfig`](../developers/json_rpc/newl1-api-list.md#newl1_laneconfig) RPC method.
 
 ## For developers
 
