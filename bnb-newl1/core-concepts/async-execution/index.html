@@ -1352,10 +1352,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#why-it-matters" class="md-nav__link">
+  <a href="#how-it-works" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why it matters
+        How it works
       
     </span>
   </a>
@@ -1363,10 +1363,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-it-works" class="md-nav__link">
+  <a href="#adaptive-execution-lag" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How it works
+        Adaptive execution lag
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#block-states" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Block states
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paying-for-block-space" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paying for block space
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#system-transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System transactions
       
     </span>
   </a>
@@ -1411,6 +1444,17 @@
     <span class="md-ellipsis">
       
         Current status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What&rsquo;s next
       
     </span>
   </a>
@@ -2015,10 +2059,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#why-it-matters" class="md-nav__link">
+  <a href="#how-it-works" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why it matters
+        How it works
       
     </span>
   </a>
@@ -2026,10 +2070,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-it-works" class="md-nav__link">
+  <a href="#adaptive-execution-lag" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How it works
+        Adaptive execution lag
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#block-states" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Block states
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paying-for-block-space" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paying for block space
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#system-transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System transactions
       
     </span>
   </a>
@@ -2074,6 +2151,17 @@
     <span class="md-ellipsis">
       
         Current status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What&rsquo;s next
       
     </span>
   </a>
@@ -2172,18 +2260,77 @@
 
 
 <div><h1 id="async-execution-state-commitment">Async Execution &amp; State Commitment<a class="headerlink" href="#async-execution-state-commitment" title="Link to this section">¶</a></h1>
-<p>BNB NewL1 separates <strong>ordering</strong> (deciding which transactions go in which block, and in what order) from <strong>execution</strong> (running those transactions through the EVM and computing the resulting state). A block can be proposed, gossiped, and even voted on for <a href="../consensus/">fast finality</a> before its execution result is fully computed — execution runs asynchronously, on its own track, and catches up shortly after.</p>
-<h2 id="why-it-matters">Why it matters<a class="headerlink" href="#why-it-matters" title="Link to this section">¶</a></h2>
-<p>In a conventional EVM chain, block production is gated by execution: a proposer can’t seal a block until every transaction in it has actually run. At sub-second block times, that coupling caps how fast blocks can be produced at how fast the EVM can execute them. Decoupling the two means consensus liveness — producing and finalizing blocks on schedule — no longer depends on execution keeping pace in real time. Execution is free to lag by a small, bounded amount and catch up asynchronously, without slowing down block production or finality itself.</p>
+<p>Conventional blockchains interleave execution with consensus: a block proposal carries the post-execution state root, so the leader must execute before proposing and every validator must re-execute before voting. The consequences compound — execution runs twice per block, the gas limit is sized against the slowest node’s worst case, and the execution budget shrinks to a fraction of the block time.</p>
+<p>At a 200 ms block interval, that architecture isn’t viable. BNB NewL1 decouples the two concerns: <strong>consensus establishes transaction ordering without executing anything, and execution proceeds asynchronously, several blocks behind.</strong> Since a deterministic ordering fully determines every outcome, execution <em>reveals</em> state rather than deciding it.</p>
 <h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Link to this section">¶</a></h2>
-<p>A <code>NewL1Header</code> carries the fields known at proposal time — including the transaction list — but omits the fields that can only be computed by actually executing the block: <code>state_root</code>, <code>receipts_root</code>, <code>logs_bloom</code>, <code>gas_used</code>, <code>blob_gas_used</code>, and <code>requests_hash</code>. Those values are published later, in <strong>execution commitments</strong> attached to a subsequent block.</p>
 <ul>
-<li>A block at height <code>N</code> carries a commitment list covering earlier blocks up to <code>N − D</code>, where <code>D</code> (the execution lag, in blocks) is chosen by the proposer and adjusts dynamically — nudged by at most one slot per block within a bounded range — based on how far behind the local execution scheduler actually is.</li>
-<li>Validators don’t re-derive or second-guess the proposer’s exact lag. They only enforce the <strong>structure</strong> of the commitment list: entries must be contiguous from the previous commitment, strictly increasing, and advance by a bounded amount per block.</li>
-<li>Execution itself runs off the hot path: an execution scheduler picks up imported blocks, runs the EVM work in the background, and produces the real post-execution state once it’s done — independent of the block-production and voting loop.</li>
+<li><strong>Ordering (slot N)</strong> — static validation and the <a href="../consensus/">BLS vote</a> that finalizes transaction order. No execution.</li>
+<li><strong>Execution (slot ≥ N+1)</strong> — transactions execute asynchronously; the result is written into a later block’s header as an <code>ExecutionCommitment</code>.</li>
 </ul>
+<p>Concretely, a <code>NewL1Header</code> carries the fields known at proposal time — including the transaction list — but omits everything that can only be computed by running the block: <code>state_root</code>, <code>receipts_root</code>, <code>logs_bloom</code>, <code>gas_used</code>, <code>blob_gas_used</code>, and <code>requests_hash</code>. Those values are published later, in execution commitments attached to a subsequent block. Execution itself runs off the hot path: a scheduler picks up imported blocks, runs the EVM work in the background, and produces the real post-execution state when it’s done — independent of the block-production and voting loop.</p>
+<h2 id="adaptive-execution-lag">Adaptive execution lag<a class="headerlink" href="#adaptive-execution-lag" title="Link to this section">¶</a></h2>
+<p>Block <code>N</code>’s results land in the header of block <code>N+D</code>. Prior designs fix <code>D</code> (EIP-7886 at 1, Monad at 3) and pay worst-case latency at all times. BNB NewL1’s <code>D</code> adapts to load:</p>
+<ul>
+<li><strong>Low load</strong> — <code>D</code> shrinks toward 1, minimizing time to finality.</li>
+<li><strong>High load</strong> — <code>D</code> grows, absorbing backlog without stalling consensus.</li>
+<li><strong>Catch-up</strong> — one block may carry several <code>ExecutionCommitment</code>s, draining the backlog in batches.</li>
+</ul>
+<p><img alt="Adaptive execution lag across normal load, heavy load, and catch-up" src="../../../assets/newl1-adaptive-lag.png"></p>
+<p>Constraints: <code>1 ≤ D(N) ≤ D_MAX</code>, at most ±1 change per block, with <code>D_MAX</code> <a href="../../governance/overview/">governance-configurable</a>. Validators don’t re-derive the proposer’s exact lag — they enforce the <strong>structure</strong> of the commitment list: entries must be contiguous from the previous commitment, strictly increasing, and advance by a bounded amount per block.</p>
+<h2 id="block-states">Block states<a class="headerlink" href="#block-states" title="Link to this section">¶</a></h2>
+<p>Decoupling means a block no longer goes from “proposed” to “final” in one hop — ordering can be settled while the execution result is still in flight. Each block moves through four states:</p>
+<div class="highlight"><pre><span></span><code> ordered ────────► executed ────────► committed ────────► finalized
+ slot N            slot N+D           header of           committing block
+ block produced    local EVM run      block N+D           BLS-voted
+ └─ consensus ─┘   └────────────── execution lane ──────────────┘
+</code></pre></div>
+<ul>
+<li><strong>Ordered</strong> — the block is produced and transactions are packed in a fixed order.</li>
+<li><strong>Executed</strong> — the EVM has run the block’s transactions locally.</li>
+<li><strong>Committed</strong> — the execution result appears in a later block’s header as an <code>ExecutionCommitment</code>.</li>
+<li><strong>Execution finalized</strong> — the committing block is itself voted in, completing execution finality.</li>
+</ul>
+<p>Ordering alone never finalizes a block; finality requires the execution result to be committed on-chain and voted on. Reorgs roll back ordering and execution atomically.</p>
+<h2 id="paying-for-block-space">Paying for block space<a class="headerlink" href="#paying-for-block-space" title="Link to this section">¶</a></h2>
+<p>Consensus admits transactions against a <code>D</code>-lagged view of state, so a transaction can pass every ordering-time check and still be guaranteed to fail at execution. Unmitigated, that puts calldata on-chain without anyone paying for it:</p>
+<table>
+<thead>
+<tr>
+<th>Vector</th>
+<th>Mechanism</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Zero-balance spam</td>
+<td>Account drained after the <code>D</code>-lagged snapshot; the transaction clears consensus, fails at execution.</td>
+</tr>
+<tr>
+<td>Intra-block drain</td>
+<td>One transaction drains an account; a second, calldata-heavy one still appears funded against stale state.</td>
+</tr>
+<tr>
+<td>Nonce conflicts</td>
+<td>Collisions inside the <code>D</code>-window are invisible to static checks.</td>
+</tr>
+<tr>
+<td>Contract dependencies</td>
+<td>Approvals and balances shift between ordering and execution; static checks can’t see it.</td>
+</tr>
+</tbody>
+</table>
+<p>BNB NewL1 tracks each account’s cumulative in-flight spend across the <code>D</code>-window and derives an <code>effectiveBalance</code> from it, enforced by four rules:</p>
+<ol>
+<li><strong>Fee on gas limit</strong> — the sender pays <code>gas_bid × gas_limit</code> regardless of actual usage. Unused-gas refunds are disabled and EIP-3529 refunds are voided, so blocks are packed on declared gas, which is the block space actually sold. (System transactions and RPC simulations keep standard refund behavior — see <a href="../../get-started/migrate-from-bsc/#you-pay-for-your-declared-gas-limit">Migrating from BSC</a>.)</li>
+<li><strong>Consensus-time solvency</strong> — a transaction is admitted only if <code>effectiveBalance ≥ tx_cost</code>.</li>
+<li><strong>Execution-time settlement</strong> — transactions that become unpayable, or hit a nonce mismatch, fail rather than execute. If the nonce is correct, the payer is charged <code>min(balance, occupied × price)</code> and the nonce is consumed; if the nonce is invalid, no charges or state changes occur, preventing malicious replays. Either way the receipt consumes <code>min(gas_limit, remaining block gas)</code>, so invalid transactions never occupy free block space.</li>
+<li><strong>Per-account in-flight caps</strong> — hard limits on cumulative <code>gas_limit</code> and calldata bytes per account within the <code>D</code>-window.</li>
+</ol>
+<p>Only an account’s own transactions can spend its native balance, so this accounting is exact rather than heuristic — no fixed reserve floor is needed, unlike Monad’s reserve-balance approach.</p>
+<h2 id="system-transactions">System transactions<a class="headerlink" href="#system-transactions" title="Link to this section">¶</a></h2>
+<p>Interleaved chains build and sign system transactions — validator-set updates, reward distribution, slashing — at proposal time, because execution results are already on hand. On BNB NewL1 they aren’t: those results don’t exist until slot <code>N+D</code>. System transactions therefore don’t exist at ordering time at all. They are <strong>generated during execution</strong>, and their effects land in the block’s <code>ExecutionCommitment</code>. Validators order and vote on user transactions only.</p>
 <h2 id="lthash-state-commitment">LtHash state commitment<a class="headerlink" href="#lthash-state-commitment" title="Link to this section">¶</a></h2>
-<p>BNB NewL1 commits state with a cumulative hash accumulator (<code>BLAKE3</code> over a lattice hash, “LtHash”) rather than Ethereum’s Merkle-Patricia trie. This is what makes async execution practical: updating a cumulative hash as execution completes is cheap, whereas maintaining an MPT is exactly the kind of synchronous-with-execution bookkeeping this design avoids.</p>
+<p>BNB NewL1 commits state with a cumulative hash accumulator (<code>BLAKE3</code> over a lattice hash, “LtHash”) over a flat key-value store, rather than Ethereum’s Merkle-Patricia trie. This is what makes async execution practical: updating a cumulative hash as execution completes is cheap, whereas maintaining an MPT is exactly the kind of synchronous-with-execution bookkeeping this design avoids. Because the accumulator is cumulative, any divergence at one block propagates into every descendant commitment.</p>
 <p>Two concrete consequences for anyone integrating with the chain:</p>
 <ul>
 <li><strong><code>eth_getProof</code> is not supported</strong> (rejected with <code>-32004</code>) — there’s no trie to produce a Merkle inclusion proof from. An LtHash-native inclusion proof scheme is a planned follow-up, not available today.</li>
@@ -2191,7 +2338,7 @@
 </ul>
 <p>See <a href="../../developers/json_rpc/json-rpc-endpoint/">JSON-RPC Endpoint</a> for the full list of RPC differences this causes.</p>
 <h2 id="correctness-enforcement">Correctness enforcement<a class="headerlink" href="#correctness-enforcement" title="Link to this section">¶</a></h2>
-<p>Because ordering and execution are decoupled, a block’s fast-finality vote is fundamentally a vote on ordering, not on someone else’s claimed execution result. The correctness check happens somewhere else: a validator abstains from voting for a head whose published execution commitments it has locally computed to a <strong>different</strong> result. Since the state commitment is cumulative, any divergence at one block propagates into every descendant commitment, so this check reliably catches a bad result within a bounded number of blocks. The practical effect is that an incorrect execution result cannot gather the two-thirds vote quorum needed to finalize — even though block <em>import</em> itself doesn’t reject it outright (rejecting at import would break the ability for later blocks to resolve their parent while execution is still catching up).</p>
+<p>Because ordering and execution are decoupled, a fast-finality vote is fundamentally a vote on ordering, not on someone else’s claimed execution result. The correctness check happens elsewhere: a validator <strong>abstains</strong> from voting for a head whose published execution commitments its own local execution disproves. Since the state commitment is cumulative, a bad result is reliably caught within a bounded number of blocks, and an incorrect execution result cannot gather the ⌈2N/3⌉ votes it needs to finalize — even though block <em>import</em> itself doesn’t reject it outright (rejecting at import would break the ability for later blocks to resolve their parent while execution is still catching up).</p>
 <h2 id="for-developers">For developers<a class="headerlink" href="#for-developers" title="Link to this section">¶</a></h2>
 <p>Three block-height concepts exist side by side, and they’re all reachable through <strong>standard Ethereum block tags</strong> — there are no custom tag strings or custom height methods on the wire:</p>
 <table>
@@ -2220,14 +2367,16 @@
 </tr>
 </tbody>
 </table>
-<p>The executed tip trails the ordered tip by the proposer-chosen delay, normally a small number of blocks.</p>
+<p>The executed tip trails the ordered tip by <code>D</code>, normally a small number of blocks.</p>
 <p>Practical guidance:</p>
 <ul>
 <li>A transaction’s ordering is settled quickly, but execution-derived data (state, receipts) for the <em>very latest</em> blocks lags behind it. You rarely have to think about this: <code>latest</code> and <code>pending</code> both resolve to the <strong>executed</strong> tip, so an ordinary read never returns pre-execution state and never fails with “not yet executed”. Asking for an explicit block number that is ordered but not yet executed is what returns <code>-38004</code> — retry, don’t treat it as an error.</li>
 <li>Only canonical <strong>and</strong> finalized blocks are persisted to disk — the unfinalized window lives in memory. This is why finalized, not just ordered, is the right bar for anything that shouldn’t ever be revisited.</li>
 </ul>
 <h2 id="current-status">Current status<a class="headerlink" href="#current-status" title="Link to this section">¶</a></h2>
-<p>The async execution pipeline itself is live and running today on the devnet. The LtHash state-commitment migration is functional today; follow-up work (a checkpoint-based state sync to replace snap sync, and a native LtHash inclusion-proof scheme for <code>eth_getProof</code>) is still in progress.</p></div>
+<p>The async execution pipeline is live and running today on the devnet. The LtHash state-commitment migration is functional; follow-up work (a checkpoint-based state sync to replace snap sync, and a native LtHash inclusion-proof scheme for <code>eth_getProof</code>) is still in progress.</p>
+<h2 id="whats-next">What’s next<a class="headerlink" href="#whats-next" title="Link to this section">¶</a></h2>
+<p>Decoupling consensus from execution gives the EVM a dedicated processing window; <strong>parallel execution</strong> is what will maximize throughput inside it. The current design centers on an access-list-based parallel EVM: transactions declare their state dependencies explicitly, so non-conflicting transactions can execute concurrently. Detailed design is in progress.</p></div>
 
 
 
@@ -2248,7 +2397,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 18, 2026 06:27:40 UTC">August 18, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 1, 2026 01:33:05 UTC">September 1, 2026</span>
   </span>
 
     

@@ -146,7 +146,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#consensus-parlia-poa-bls-fast-finality" class="md-skip">
+        <a href="#consensus-parlia-posa-bls-fast-finality" class="md-skip">
           Skip to content
         </a>
       
@@ -1324,6 +1324,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#block-production" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1335,10 +1346,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#finality" class="md-nav__link">
+  <a href="#fast-finality" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Finality
+        Fast finality
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validator-set" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validator set
       
     </span>
   </a>
@@ -1350,6 +1372,17 @@
     <span class="md-ellipsis">
       
         For developers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What&rsquo;s next
       
     </span>
   </a>
@@ -1982,6 +2015,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#block-production" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1993,10 +2037,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#finality" class="md-nav__link">
+  <a href="#fast-finality" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Finality
+        Fast finality
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validator-set" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validator set
       
     </span>
   </a>
@@ -2008,6 +2063,17 @@
     <span class="md-ellipsis">
       
         For developers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What&rsquo;s next
       
     </span>
   </a>
@@ -2105,24 +2171,62 @@
   
 
 
-<div><h1 id="consensus-parlia-poa-bls-fast-finality">Consensus: Parlia PoA + BLS Fast Finality<a class="headerlink" href="#consensus-parlia-poa-bls-fast-finality" title="Link to this section">¶</a></h1>
-<p>BNB NewL1 uses <strong>Parlia</strong>, the same consensus family that secures BNB Smart Chain: a bounded, on-chain-elected set of validators takes turns proposing blocks (proof-of-authority), with BLS-signature-based fast finality layered on top so blocks become irreversible almost immediately rather than through accumulated confirmations.</p>
+<div><h1 id="consensus-parlia-posa-bls-fast-finality">Consensus: Parlia PoSA + BLS Fast Finality<a class="headerlink" href="#consensus-parlia-posa-bls-fast-finality" title="Link to this section">¶</a></h1>
+<p>BNB NewL1’s consensus is derived from <strong>Parlia</strong>, the Proof-of-Staked-Authority protocol securing BNB Smart Chain. Parlia has run in production for years, through several rounds of block-time reduction, and already has the properties BNB NewL1’s latency targets need. BNB NewL1 takes it with tuned parameters and a handful of deliberate divergences, stripped of BSC’s accumulated hardfork gating: <strong>the chain runs one configuration from genesis</strong> — no activation heights, no feature flags.</p>
+<h2 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Link to this section">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Block interval</td>
+<td>200 ms</td>
+</tr>
+<tr>
+<td>Finality</td>
+<td>sub-second, via cross-block BLS votes</td>
+</tr>
+<tr>
+<td>Epoch</td>
+<td>2,250 blocks (7.5 minutes)</td>
+</tr>
+<tr>
+<td>Proposer turn length</td>
+<td>16 blocks</td>
+</tr>
+<tr>
+<td>Validator set</td>
+<td>up to 64 validators, PoSA</td>
+</tr>
+</tbody>
+</table>
 <h2 id="block-production">Block production<a class="headerlink" href="#block-production" title="Link to this section">¶</a></h2>
-<ul>
-<li>A fixed <strong>validator set</strong> is elected on-chain (see <a href="../../governance/overview/">Governance</a>) and rotates at <strong>epoch boundaries every 1,000 blocks</strong> (roughly 3.3 minutes at the current block interval).</li>
-<li>Within an epoch, validators take turns proposing blocks in a fixed order. Each validator seals a run of <strong>16 consecutive blocks</strong> (the “turn length”) before rotation passes to the next validator.</li>
-<li>New blocks are produced every <strong>200 ms</strong> (5 blocks/second).</li>
-<li>If the in-turn validator misses its slot, out-of-turn validators can step in as backups after a deterministic back-off delay, so the chain keeps producing blocks even if a proposer is temporarily offline.</li>
-</ul>
-<h2 id="finality">Finality<a class="headerlink" href="#finality" title="Link to this section">¶</a></h2>
-<p>Unlike a plain longest-chain / probabilistic-finality design — where a block is only ever “probably final” — Parlia adds <strong>BLS fast finality</strong>: validators sign BLS votes on the blocks they consider canonical, and once two-thirds or more of the validator set has voted for a block, it’s <strong>finalized</strong> — cryptographically irreversible, typically within a small number of block intervals rather than a long confirmation wait.</p>
-<p>Finality here is a statement about <strong>ordering</strong> — which block comes next — not about the result of executing it. Block execution itself runs on a separate, decoupled track; see <a href="../async-execution/">Async Execution</a> for how that works and what it means for reading state, receipts, and <code>eth_getProof</code>.</p>
+<p>Validators take turns proposing, rotating every <strong>16 blocks</strong> in sorted order. If the in-turn proposer misses its slot, out-of-turn validators step in after a randomized backoff, with the delay schedule seeded deterministically so every node computes the same order. In-turn blocks carry more weight than out-of-turn blocks, so the chain converges back to the schedule as soon as the in-turn proposer returns.</p>
+<h2 id="fast-finality">Fast finality<a class="headerlink" href="#fast-finality" title="Link to this section">¶</a></h2>
+<p>Finality comes from a BLS vote overlay — the same construction BSC uses — with one property that matters more here than anywhere else: <strong>validators sign a block’s ordering, not its execution result.</strong> That is what makes order-execution decoupling possible; consensus never waits for the EVM.</p>
+<p>The flow:</p>
+<ol>
+<li>Each validator signs a vote for the head block on every canonical update.</li>
+<li>The next proposer aggregates votes into a single BLS attestation once ⌈2N/3⌉ validators have signed, and embeds it in its block header. Finality proofs travel with the chain itself — a node that has the headers has the proofs.</li>
+<li>Justified and finalized heights are derived from the attestations using Casper-FFG rules: an attestation whose source and target are consecutive finalizes the source. There is no imperative “mark finalized” step anywhere — every node reads the same finality state out of the same chain.</li>
+</ol>
+<p>In the common case a block is justified one block later and finalized two blocks later — roughly <strong>half a second</strong> at the 200 ms interval.</p>
+<p>Finality also backstops <a href="../async-execution/">asynchronous execution</a>: a validator abstains from voting on any block whose published <code>ExecutionCommitment</code> its own local execution disproves, so an incorrect execution result cannot gather the ⌈2N/3⌉ votes it needs to finalize.</p>
+<h2 id="validator-set">Validator set<a class="headerlink" href="#validator-set" title="Link to this section">¶</a></h2>
+<p>Validators stake BNB through the on-chain staking system (<code>StakeHub</code>, see <a href="../../governance/overview/">Governance</a>). Elections run <strong>once per day</strong> at a designated block, ranking candidates by stake; epoch-boundary headers bind the elected set, and every node validates against the set the chain itself recorded.</p>
+<p>Double-sign evidence is detected automatically and submitted on-chain for slashing; each validator also keeps a local journal that makes it refuse to sign conflicting votes or blocks in the first place.</p>
 <h2 id="for-developers">For developers<a class="headerlink" href="#for-developers" title="Link to this section">¶</a></h2>
 <ul>
 <li>Validator admission and rotation are on-chain and queryable (see <a href="../../developers/json_rpc/newl1-api-list/#newl1_getvalidatorschedule"><code>newl1_getValidatorSchedule</code></a>).</li>
 <li>Block interval, turn length, and epoch length are chain parameters, not assumptions to hardcode into client code.</li>
 <li>Applications that need a hard guarantee before acting irreversibly (e.g. a bridge release, a large settlement) should wait for <strong>finalized</strong>, not just <strong>ordered/imported</strong> — see <a href="../tx-preconfirmation/">Transaction Pre-confirmation</a> for the faster, best-effort signal available before finality.</li>
-</ul></div>
+</ul>
+<h2 id="whats-next">What’s next<a class="headerlink" href="#whats-next" title="Link to this section">¶</a></h2>
+<p>Parlia is the default, not the endpoint. The properties BNB NewL1 actually depends on are a fixed 200 ms cadence, ordering-only votes, and sub-second finality — any consensus that preserves those can slot in behind the same interfaces. Next-generation designs are under evaluation, in particular <strong>Minimmit</strong>, a minimal BFT protocol that reaches finality in fewer communication rounds, as a candidate for Consensus 2.0. The consensus layer sits behind narrow seams in the node architecture precisely so that this migration, if and when it comes, is a component swap rather than a rewrite.</p></div>
 
 
 
@@ -2143,7 +2247,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 18, 2026 06:27:40 UTC">August 18, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 1, 2026 01:33:05 UTC">September 1, 2026</span>
   </span>
 
     

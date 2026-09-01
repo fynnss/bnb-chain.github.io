@@ -877,6 +877,28 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#where-bnb-newl1-fits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where BNB NewL1 fits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#system-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#whats-new" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1991,6 +2013,28 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#where-bnb-newl1-fits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where BNB NewL1 fits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#system-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#whats-new" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2108,8 +2152,59 @@
 
 
 <div><h1 id="bnb-newl1-high-performance-evm-l1">BNB NewL1 — High-Performance EVM L1<a class="headerlink" href="#bnb-newl1-high-performance-evm-l1" title="Link to this section">¶</a></h1>
-<p>BNB NewL1 is a new, high-performance Layer 1 blockchain in the BNB Chain ecosystem. The EVM execution layer itself is unchanged — existing Solidity contracts run without modification, and standard wallet flows (sign a legacy/EIP-1559 transaction, submit it, read back the receipt) work as on any EVM chain. Everything above the EVM — consensus, node architecture, mempool, blockspace policy — has been rebuilt for higher throughput and faster finality, and that rebuild does introduce a handful of concrete RPC-surface differences (no <code>eth_getProof</code>, no global mempool, no EIP-4844/EIP-7702 transactions — see <a href="../developers/json_rpc/json-rpc-endpoint/">JSON-RPC Endpoint</a> for the full list) that some wallets or infra tooling built against those specific behaviors would need to account for.</p>
+<p>BNB NewL1 is a high-performance, EVM-compatible Layer 1 blockchain, and the newest member of the BNB Chain family. It targets workloads that reward sub-second finality, near-instant pre-confirmation, reserved capacity for latency-sensitive traffic, native privacy, and flexible accounts: high-frequency trading, real-time payments, confidential finance, and agent-driven activity.</p>
+<p><strong>BNB is the native asset — no new token is issued.</strong> BNB NewL1 sits alongside BNB Smart Chain (BSC), opBNB, and Greenfield, with a native BSC ↔ BNB NewL1 bridge (in development) moving BNB between chains.</p>
+<p>The EVM execution layer itself is unchanged — existing Solidity contracts run without modification, and standard wallet flows (sign a legacy/EIP-1559 transaction, submit it, read back the receipt) work as on any EVM chain. Everything above and below the EVM — consensus, node architecture, mempool, state storage, blockspace policy — has been rebuilt for higher throughput and faster finality, and that rebuild does introduce a handful of concrete RPC-surface differences (no <code>eth_getProof</code>, no global mempool, no EIP-4844/EIP-7702 transactions — see <a href="../developers/json_rpc/json-rpc-endpoint/">JSON-RPC Endpoint</a> for the full list) that some wallets or infra tooling built against those specific behaviors would need to account for.</p>
 <p>It’s built for latency-sensitive on-chain activity — DEX/AMM trading, liquidations, and other flows where waiting a full block for any signal is too slow. 200ms blocks and BLS fast finality mean transactions finalize in roughly one block interval instead of accumulating confirmations, and two features unique to BNB NewL1 build on top of that: sub-20ms transaction pre-confirmation and Multi-Lane reserved capacity, so latency-sensitive trades don’t have to compete with unrelated traffic for inclusion. (Under the hood it builds on <a href="https://github.com/paradigmxyz/reth">reth</a> and <a href="https://github.com/bluealloy/revm">revm</a> for the execution layer.)</p>
+<h2 id="where-bnb-newl1-fits">Where BNB NewL1 fits<a class="headerlink" href="#where-bnb-newl1-fits" title="Link to this section">¶</a></h2>
+<p>BNB’s infrastructure has arrived in stages, each adding a capability the previous one didn’t have:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2017</td>
+<td>ERC-20 BNB</td>
+<td>utility token on Ethereum</td>
+</tr>
+<tr>
+<td>2019</td>
+<td>Beacon Chain</td>
+<td>governance and staking</td>
+</tr>
+<tr>
+<td>2020</td>
+<td>BSC</td>
+<td>general-purpose EVM L1</td>
+</tr>
+<tr>
+<td>2023</td>
+<td>opBNB + Greenfield</td>
+<td>scaling and decentralized storage</td>
+</tr>
+<tr>
+<td>Next</td>
+<td><strong>BNB NewL1</strong></td>
+<td>vertically optimized, latency-first EVM L1</td>
+</tr>
+</tbody>
+</table>
+<p>BSC remains the broad-base chain for the existing ecosystem. BNB NewL1 is a clean-slate design for the workloads that outgrow a general-purpose chain: it moves execution off the consensus critical path, replaces the Merkle-Patricia trie with a flat key-value state under a lattice-hash commitment, and builds privacy and account abstraction into the protocol instead of layering them on as contracts. What it keeps is what defines the family — full EVM compatibility, BNB as the economic center, and shared tooling with BSC, opBNB, and Greenfield.</p>
+<h2 id="system-architecture">System architecture<a class="headerlink" href="#system-architecture" title="Link to this section">¶</a></h2>
+<p><img alt="BNB NewL1 system architecture" src="../../assets/newl1-architecture.png"></p>
+<ul>
+<li><strong>Application layer</strong> — DeFi, payments, privacy-preserving finance, and AI agents. Users, dApps, wallets, MEV builders, and CEXes all enter here.</li>
+<li><strong>Account &amp; UX layer</strong> — <a href="../core-concepts/account-abstraction/">native account abstraction</a>: gas sponsorship, passkey (WebAuthn/P256) signing, batched calls, and scoped access keys, all as protocol rules rather than contracts. A transaction doesn’t have to originate from a BNB-holding EOA. (Stablecoin-denominated gas, “GasToken”, is designed but not yet implemented.)</li>
+<li><strong>Execution layer</strong> — a parallel EVM with <a href="../core-concepts/async-execution/">ordering and execution decoupled</a>, so consensus liveness never waits on execution throughput.</li>
+<li><strong>Consensus layer</strong> — <a href="../core-concepts/consensus/">enhanced Parlia</a>: 200ms blocks, BLS fast finality, and 20ms <a href="../core-concepts/tx-preconfirmation/">sub-blocks</a> that commit ordering ahead of final execution.</li>
+<li><strong>Network layer</strong> — P2P block and sub-block gossip, plus direct-to-proposer transaction routing in place of a global mempool.</li>
+<li><strong>Storage layer</strong> — a flat key-value store committed with a cumulative lattice hash (LtHash) instead of a Merkle-Patricia trie, which is what makes async execution and fast state commitment practical.</li>
+</ul>
 <h2 id="whats-new">What’s new<a class="headerlink" href="#whats-new" title="Link to this section">¶</a></h2>
 <p>BNB NewL1 keeps Parlia — the same proof-of-authority-with-BLS-fast-finality consensus family that secures BNB Smart Chain — but adds several protocol-level features that are new to the BNB Chain ecosystem:</p>
 <table>
@@ -2183,12 +2278,12 @@
 <td>16</td>
 </tr>
 <tr>
-<td>Epoch length (validator-set rotation)</td>
-<td>1,000 blocks</td>
+<td>Epoch length</td>
+<td>2,250 blocks (7.5 minutes)</td>
 </tr>
 <tr>
 <td>Consensus</td>
-<td>Parlia (PoA turn rotation + BLS fast finality)</td>
+<td>Parlia PoSA (turn rotation + BLS fast finality), up to 64 validators</td>
 </tr>
 <tr>
 <td>Gas asset</td>
@@ -2219,7 +2314,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 18, 2026 06:27:40 UTC">August 18, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 1, 2026 01:33:05 UTC">September 1, 2026</span>
   </span>
 
     
