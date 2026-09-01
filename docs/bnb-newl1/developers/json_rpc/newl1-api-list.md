@@ -55,7 +55,7 @@ curl -X POST "$RPC" -H "Content-Type: application/json" \
 | Fees | The base fee is consensus-pinned to zero (BEP-222), so the effective gas price is `min(maxFeePerGas, maxPriorityFeePerGas)`. A transaction that tips zero pays nothing and is rejected by the pool's minimum-price gate (1 wei default, matching geth's `PriceLimit`). |
 | Mempool | No global mempool — transactions route directly to the current and next block producer. There is no `txpool_*` namespace. `eth_subscribe("newPendingTransactions")` reports only the node's **own** local-pool admissions. |
 | Replace-by-fee | Works, but only locally: a same-nonce resubmission must beat the incumbent's effective tip by 10%, and displaces it only in the pools that hold it. A transaction forwarded from another node never displaces one received directly from a client. |
-| Transaction expiry | A pooled transaction not included within the pool TTL (60 s default) is evicted, and a nonce more than 256 ahead of the account's current nonce is rejected at submission. |
+| Transaction expiry | A pooled transaction not included within the pool TTL (3 h default, scanned every 20 s) is evicted, and a nonce more than 256 ahead of the account's current nonce is rejected at submission. Both time values are operator-configurable. |
 | Transaction types | EIP-4844 (blob) and EIP-7702 (set-code) transactions are rejected by the pool's type gate. Two native types are added — see [Transaction Types](../transaction-types.md). |
 | `eth_syncing` | Always `false` — there is no staged-sync driver to report progress from. |
 | Uncle methods | Compatibility stubs: counts are always `0x0`, bodies always `null`. |
@@ -146,8 +146,7 @@ Each notification carries:
 
 If a subscriber falls behind, the node sends `{"status": "lagged", "dropped": n}` rather than silently dropping a revocation — re-query `newl1_getTransactionPreconfirmation` when you see it.
 
-!!! warning "Subscribe from a node that isn't producing the block"
-    Sub-blocks travel by P2P gossip, and a producer does **not** loop its own broadcast back to its own subscribers. A node with no peers reports zero events even while producing blocks.
+The producer explicitly feeds its own published slices to local subscribers, so this subscription works against the producer's RPC and on a single-node devnet.
 
 ### newl1_subscribeSubBlocks
 
@@ -270,19 +269,19 @@ curl -X POST "$RPC" -H "Content-Type: application/json" \
 
 ```jsonc
 {
-  "state": "ready",   // pending | ready | parked | ordered | evicted | removed | rejected | unknown
+  "state": "ready",   // pending | ready | parked | emitted | ordered | evicted | removed | rejected | unknown
   "reason": null,     // set only for a terminal state, e.g. why it was evicted
   "sender": "0x…",
-  "nonce": 0,
-  "ageMs": 12
+  "nonce": "0x0",
+  "ageMs": "0xc"
 }
 ```
 
-`unknown` is ambiguous by design — it covers both "never seen" and "aged out of the bounded status ring". Treat it as "no information", not as a negative outcome. This is a **local** view: it answers for the node you asked, not the network.
+`sender`, `nonce`, and `ageMs` are `null` for `unknown`. That state is ambiguous by design — it covers both "never seen" and "aged out of the bounded status ring". Treat it as "no information", not as a negative outcome. This is a **local** view: it answers for the node you asked, not the network. See [Transaction Lifecycle](../transaction-lifecycle.md#2-pool-states) for state transitions and terminal reasons.
 
 ### newl1_debugSenderSnapshot
 
-Debug surface: one sender's live pool lane — every entry nonce-ascending with its state and age, plus the watermarks the block packer works from (`confirmedBase`, `orderedNonce`). Answers "why isn't this sender's transaction being packed" without reading node logs.
+Debug surface: one sender's live pool lane — every entry nonce-ascending with its state and age, plus the watermarks the block packer works from (`baseAtExecutedTip`, `orderedNonce`). Answers "why isn't this sender's transaction being packed" without reading node logs.
 
 **Parameters**
 
@@ -294,6 +293,19 @@ Debug surface: one sender's live pool lane — every entry nonce-ascending with 
 curl -X POST "$RPC" -H "Content-Type: application/json" \
   --data '{"jsonrpc":"2.0","method":"newl1_debugSenderSnapshot","params":["0x…"],"id":1}'
 ```
+
+```jsonc
+{
+  "sender": "0x…",
+  "baseAtExecutedTip": "0x28",
+  "orderedNonce": "0x2a",
+  "entries": [
+    { "nonce": "0x2a", "hash": "0x…", "state": "emitted", "ageMs": "0xc" }
+  ]
+}
+```
+
+`baseAtExecutedTip` is the sender nonce at the executed tip. `orderedNonce` additionally accounts for canonical transactions that have not necessarily executed yet. Either watermark may be `null` when unavailable.
 
 ## System Transaction API
 

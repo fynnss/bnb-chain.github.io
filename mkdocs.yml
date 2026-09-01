@@ -162,6 +162,7 @@ nav:
     - Developers:
       - Quick Guide: ./bnb-newl1/developers/quick-guide.md
       - Transaction Types: ./bnb-newl1/developers/transaction-types.md
+      - Transaction Lifecycle: ./bnb-newl1/developers/transaction-lifecycle.md
       - Examples: ./bnb-newl1/developers/examples.md
       - JSON-RPC:
         - Endpoint: ./bnb-newl1/developers/json_rpc/json-rpc-endpoint.md

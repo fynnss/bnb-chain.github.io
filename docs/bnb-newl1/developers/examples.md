@@ -46,8 +46,7 @@ Each notification is a `newl1_preconfirmation` frame: `{txHash, blockNumber, par
 
 Filter to a single transaction with `"params":[{"txHash":"0x…"}]`. Chain tips instead: `newl1_subscribeNewHeads`, or standard `eth_subscribe` with `["newHeads"]`.
 
-!!! warning "Subscribe from a non-producing node"
-    Sub-blocks travel by P2P gossip and a producer does **not** loop its own broadcast back to its own subscribers. Point `WS` at a node that is not the one producing your transaction's block.
+The producer feeds its own published slices to local subscribers as well as gossiping them to peers, so `WS` may point at either a producing or non-producing node.
 
 ## Follow one transaction through every stage
 
