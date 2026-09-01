@@ -8,7 +8,7 @@ title: FAQ - BNB NewL1
 Yes at the execution layer — revm semantics are a hard design invariant, so existing Solidity contracts and standard transaction flows work unmodified. The RPC surface above that has a few explicit differences (no `eth_getProof`, no global mempool, no EIP-4844/EIP-7702 transactions) that some wallets or infra tooling may need to account for. See [Overview](./overview.md) and [JSON-RPC Endpoint](./developers/json_rpc/json-rpc-endpoint.md).
 
 **How is it different from BNB Smart Chain?**
-Same Parlia PoA + BLS fast-finality consensus family, but with a faster block interval, decoupled ordering/execution, and several new protocol features not present on BSC: [native account abstraction](./core-concepts/account-abstraction.md), [transaction pre-confirmation](./core-concepts/tx-preconfirmation.md), [Multi-Lane](./core-concepts/multi-lane.md), and a native [shielded pool](./core-concepts/privacy.md). See [Overview](./overview.md) for the full comparison.
+Same Parlia PoSA + BLS fast-finality consensus family, but with a faster block interval, decoupled ordering/execution, and several new protocol features not present on BSC: [native account abstraction](./core-concepts/account-abstraction.md), [transaction pre-confirmation](./core-concepts/tx-preconfirmation.md), [Multi-Lane](./core-concepts/multi-lane.md), and a native [shielded pool](./core-concepts/privacy.md). See [Overview](./overview.md) for the full comparison.
 
 **Is BNB NewL1 live on mainnet?**
 Not yet — it currently runs as an internal multi-validator devnet. Endpoints will be published on [Network Information](./get-started/network-info.md) once a network is available.

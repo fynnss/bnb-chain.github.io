@@ -32,7 +32,7 @@ title: BNB NewL1 - High-Performance EVM L1
     </a>
     <a href="./core-concepts/consensus">
         <div>Consensus</div>
-        <p>Parlia PoA with BLS fast finality</p>
+        <p>Parlia PoSA with BLS fast finality</p>
     </a>
     <a href="./core-concepts/account-abstraction">
         <div>Native Account Abstraction</div>

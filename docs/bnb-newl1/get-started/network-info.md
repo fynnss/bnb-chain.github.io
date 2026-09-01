@@ -21,10 +21,10 @@ title: Network Information - BNB NewL1
 
 | Parameter | Value |
 |---|---|
-| Consensus | Parlia (PoA turn rotation + BLS fast finality) |
+| Consensus | Parlia PoSA (turn rotation + BLS fast finality), up to 64 validators |
 | Block interval | 200 ms |
 | Turn length (blocks per validator, per rotation) | 16 |
-| Epoch length (validator-set rotation) | 1,000 blocks |
+| Epoch length | 2,250 blocks (7.5 minutes) |
 | EVM | Full Prague from genesis, no fork ramp |
 | Base fee | Pinned to `0` (BEP-222) — the priority fee is the entire price |
 | Fee model | Charged on the declared gas limit, not gas used ([details](./migrate-from-bsc.md#you-pay-for-your-declared-gas-limit)) |

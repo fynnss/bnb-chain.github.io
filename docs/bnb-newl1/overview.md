@@ -4,9 +4,38 @@ title: BNB NewL1 Overview - BNB NewL1
 
 # BNB NewL1 — High-Performance EVM L1
 
-BNB NewL1 is a new, high-performance Layer 1 blockchain in the BNB Chain ecosystem. The EVM execution layer itself is unchanged — existing Solidity contracts run without modification, and standard wallet flows (sign a legacy/EIP-1559 transaction, submit it, read back the receipt) work as on any EVM chain. Everything above the EVM — consensus, node architecture, mempool, blockspace policy — has been rebuilt for higher throughput and faster finality, and that rebuild does introduce a handful of concrete RPC-surface differences (no `eth_getProof`, no global mempool, no EIP-4844/EIP-7702 transactions — see [JSON-RPC Endpoint](./developers/json_rpc/json-rpc-endpoint.md) for the full list) that some wallets or infra tooling built against those specific behaviors would need to account for.
+BNB NewL1 is a high-performance, EVM-compatible Layer 1 blockchain, and the newest member of the BNB Chain family. It targets workloads that reward sub-second finality, near-instant pre-confirmation, reserved capacity for latency-sensitive traffic, native privacy, and flexible accounts: high-frequency trading, real-time payments, confidential finance, and agent-driven activity.
+
+**BNB is the native asset — no new token is issued.** BNB NewL1 sits alongside BNB Smart Chain (BSC), opBNB, and Greenfield, with a native BSC ↔ BNB NewL1 bridge (in development) moving BNB between chains.
+
+The EVM execution layer itself is unchanged — existing Solidity contracts run without modification, and standard wallet flows (sign a legacy/EIP-1559 transaction, submit it, read back the receipt) work as on any EVM chain. Everything above and below the EVM — consensus, node architecture, mempool, state storage, blockspace policy — has been rebuilt for higher throughput and faster finality, and that rebuild does introduce a handful of concrete RPC-surface differences (no `eth_getProof`, no global mempool, no EIP-4844/EIP-7702 transactions — see [JSON-RPC Endpoint](./developers/json_rpc/json-rpc-endpoint.md) for the full list) that some wallets or infra tooling built against those specific behaviors would need to account for.
 
 It's built for latency-sensitive on-chain activity — DEX/AMM trading, liquidations, and other flows where waiting a full block for any signal is too slow. 200ms blocks and BLS fast finality mean transactions finalize in roughly one block interval instead of accumulating confirmations, and two features unique to BNB NewL1 build on top of that: sub-20ms transaction pre-confirmation and Multi-Lane reserved capacity, so latency-sensitive trades don't have to compete with unrelated traffic for inclusion. (Under the hood it builds on [reth](https://github.com/paradigmxyz/reth) and [revm](https://github.com/bluealloy/revm) for the execution layer.)
+
+## Where BNB NewL1 fits
+
+BNB's infrastructure has arrived in stages, each adding a capability the previous one didn't have:
+
+| | | |
+|---|---|---|
+| 2017 | ERC-20 BNB | utility token on Ethereum |
+| 2019 | Beacon Chain | governance and staking |
+| 2020 | BSC | general-purpose EVM L1 |
+| 2023 | opBNB + Greenfield | scaling and decentralized storage |
+| Next | **BNB NewL1** | vertically optimized, latency-first EVM L1 |
+
+BSC remains the broad-base chain for the existing ecosystem. BNB NewL1 is a clean-slate design for the workloads that outgrow a general-purpose chain: it moves execution off the consensus critical path, replaces the Merkle-Patricia trie with a flat key-value state under a lattice-hash commitment, and builds privacy and account abstraction into the protocol instead of layering them on as contracts. What it keeps is what defines the family — full EVM compatibility, BNB as the economic center, and shared tooling with BSC, opBNB, and Greenfield.
+
+## System architecture
+
+![BNB NewL1 system architecture](../assets/newl1-architecture.png)
+
+- **Application layer** — DeFi, payments, privacy-preserving finance, and AI agents. Users, dApps, wallets, MEV builders, and CEXes all enter here.
+- **Account & UX layer** — [native account abstraction](./core-concepts/account-abstraction.md): gas sponsorship, passkey (WebAuthn/P256) signing, batched calls, and scoped access keys, all as protocol rules rather than contracts. A transaction doesn't have to originate from a BNB-holding EOA. (Stablecoin-denominated gas, "GasToken", is designed but not yet implemented.)
+- **Execution layer** — a parallel EVM with [ordering and execution decoupled](./core-concepts/async-execution.md), so consensus liveness never waits on execution throughput.
+- **Consensus layer** — [enhanced Parlia](./core-concepts/consensus.md): 200ms blocks, BLS fast finality, and 20ms [sub-blocks](./core-concepts/tx-preconfirmation.md) that commit ordering ahead of final execution.
+- **Network layer** — P2P block and sub-block gossip, plus direct-to-proposer transaction routing in place of a global mempool.
+- **Storage layer** — a flat key-value store committed with a cumulative lattice hash (LtHash) instead of a Merkle-Patricia trie, which is what makes async execution and fast state commitment practical.
 
 ## What's new
 
@@ -35,8 +64,8 @@ BNB NewL1 keeps Parlia — the same proof-of-authority-with-BLS-fast-finality co
 |---|---|
 | Block interval | 200 ms |
 | Turn length (blocks per validator, per rotation) | 16 |
-| Epoch length (validator-set rotation) | 1,000 blocks |
-| Consensus | Parlia (PoA turn rotation + BLS fast finality) |
+| Epoch length | 2,250 blocks (7.5 minutes) |
+| Consensus | Parlia PoSA (turn rotation + BLS fast finality), up to 64 validators |
 | Gas asset | BNB (bridged from BSC) |
 
 ## Current status
