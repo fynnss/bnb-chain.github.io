@@ -6,7 +6,7 @@ title: BNB NewL1 Overview - BNB NewL1
 
 BNB NewL1 is a high-performance, EVM-compatible Layer 1 and the newest member of the BNB Chain family, built for workloads that need sub-second finality and predictable inclusion: high-frequency trading, real-time payments, confidential finance, and agent-driven activity. **BNB is the native asset — no new token is issued**, and a native BSC ↔ BNB NewL1 bridge (in development) moves it between chains.
 
-Existing Solidity contracts and standard wallet flows run unchanged (execution builds on [reth](https://github.com/paradigmxyz/reth) and [revm](https://github.com/bluealloy/revm)). What's rebuilt is everything around the EVM — consensus, node architecture, mempool, state storage — which is where 200 ms blocks, sub-second finality, ~20 ms pre-confirmation, and reserved capacity per traffic class come from. That rebuild also leaves a short list of RPC-surface differences (no `eth_getProof`, no global mempool, no EIP-4844/EIP-7702) that tooling built against those behaviors must account for — see [JSON-RPC Endpoint](./developers/json_rpc/json-rpc-endpoint.md).
+Three bets separate it from a general-purpose EVM chain: execution runs **off the consensus critical path** rather than on it; state lives in a **flat key-value store under a lattice-hash commitment** rather than a Merkle-Patricia trie; and account UX and privacy are **protocol primitives** rather than contracts layered on top.
 
 ## Where BNB NewL1 fits
 
@@ -20,47 +20,41 @@ Existing Solidity contracts and standard wallet flows run unchanged (execution b
 
 BSC remains the broad-base chain for the existing ecosystem. BNB NewL1 is a clean-slate design for the workloads that outgrow it, keeping what defines the family: full EVM compatibility, BNB as the economic center, and shared tooling with BSC, opBNB, and Greenfield.
 
-## System architecture
+## Architecture
 
 ![BNB NewL1 system architecture](../assets/newl1-architecture.png)
 
-| Layer | What's in it |
-|---|---|
-| Application | DeFi, payments, privacy-preserving finance, AI agents |
-| [Account & UX](./core-concepts/account-abstraction.md) | Gas sponsorship, passkey signing, batched calls, scoped access keys — as protocol rules, not contracts, so a transaction needn't come from a BNB-holding EOA |
-| [Execution](./core-concepts/async-execution.md) | Parallel EVM with ordering and execution decoupled, so consensus never waits on the EVM |
-| [Consensus](./core-concepts/consensus.md) | Enhanced Parlia: 200 ms blocks, BLS fast finality, 20 ms [sub-blocks](./core-concepts/tx-preconfirmation.md) |
-| Network | P2P block and sub-block gossip, direct-to-proposer transaction routing in place of a global mempool |
-| [Storage](./core-concepts/async-execution.md#lthash-state-commitment) | Flat key-value store under a cumulative lattice-hash (LtHash) commitment instead of a Merkle-Patricia trie |
-
-## What's new
-
-Protocol-level features new to the BNB Chain ecosystem:
-
-| Feature | What it gives you | Read more |
+| Layer | What's in it | Read more |
 |---|---|---|
-| **BLS fast finality** | Blocks become irreversible in roughly one block interval once two-thirds of validators vote, instead of relying on confirmation depth | [Consensus](./core-concepts/consensus.md) |
-| **Async execution** | Block ordering and finality no longer wait on EVM execution to keep up — execution runs on its own decoupled track, so consensus liveness doesn't depend on execution throughput | [Async Execution](./core-concepts/async-execution.md) |
-| **Transaction pre-confirmation** | A sub-second (~20ms), best-effort signal that the current block producer has committed to including your transaction, well before the block itself lands | [Pre-confirmation](./core-concepts/tx-preconfirmation.md) |
-| **Multi-Lane** | Reserved gas capacity per transaction class (e.g. AMM, liquidation) so latency-sensitive traffic can't be crowded out by unrelated load | [Multi-Lane](./core-concepts/multi-lane.md) |
-| **Native account abstraction** | A protocol-level transaction type (`0x76`) with batched calls, session/admin keys, passkey (WebAuthn/P256) signing, and gas sponsorship — no bundler or entry-point contract required | [Account Abstraction](./core-concepts/account-abstraction.md) |
-| **Shielded pool (privacy)** | An opt-in, native system contract for zk-shielded transfers — sender, recipient, and amount hidden — alongside fully transparent transactions | [Privacy](./core-concepts/privacy.md) |
-| **On-chain governance** | Token-weighted (govBNB) proposal/vote/timelock governance controlling protocol parameters, including the Multi-Lane configuration | [Governance](./governance/overview.md) |
+| **Application** | DeFi, payments, confidential finance, AI agents. An opt-in native shielded pool hides sender, recipient, and amount, alongside fully transparent transactions | [Privacy](./core-concepts/privacy.md) |
+| **Account & UX** | Gas sponsorship, passkey (WebAuthn/P256) signing, batched calls, and scoped access keys as a native transaction type (`0x76`) — no bundler or entry-point contract, and no need for the sender to hold BNB | [Account Abstraction](./core-concepts/account-abstraction.md) |
+| **Execution** | Parallel EVM with ordering and execution decoupled, so consensus liveness never depends on execution throughput. Multi-Lane reserves gas capacity per transaction class, so latency-sensitive traffic can't be crowded out | [Async Execution](./core-concepts/async-execution.md) · [Multi-Lane](./core-concepts/multi-lane.md) |
+| **Consensus** | Enhanced Parlia: 200 ms blocks and BLS fast finality, so blocks become irreversible in roughly one block interval. Sub-blocks stream ordering commitments every 20 ms, giving a pre-confirmation well before the block lands | [Consensus](./core-concepts/consensus.md) · [Pre-confirmation](./core-concepts/tx-preconfirmation.md) |
+| **Network** | P2P block and sub-block gossip, with transactions routed straight to the current and next proposer instead of a global mempool | [JSON-RPC Endpoint](./developers/json_rpc/json-rpc-endpoint.md) |
+| **Storage** | Flat key-value store under a cumulative lattice-hash (LtHash) commitment instead of a Merkle-Patricia trie | [State Commitment](./core-concepts/async-execution.md#lthash-state-commitment) |
+| **Governance** | Token-weighted (govBNB) proposal / vote / timelock control over protocol parameters, including the Multi-Lane quotas | [Governance](./governance/overview.md) |
 
-## Design principles
+## What this means for developers
 
-- **EVM compatibility is non-negotiable.** Contracts, opcodes, and per-operation gas costs behave exactly as on any other EVM chain. What differs is billing: a transaction pays for its declared gas limit, not its gas used, because block space is sold by declared gas before execution runs ([details](./get-started/migrate-from-bsc.md#you-pay-for-your-declared-gas-limit)).
-- **No global mempool.** Transactions go directly to the current and next block producer rather than a shared pending pool — part of what makes pre-confirmation and Multi-Lane packing possible.
+Existing Solidity contracts and standard wallet flows run unchanged — contracts, opcodes, and per-operation gas costs behave exactly as on any other EVM chain (execution builds on [reth](https://github.com/paradigmxyz/reth) and [revm](https://github.com/bluealloy/revm)). The rebuilt layers around the EVM do change four things worth knowing before you port anything:
+
+- **You pay for your declared gas limit**, not gas used — block space is sold by declared gas before execution runs ([details](./get-started/migrate-from-bsc.md#you-pay-for-your-declared-gas-limit)).
+- **There is no global mempool.** Transactions go directly to the current and next block producer, which is part of what makes pre-confirmation and Multi-Lane packing possible.
+- **`eth_getProof` is unsupported, and so are EIP-4844/EIP-7702 transactions** — see [JSON-RPC Endpoint](./developers/json_rpc/json-rpc-endpoint.md) for the complete list of RPC-surface differences.
 - **New features are additive.** Account abstraction, pre-confirmation, Multi-Lane, and the shielded pool run alongside standard transactions; none of them change how an existing contract behaves.
+
+Start with [Migrating from BSC](./get-started/migrate-from-bsc.md) if you already ship on BSC, or the [Quick Guide](./developers/quick-guide.md) if you don't.
 
 ## Network parameters
 
 | Parameter | Value |
 |---|---|
 | Block interval | 200 ms |
+| Finality | sub-second (BLS fast finality) |
+| Pre-confirmation | ~20 ms (sub-block) |
 | Turn length (blocks per validator, per rotation) | 16 |
 | Epoch length | 2,250 blocks (7.5 minutes) |
-| Consensus | Parlia PoSA (turn rotation + BLS fast finality), up to 64 validators |
+| Consensus | Parlia PoSA, up to 64 validators |
 | Gas asset | BNB (bridged from BSC) |
 
 ## Current status
