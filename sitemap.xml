@@ -506,15 +506,19 @@
     </url>
     <url>
          <loc>https://fynnss.github.io/bnb-chain.github.io/bnb-newl1/core-concepts/tx-preconfirmation/</loc>
-         <lastmod>2026-08-14</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://fynnss.github.io/bnb-chain.github.io/bnb-newl1/developers/examples/</loc>
-         <lastmod>2026-08-18</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://fynnss.github.io/bnb-chain.github.io/bnb-newl1/developers/quick-guide/</loc>
          <lastmod>2026-08-18</lastmod>
+    </url>
+    <url>
+         <loc>https://fynnss.github.io/bnb-chain.github.io/bnb-newl1/developers/transaction-lifecycle/</loc>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://fynnss.github.io/bnb-chain.github.io/bnb-newl1/developers/transaction-types/</loc>
@@ -530,7 +534,7 @@
     </url>
     <url>
          <loc>https://fynnss.github.io/bnb-chain.github.io/bnb-newl1/get-started/migrate-from-bsc/</loc>
-         <lastmod>2026-08-18</lastmod>
+         <lastmod>2026-09-01</lastmod>
     </url>
     <url>
          <loc>https://fynnss.github.io/bnb-chain.github.io/bnb-newl1/get-started/network-info/</loc>

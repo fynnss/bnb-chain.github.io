@@ -984,6 +984,8 @@
       
         
       
+        
+      
     
     
     
@@ -1097,6 +1099,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../transaction-lifecycle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transaction Lifecycle
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../examples/" class="md-nav__link">
         
   
@@ -1148,10 +1178,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4_4" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4_5" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_4_4" id="__nav_4_4_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_4_5" id="__nav_4_4_5_label" tabindex="0">
             
   
   
@@ -1169,8 +1199,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_4_4_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_4_4">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_4_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_4_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2865,7 +2895,7 @@ curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </spa
 </tr>
 <tr>
 <td>Transaction expiry</td>
-<td>A pooled transaction not included within the pool TTL (60 s default) is evicted, and a nonce more than 256 ahead of the account’s current nonce is rejected at submission.</td>
+<td>A pooled transaction not included within the pool TTL (3 h default, scanned every 20 s) is evicted, and a nonce more than 256 ahead of the account’s current nonce is rejected at submission. Both time values are operator-configurable.</td>
 </tr>
 <tr>
 <td>Transaction types</td>
@@ -2945,10 +2975,7 @@ curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </spa
 }
 </code></pre></div>
 <p>If a subscriber falls behind, the node sends <code>{"status": "lagged", "dropped": n}</code> rather than silently dropping a revocation — re-query <code>newl1_getTransactionPreconfirmation</code> when you see it.</p>
-<div class="admonition warning">
-<p class="admonition-title">Subscribe from a node that isn’t producing the block</p>
-<p>Sub-blocks travel by P2P gossip, and a producer does <strong>not</strong> loop its own broadcast back to its own subscribers. A node with no peers reports zero events even while producing blocks.</p>
-</div>
+<p>The producer explicitly feeds its own published slices to local subscribers, so this subscription works against the producer’s RPC and on a single-node devnet.</p>
 <h3 id="newl1_subscribesubblocks">newl1_subscribeSubBlocks<a class="headerlink" href="#newl1_subscribesubblocks" title="Link to this section">¶</a></h3>
 <p>WebSocket only. Streams the raw signed sub-blocks straight from the gossip mesh, for clients that verify signatures themselves rather than trusting the node’s interpretation. Notification method is <code>newl1_subBlock</code>; unsubscribe with <code>newl1_unsubscribeSubBlocks</code>.</p>
 <p><strong>Parameters</strong></p>
@@ -3032,16 +3059,16 @@ curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </spa
 <span class="w">  </span>--data<span class="w"> </span><span class="s1">'{"jsonrpc":"2.0","method":"newl1_getTransactionStatus","params":["0x…"],"id":1}'</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>{
-  "state": "ready",   // pending | ready | parked | ordered | evicted | removed | rejected | unknown
+  "state": "ready",   // pending | ready | parked | emitted | ordered | evicted | removed | rejected | unknown
   "reason": null,     // set only for a terminal state, e.g. why it was evicted
   "sender": "0x…",
-  "nonce": 0,
-  "ageMs": 12
+  "nonce": "0x0",
+  "ageMs": "0xc"
 }
 </code></pre></div>
-<p><code>unknown</code> is ambiguous by design — it covers both “never seen” and “aged out of the bounded status ring”. Treat it as “no information”, not as a negative outcome. This is a <strong>local</strong> view: it answers for the node you asked, not the network.</p>
+<p><code>sender</code>, <code>nonce</code>, and <code>ageMs</code> are <code>null</code> for <code>unknown</code>. That state is ambiguous by design — it covers both “never seen” and “aged out of the bounded status ring”. Treat it as “no information”, not as a negative outcome. This is a <strong>local</strong> view: it answers for the node you asked, not the network. See <a href="../../transaction-lifecycle/#2-pool-states">Transaction Lifecycle</a> for state transitions and terminal reasons.</p>
 <h3 id="newl1_debugsendersnapshot">newl1_debugSenderSnapshot<a class="headerlink" href="#newl1_debugsendersnapshot" title="Link to this section">¶</a></h3>
-<p>Debug surface: one sender’s live pool lane — every entry nonce-ascending with its state and age, plus the watermarks the block packer works from (<code>confirmedBase</code>, <code>orderedNonce</code>). Answers “why isn’t this sender’s transaction being packed” without reading node logs.</p>
+<p>Debug surface: one sender’s live pool lane — every entry nonce-ascending with its state and age, plus the watermarks the block packer works from (<code>baseAtExecutedTip</code>, <code>orderedNonce</code>). Answers “why isn’t this sender’s transaction being packed” without reading node logs.</p>
 <p><strong>Parameters</strong></p>
 <p><strong>Address</strong> String (REQUIRED)</p>
 <ul>
@@ -3050,6 +3077,16 @@ curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </spa
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">"</span><span class="nv">$RPC</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--data<span class="w"> </span><span class="s1">'{"jsonrpc":"2.0","method":"newl1_debugSenderSnapshot","params":["0x…"],"id":1}'</span>
 </code></pre></div>
+<div class="highlight"><pre><span></span><code>{
+  "sender": "0x…",
+  "baseAtExecutedTip": "0x28",
+  "orderedNonce": "0x2a",
+  "entries": [
+    { "nonce": "0x2a", "hash": "0x…", "state": "emitted", "ageMs": "0xc" }
+  ]
+}
+</code></pre></div>
+<p><code>baseAtExecutedTip</code> is the sender nonce at the executed tip. <code>orderedNonce</code> additionally accounts for canonical transactions that have not necessarily executed yet. Either watermark may be <code>null</code> when unavailable.</p>
 <h2 id="system-transaction-api">System Transaction API<a class="headerlink" href="#system-transaction-api" title="Link to this section">¶</a></h2>
 <h3 id="newl1_getsystemreceiptsbyblock">newl1_getSystemReceiptsByBlock<a class="headerlink" href="#newl1_getsystemreceiptsbyblock" title="Link to this section">¶</a></h3>
 <p>Receipts for a block’s <strong>system transactions</strong> — slashing, deposits, finality rewards, validator-set updates, and shielded-pool drains. These run in the block executor after ordinary transactions and have no place in <code>transactions_root</code>, so they never appear in <code>eth_getBlockReceipts</code> or in the block’s transaction list. This method is the only way to see them.</p>
@@ -3216,7 +3253,7 @@ curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </spa
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 1, 2026 01:33:05 UTC">September 1, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 1, 2026 10:51:17 UTC">September 1, 2026</span>
   </span>
 
     

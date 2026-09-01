@@ -982,6 +982,8 @@
       
         
       
+        
+      
     
     
     
@@ -1075,6 +1077,34 @@
     
   
     Transaction Types
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developers/transaction-lifecycle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transaction Lifecycle
   
 
     
@@ -2215,7 +2245,7 @@
 <li>Pre-confirmations <strong>can and do get revoked</strong> (reported as <code>aborted</code> or <code>superseded</code> on the same subscription) — this is expected, normal behavior, not a fault. Applications must handle revocation rather than treating “pre-confirmed” as final.</li>
 </ul>
 <h2 id="confirmation-ladder">Confirmation ladder<a class="headerlink" href="#confirmation-ladder" title="Link to this section">¶</a></h2>
-<p>Think of transaction status as progressing through up to four stages, the last two of which are independent of each other:</p>
+<p>Think of transaction status as progressing through several milestones. Ordering and execution advance independently after inclusion:</p>
 <table>
 <thead>
 <tr>
@@ -2236,18 +2266,23 @@
 <td>Your tx is in an imported block.</td>
 </tr>
 <tr>
-<td><code>finalized</code></td>
+<td><code>order-finalized</code></td>
 <td>~1–few block intervals</td>
-<td>Two-thirds of validators voted for the block (see <a href="../consensus/">Consensus</a>) — irreversible.</td>
+<td>Two-thirds of validators voted for the containing block (see <a href="../consensus/">Consensus</a>) — its order is irreversible.</td>
 </tr>
 <tr>
 <td><code>executed</code></td>
 <td>Shortly after ordering</td>
 <td>The EVM has actually run the transaction and produced a result.</td>
 </tr>
+<tr>
+<td><code>execution-finalized</code></td>
+<td>After execution is committed and the committing block is finalized</td>
+<td>The transaction’s result is covered by the commitment-backed <code>finalized</code> height.</td>
+</tr>
 </tbody>
 </table>
-<p>Anything that must be irreversible — releasing funds, settling a trade — should wait for <strong>finalized</strong>, and re-check the block hash, since a reorg can still replace an ordered-but-not-yet-finalized block.</p>
+<p>Read raw order finality from <code>finalizedNumber</code> on <code>newl1_subscribeNewHeads</code>. For anything that depends on execution success or state changes, wait until the transaction’s block is at or below <code>eth_blockNumber("finalized")</code>, then re-check the canonical block hash.</p>
 <h2 id="how-to-use-it">How to use it<a class="headerlink" href="#how-to-use-it" title="Link to this section">¶</a></h2>
 <h3 id="rpc-websocket">RPC (WebSocket)<a class="headerlink" href="#rpc-websocket" title="Link to this section">¶</a></h3>
 <ul>
@@ -2275,9 +2310,9 @@
 <li>Coverage can be incomplete during mixed-version network rollouts.</li>
 <li>A conservative (fail-closed) break rate is expected and is a health metric to monitor, not necessarily a sign of a problem.</li>
 </ul>
-<div class="admonition warning">
-<p class="admonition-title">Requires a network peer — a fully isolated single node sees nothing</p>
-<p>Verified directly: sub-blocks are delivered by P2P gossip, and a node does <strong>not</strong> loop its own broadcast back to its own local subscribers. On a completely isolated single-node devnet (0 connected peers), <code>newl1_subscribePreconfirmations</code> and <code>newl1_subscribeSubBlocks</code> report <strong>zero events</strong> on that node’s own WebSocket — even while it is actively producing blocks and real transactions are landing in them (<code>streamed=true</code> in the node’s logs, but nothing reaches the local subscription). The moment the node has at least one connected peer (e.g. a second, non-validator observer node), pre-confirmation events immediately appear on the peer’s subscription. If you’re evaluating this feature on a minimal local devnet, boot at least two nodes (they don’t both need to be validators) and subscribe from the one that <strong>isn’t</strong> producing the block, matching how the project’s own test suite validates this feature.</p>
+<div class="admonition note">
+<p class="admonition-title">Producer-local subscriptions are supported</p>
+<p>Sub-blocks are gossiped to peers, and the producer also feeds its own published slices directly to local subscribers. <code>newl1_subscribePreconfirmations</code> and <code>newl1_subscribeSubBlocks</code> therefore work against the producer’s RPC, including on a fully isolated single-node devnet.</p>
 </div></div>
 
 
@@ -2299,7 +2334,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 14, 2026 06:51:29 UTC">August 14, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 1, 2026 10:51:17 UTC">September 1, 2026</span>
   </span>
 
     

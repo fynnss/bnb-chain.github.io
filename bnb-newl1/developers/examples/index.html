@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://fynnss.github.io/bnb-chain.github.io/bnb-newl1/developers/examples/">
       
       
-        <link rel="prev" href="../transaction-types/">
+        <link rel="prev" href="../transaction-lifecycle/">
       
       
         <link rel="next" href="../json_rpc/json-rpc-endpoint/">
@@ -984,6 +984,8 @@
       
         
       
+        
+      
     
     
     
@@ -1077,6 +1079,34 @@
     
   
     Transaction Types
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transaction-lifecycle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transaction Lifecycle
   
 
     
@@ -2179,10 +2209,7 @@ rpc<span class="w"> </span>eth_blockNumber<span class="w"> </span><span class="s
 </code></pre></div>
 <p>Each notification is a <code>newl1_preconfirmation</code> frame: <code>{txHash, blockNumber, parentHash, subBlockIndex, subBlockHash, position, leader, timestampMs, status}</code>. Send transactions in another terminal and they appear ~20 ms after submission, well before their block seals. <code>status</code> transitions to <code>aborted</code> / <code>superseded</code> if the promise is withdrawn.</p>
 <p>Filter to a single transaction with <code>"params":[{"txHash":"0x…"}]</code>. Chain tips instead: <code>newl1_subscribeNewHeads</code>, or standard <code>eth_subscribe</code> with <code>["newHeads"]</code>.</p>
-<div class="admonition warning">
-<p class="admonition-title">Subscribe from a non-producing node</p>
-<p>Sub-blocks travel by P2P gossip and a producer does <strong>not</strong> loop its own broadcast back to its own subscribers. Point <code>WS</code> at a node that is not the one producing your transaction’s block.</p>
-</div>
+<p>The producer feeds its own published slices to local subscribers as well as gossiping them to peers, so <code>WS</code> may point at either a producing or non-producing node.</p>
 <h2 id="follow-one-transaction-through-every-stage">Follow one transaction through every stage<a class="headerlink" href="#follow-one-transaction-through-every-stage" title="Link to this section">¶</a></h2>
 <div class="highlight"><pre><span></span><code><span class="nv">TX</span><span class="o">=</span><span class="k">$(</span>cast<span class="w"> </span>send<span class="w"> </span>--private-key<span class="w"> </span><span class="nv">$SK</span><span class="w"> </span>--legacy<span class="w"> </span>--gas-price<span class="w"> </span><span class="m">1000000000</span><span class="w"> </span>--gas-limit<span class="w"> </span><span class="m">21000</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--rpc-url<span class="w"> </span><span class="nv">$RPC</span><span class="w"> </span><span class="nv">$TO</span><span class="w"> </span>--value<span class="w"> </span><span class="m">1</span><span class="w"> </span>--async<span class="k">)</span>
@@ -2231,7 +2258,7 @@ rpc<span class="w"> </span>eth_getProof<span class="w"> </span><span class="s1">
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 18, 2026 06:27:40 UTC">August 18, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 1, 2026 10:51:17 UTC">September 1, 2026</span>
   </span>
 
     
