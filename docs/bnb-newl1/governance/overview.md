@@ -8,7 +8,7 @@ BNB NewL1 uses fully on-chain, token-weighted governance — the same Compound/O
 
 ## What's governable
 
-Protocol and system parameters — for example staking and slashing constants, and BNB NewL1–specific configuration such as the [Multi-Lane](../core-concepts/multi-lane.md) quotas in `LaneRegistry`. Validator-set **membership** itself is not a governance vote; it's decided automatically by stake-weighted election each epoch (see below), while the parameters that shape staking and elections are governable.
+Protocol and system parameters — for example staking and slashing constants, and BNB NewL1–specific configuration such as the [Multi-Lane](../core-concepts/multi-lane.md) quotas in `LaneRegistry`. Validator-set **membership** itself is not a governance vote; it's decided automatically by a stake-weighted election that runs once per day (see below), while the parameters that shape staking and elections are governable.
 
 ## Voting power
 
@@ -41,6 +41,6 @@ Two access-control gates make this the only path to change anything governed: ev
 
 ## Validator-set rotation
 
-Validator-set membership updates automatically once per epoch (see [Consensus](../core-concepts/consensus.md)): at the first block of each epoch, the protocol reads the top validators by voting power from `StakeHub` and updates the active validator set on-chain — no separate governance proposal is required for this routine rotation.
+Validator-set membership updates automatically (see [Consensus](../core-concepts/consensus.md)): an election runs once per day at a designated block, reading the top validators by voting power from `StakeHub` and updating the active validator set on-chain, which the next epoch-boundary header then binds — no separate governance proposal is required for this routine rotation.
 
 See [System Contracts](./system-contracts.md) for the full list of contracts involved and their addresses.

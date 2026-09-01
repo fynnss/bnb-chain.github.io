@@ -4,23 +4,74 @@ title: Async Execution & State Commitment - BNB NewL1
 
 # Async Execution & State Commitment
 
-BNB NewL1 separates **ordering** (deciding which transactions go in which block, and in what order) from **execution** (running those transactions through the EVM and computing the resulting state). A block can be proposed, gossiped, and even voted on for [fast finality](./consensus.md) before its execution result is fully computed — execution runs asynchronously, on its own track, and catches up shortly after.
+Conventional blockchains interleave execution with consensus: a block proposal carries the post-execution state root, so the leader must execute before proposing and every validator must re-execute before voting. The consequences compound — execution runs twice per block, the gas limit is sized against the slowest node's worst case, and the execution budget shrinks to a fraction of the block time.
 
-## Why it matters
-
-In a conventional EVM chain, block production is gated by execution: a proposer can't seal a block until every transaction in it has actually run. At sub-second block times, that coupling caps how fast blocks can be produced at how fast the EVM can execute them. Decoupling the two means consensus liveness — producing and finalizing blocks on schedule — no longer depends on execution keeping pace in real time. Execution is free to lag by a small, bounded amount and catch up asynchronously, without slowing down block production or finality itself.
+At a 200 ms block interval, that architecture isn't viable. BNB NewL1 decouples the two concerns: **consensus establishes transaction ordering without executing anything, and execution proceeds asynchronously, several blocks behind.** Since a deterministic ordering fully determines every outcome, execution *reveals* state rather than deciding it.
 
 ## How it works
 
-A `NewL1Header` carries the fields known at proposal time — including the transaction list — but omits the fields that can only be computed by actually executing the block: `state_root`, `receipts_root`, `logs_bloom`, `gas_used`, `blob_gas_used`, and `requests_hash`. Those values are published later, in **execution commitments** attached to a subsequent block.
+- **Ordering (slot N)** — static validation and the [BLS vote](./consensus.md) that finalizes transaction order. No execution.
+- **Execution (slot ≥ N+1)** — transactions execute asynchronously; the result is written into a later block's header as an `ExecutionCommitment`.
 
-- A block at height `N` carries a commitment list covering earlier blocks up to `N − D`, where `D` (the execution lag, in blocks) is chosen by the proposer and adjusts dynamically — nudged by at most one slot per block within a bounded range — based on how far behind the local execution scheduler actually is.
-- Validators don't re-derive or second-guess the proposer's exact lag. They only enforce the **structure** of the commitment list: entries must be contiguous from the previous commitment, strictly increasing, and advance by a bounded amount per block.
-- Execution itself runs off the hot path: an execution scheduler picks up imported blocks, runs the EVM work in the background, and produces the real post-execution state once it's done — independent of the block-production and voting loop.
+Concretely, a `NewL1Header` carries the fields known at proposal time — including the transaction list — but omits everything that can only be computed by running the block: `state_root`, `receipts_root`, `logs_bloom`, `gas_used`, `blob_gas_used`, and `requests_hash`. Those values are published later, in execution commitments attached to a subsequent block. Execution itself runs off the hot path: a scheduler picks up imported blocks, runs the EVM work in the background, and produces the real post-execution state when it's done — independent of the block-production and voting loop.
+
+## Adaptive execution lag
+
+Block `N`'s results land in the header of block `N+D`. Prior designs fix `D` (EIP-7886 at 1, Monad at 3) and pay worst-case latency at all times. BNB NewL1's `D` adapts to load:
+
+- **Low load** — `D` shrinks toward 1, minimizing time to finality.
+- **High load** — `D` grows, absorbing backlog without stalling consensus.
+- **Catch-up** — one block may carry several `ExecutionCommitment`s, draining the backlog in batches.
+
+![Adaptive execution lag across normal load, heavy load, and catch-up](../../assets/newl1-adaptive-lag.png)
+
+Constraints: `1 ≤ D(N) ≤ D_MAX`, at most ±1 change per block, with `D_MAX` [governance-configurable](../governance/overview.md). Validators don't re-derive the proposer's exact lag — they enforce the **structure** of the commitment list: entries must be contiguous from the previous commitment, strictly increasing, and advance by a bounded amount per block.
+
+## Block states
+
+Decoupling means a block no longer goes from "proposed" to "final" in one hop — ordering can be settled while the execution result is still in flight. Each block moves through four states:
+
+```
+ ordered ────────► executed ────────► committed ────────► finalized
+ slot N            slot N+D           header of           committing block
+ block produced    local EVM run      block N+D           BLS-voted
+ └─ consensus ─┘   └────────────── execution lane ──────────────┘
+```
+
+- **Ordered** — the block is produced and transactions are packed in a fixed order.
+- **Executed** — the EVM has run the block's transactions locally.
+- **Committed** — the execution result appears in a later block's header as an `ExecutionCommitment`.
+- **Execution finalized** — the committing block is itself voted in, completing execution finality.
+
+Ordering alone never finalizes a block; finality requires the execution result to be committed on-chain and voted on. Reorgs roll back ordering and execution atomically.
+
+## Paying for block space
+
+Consensus admits transactions against a `D`-lagged view of state, so a transaction can pass every ordering-time check and still be guaranteed to fail at execution. Unmitigated, that puts calldata on-chain without anyone paying for it:
+
+| Vector | Mechanism |
+|---|---|
+| Zero-balance spam | Account drained after the `D`-lagged snapshot; the transaction clears consensus, fails at execution. |
+| Intra-block drain | One transaction drains an account; a second, calldata-heavy one still appears funded against stale state. |
+| Nonce conflicts | Collisions inside the `D`-window are invisible to static checks. |
+| Contract dependencies | Approvals and balances shift between ordering and execution; static checks can't see it. |
+
+BNB NewL1 tracks each account's cumulative in-flight spend across the `D`-window and derives an `effectiveBalance` from it, enforced by four rules:
+
+1. **Fee on gas limit** — the sender pays `gas_bid × gas_limit` regardless of actual usage. Unused-gas refunds are disabled and EIP-3529 refunds are voided, so blocks are packed on declared gas, which is the block space actually sold. (System transactions and RPC simulations keep standard refund behavior — see [Migrating from BSC](../get-started/migrate-from-bsc.md#you-pay-for-your-declared-gas-limit).)
+2. **Consensus-time solvency** — a transaction is admitted only if `effectiveBalance ≥ tx_cost`.
+3. **Execution-time settlement** — transactions that become unpayable, or hit a nonce mismatch, fail rather than execute. If the nonce is correct, the payer is charged `min(balance, occupied × price)` and the nonce is consumed; if the nonce is invalid, no charges or state changes occur, preventing malicious replays. Either way the receipt consumes `min(gas_limit, remaining block gas)`, so invalid transactions never occupy free block space.
+4. **Per-account in-flight caps** — hard limits on cumulative `gas_limit` and calldata bytes per account within the `D`-window.
+
+Only an account's own transactions can spend its native balance, so this accounting is exact rather than heuristic — no fixed reserve floor is needed, unlike Monad's reserve-balance approach.
+
+## System transactions
+
+Interleaved chains build and sign system transactions — validator-set updates, reward distribution, slashing — at proposal time, because execution results are already on hand. On BNB NewL1 they aren't: those results don't exist until slot `N+D`. System transactions therefore don't exist at ordering time at all. They are **generated during execution**, and their effects land in the block's `ExecutionCommitment`. Validators order and vote on user transactions only.
 
 ## LtHash state commitment
 
-BNB NewL1 commits state with a cumulative hash accumulator (`BLAKE3` over a lattice hash, "LtHash") rather than Ethereum's Merkle-Patricia trie. This is what makes async execution practical: updating a cumulative hash as execution completes is cheap, whereas maintaining an MPT is exactly the kind of synchronous-with-execution bookkeeping this design avoids.
+BNB NewL1 commits state with a cumulative hash accumulator (`BLAKE3` over a lattice hash, "LtHash") over a flat key-value store, rather than Ethereum's Merkle-Patricia trie. This is what makes async execution practical: updating a cumulative hash as execution completes is cheap, whereas maintaining an MPT is exactly the kind of synchronous-with-execution bookkeeping this design avoids. Because the accumulator is cumulative, any divergence at one block propagates into every descendant commitment.
 
 Two concrete consequences for anyone integrating with the chain:
 
@@ -31,7 +82,7 @@ See [JSON-RPC Endpoint](../developers/json_rpc/json-rpc-endpoint.md) for the ful
 
 ## Correctness enforcement
 
-Because ordering and execution are decoupled, a block's fast-finality vote is fundamentally a vote on ordering, not on someone else's claimed execution result. The correctness check happens somewhere else: a validator abstains from voting for a head whose published execution commitments it has locally computed to a **different** result. Since the state commitment is cumulative, any divergence at one block propagates into every descendant commitment, so this check reliably catches a bad result within a bounded number of blocks. The practical effect is that an incorrect execution result cannot gather the two-thirds vote quorum needed to finalize — even though block *import* itself doesn't reject it outright (rejecting at import would break the ability for later blocks to resolve their parent while execution is still catching up).
+Because ordering and execution are decoupled, a fast-finality vote is fundamentally a vote on ordering, not on someone else's claimed execution result. The correctness check happens elsewhere: a validator **abstains** from voting for a head whose published execution commitments its own local execution disproves. Since the state commitment is cumulative, a bad result is reliably caught within a bounded number of blocks, and an incorrect execution result cannot gather the ⌈2N/3⌉ votes it needs to finalize — even though block *import* itself doesn't reject it outright (rejecting at import would break the ability for later blocks to resolve their parent while execution is still catching up).
 
 ## For developers
 
@@ -43,7 +94,7 @@ Three block-height concepts exist side by side, and they're all reachable throug
 | Finalized | `eth_blockNumber("finalized")` (or `"safe"` for justified) | Latest published execution commitment at or before the finalized block — a two-thirds BLS vote quorum (see [Consensus](./consensus.md)) |
 | Ordered | The `number` field on `newl1_subscribeNewHeads` / `eth_subscribe("newHeads")` | Latest block whose transaction order is settled |
 
-The executed tip trails the ordered tip by the proposer-chosen delay, normally a small number of blocks.
+The executed tip trails the ordered tip by `D`, normally a small number of blocks.
 
 Practical guidance:
 
@@ -52,4 +103,8 @@ Practical guidance:
 
 ## Current status
 
-The async execution pipeline itself is live and running today on the devnet. The LtHash state-commitment migration is functional today; follow-up work (a checkpoint-based state sync to replace snap sync, and a native LtHash inclusion-proof scheme for `eth_getProof`) is still in progress.
+The async execution pipeline is live and running today on the devnet. The LtHash state-commitment migration is functional; follow-up work (a checkpoint-based state sync to replace snap sync, and a native LtHash inclusion-proof scheme for `eth_getProof`) is still in progress.
+
+## What's next
+
+Decoupling consensus from execution gives the EVM a dedicated processing window; **parallel execution** is what will maximize throughput inside it. The current design centers on an access-list-based parallel EVM: transactions declare their state dependencies explicitly, so non-conflicting transactions can execute concurrently. Detailed design is in progress.
