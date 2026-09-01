@@ -16,16 +16,17 @@ Pre-confirmation is a **best-effort, validator-signed ordering-inclusion promise
 
 ## Confirmation ladder
 
-Think of transaction status as progressing through up to four stages, the last two of which are independent of each other:
+Think of transaction status as progressing through several milestones. Ordering and execution advance independently after inclusion:
 
 | Stage | Latency | Meaning |
 |---|---|---|
 | `preconfirmed` | ~20 ms | The current leader has streamed a signed sub-block including your tx. Revocable. |
 | `ordered` | ~1 block interval | Your tx is in an imported block. |
-| `finalized` | ~1–few block intervals | Two-thirds of validators voted for the block (see [Consensus](./consensus.md)) — irreversible. |
+| `order-finalized` | ~1–few block intervals | Two-thirds of validators voted for the containing block (see [Consensus](./consensus.md)) — its order is irreversible. |
 | `executed` | Shortly after ordering | The EVM has actually run the transaction and produced a result. |
+| `execution-finalized` | After execution is committed and the committing block is finalized | The transaction's result is covered by the commitment-backed `finalized` height. |
 
-Anything that must be irreversible — releasing funds, settling a trade — should wait for **finalized**, and re-check the block hash, since a reorg can still replace an ordered-but-not-yet-finalized block.
+Read raw order finality from `finalizedNumber` on `newl1_subscribeNewHeads`. For anything that depends on execution success or state changes, wait until the transaction's block is at or below `eth_blockNumber("finalized")`, then re-check the canonical block hash.
 
 ## How to use it
 
@@ -56,5 +57,5 @@ A client that doesn't want to trust the node's own interpretation can verify a r
 - Coverage can be incomplete during mixed-version network rollouts.
 - A conservative (fail-closed) break rate is expected and is a health metric to monitor, not necessarily a sign of a problem.
 
-!!! warning "Requires a network peer — a fully isolated single node sees nothing"
-    Verified directly: sub-blocks are delivered by P2P gossip, and a node does **not** loop its own broadcast back to its own local subscribers. On a completely isolated single-node devnet (0 connected peers), `newl1_subscribePreconfirmations` and `newl1_subscribeSubBlocks` report **zero events** on that node's own WebSocket — even while it is actively producing blocks and real transactions are landing in them (`streamed=true` in the node's logs, but nothing reaches the local subscription). The moment the node has at least one connected peer (e.g. a second, non-validator observer node), pre-confirmation events immediately appear on the peer's subscription. If you're evaluating this feature on a minimal local devnet, boot at least two nodes (they don't both need to be validators) and subscribe from the one that **isn't** producing the block, matching how the project's own test suite validates this feature.
+!!! note "Producer-local subscriptions are supported"
+    Sub-blocks are gossiped to peers, and the producer also feeds its own published slices directly to local subscribers. `newl1_subscribePreconfirmations` and `newl1_subscribeSubBlocks` therefore work against the producer's RPC, including on a fully isolated single-node devnet.

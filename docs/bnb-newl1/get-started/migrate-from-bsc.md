@@ -47,7 +47,7 @@ Bytecode runs as-is. What changes meaning is anything reasoning about **time or 
 - **Base fee is pinned to zero (BEP-222), so the tip is the price** — `min(maxFeePerGas, maxPriorityFeePerGas)`. Tipping `0` pays nothing and is rejected. Fees route through the system address to `ValidatorSet`, with BEP-95 burning its share.
 - **No global mempool.** Transactions go straight to the current and next producer. No `txpool_*`, and `eth_subscribe("newPendingTransactions")` shows only this node's admissions.
 - **Replace-by-fee needs a 10% bump and is local only** — it displaces the incumbent just in the pools holding it.
-- **Pooled transactions expire** after 60 s, and a nonce more than 256 ahead is rejected at submission.
+- **Pooled transactions expire** after 3 hours by default (operator-configurable), and a nonce more than 256 ahead is rejected at submission.
 - **`eth_getTransactionCount(addr, "latest")` returns the ordered-tip nonce** and does not look ahead. Track nonces client-side when pipelining.
 
 ## Reading state and receipts
