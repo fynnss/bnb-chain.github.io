@@ -4,69 +4,175 @@ title: Native Account Abstraction - BNB NewL1
 
 # Native Account Abstraction
 
-BNB NewL1 adds a new native transaction type — envelope `0x76` — that lets any account batch multiple calls atomically, delegate scoped signing authority to secondary keys, sign with a passkey instead of a private key, and have its gas sponsored by another account. All of it is enforced directly by the protocol.
+BNB NewL1 has a native account-abstraction transaction: EIP-2718 envelope type `0x76`. One transaction can carry a batch of calls, be authorized by a passkey or a delegated key, and have its gas paid by someone else.
 
-## vs. ERC-4337
+There is nothing to deploy or opt into. There is no bundler, no EntryPoint contract, and no smart-contract wallet — the rules below are enforced by every node. An ordinary account keeps its address and simply starts sending `0x76` transactions. Type `0x76` is valid from genesis, and standard transactions are unaffected.
 
-Ethereum's ERC-4337 account abstraction relies on a separate mempool, a bundler, an EntryPoint contract, and (optionally) a paymaster contract — all deployed as ordinary smart contracts with their own trust and gas-accounting model. BNB NewL1's account abstraction has none of that: there's no EntryPoint contract to trust, no bundler role, and no userOp-vs-transaction mempool split. Signature verification, key scoping, spend limits, and gas sponsorship are **consensus rules**, so behavior is uniform across every account rather than depending on which wallet contract a user happened to deploy. Standard transactions are completely unaffected, and the AA machinery is only paid for by transactions that actually use it.
+## What it gives you
 
-## Core concepts
+- **Atomic batches.** 1–64 user calls in one transaction, one outer signature, one nonce, and one receipt. Either all user-call effects persist or none do.
+- **Passkey signing.** P256 and WebAuthn let an account use an authenticator-bound key without exporting the private key. Standard secp256k1 signatures remain supported.
+- **Delegated keys.** Authorize additional keys with a call scope, a spend limit, and an expiry — session keys for a game, a bot, or a team member.
+- **Gas sponsorship.** Another account can pay, so a brand-new unfunded account can make its first transaction.
 
-**The `0x76` envelope.** An EIP-2718 typed transaction submitted the normal way, via `eth_sendRawTransaction`. Its body carries: `chain_id`, `nonce_key` (reserved for future parallel-nonce lanes — must be `0` today), `nonce`, standard EIP-1559 fee fields, `gas_limit`, a `calls` array (1–64 ordered `{to, value, input}` entries executed atomically as a batch), an `access_list`, a `valid_after`/`valid_before` validity window, an optional inline `key_authorization`, and an optional `fee_payer_signature`.
+## Sending an AA transaction
 
-**Key hierarchy.**
+### Fields you set
 
-| Key type | Can do | Can be revoked? |
+| Field | Meaning |
+|---|---|
+| `chain_id` | Replay protection. |
+| `nonce_key` | Second nonce dimension. **Must be `0`** today. |
+| `nonce` | The account's ordinary nonce. |
+| `max_fee_per_gas`, `max_priority_fee_per_gas` | Standard EIP-1559 fee fields. The priority fee must not exceed the cap. |
+| `gas_limit` | Covers the **whole transaction**. See [Gas](#gas). |
+| `calls` | 1–64 ordered entries, each a target, a native value, and calldata. See [Contract creation](#contract-creation). |
+| `access_list` | Standard EIP-2930 access list. |
+| `valid_after`, `valid_before` | Optional validity window. See [Validity windows](#validity-windows). |
+| `key_authorization` | Optional signed inline key grant, applied within this transaction. |
+| `fee_payer_signature` | Optional sponsor signature. |
+| `token_fee` | Optional `{token, recipient, amount}` repayment to the sponsor. Requires sponsorship. |
+
+A single transaction may not exceed **128 KiB** encoded.
+
+### Signing
+
+An AA has two distinct signing digests: the account signing hash and, when sponsored, the fee-payer hash. Both commit to the transaction body, including any `key_authorization` and `token_fee`. The account hash commits to the **presence** of a sponsor, but not the sponsor's signature bytes; the fee-payer hash binds the same body to the account being sponsored.
+
+A straightforward gas-only workflow is:
+
+1. Fill in the body. If the transaction is sponsored, decide that before computing the account hash.
+2. **Sponsored only:** the fee payer signs the fee-payer hash and the client attaches the signature.
+3. The account signs:
+    - a **root** key signs the account signing hash directly, and the account is recovered or derived from the signature;
+    - a **delegated** key signs `keccak256(0x04 || signing_hash || account)` instead, and the result is wrapped together with that account address. This prevents replay against another account on which the same key is authorized.
+4. Encode with type `0x76` and submit.
+
+Chronological order is not a consensus field. A token-fee workflow may instead compute the account hash with the sponsored-presence placeholder, obtain the account signature, and let the sponsor simulate, quote, and sign last. Changing whether the fee payer is present after the account signs invalidates the account signature.
+
+### Submitting and reading the result
+
+Submit with the ordinary `eth_sendRawTransaction`. Read the outcome with `eth_getTransactionReceipt`: the receipt has type `0x76`, and its status distinguishes a successful batch from a reverted one. `eth_getTransactionCount` is unchanged — an AA account has one ordinary nonce.
+
+## Signature schemes
+
+| Scheme | Use | How the key is identified |
 |---|---|---|
-| **Root key** | The account's own implicit key. The only key that can deploy contracts, and can manage/authorize other keys unconditionally. | No |
-| **Admin key** | Can authorize or revoke other keys, but cannot deploy contracts. Must be unrestricted — no scope, spend limit, or expiry. | Yes (by root or any other admin) |
-| **Access/session key** | An ordinary delegated key, constrained by call scope, spend limit, and expiry. Cannot manage keys. | Yes (by root or any admin) |
+| **secp256k1** | Ordinary account key | The usual address, recovered from the signature |
+| **P256** (secp256r1) | Passkey or secure-enclave key | Derived from the public key carried by the signature |
+| **WebAuthn** | Browser or device passkey | Same derivation as P256; the signature is a WebAuthn assertion |
 
-**Signature schemes.** secp256k1 (standard ECDSA), P256, and WebAuthn (browser/device passkeys) are all valid for the root key or any keychain key — meaning a BNB NewL1 account can be controlled entirely by a passkey, with no private key ever existing.
+Any of the three can be a root key or a delegated key. P256 and WebAuthn signatures do not carry a recovery id, so the public key travels inside the signature.
 
-**The `AccountKeychain` precompile**, at address `0x0000000000000000000000000000000000004000` (with a companion `SignatureVerifier` precompile at `0x0000000000000000000000000000000000004001`), is where keys are managed and read:
+!!! warning "Client-side rules that are consensus-enforced"
+    Every node re-verifies these. A client that deviates receives a rejection or produces a transaction that cannot be imported.
 
-- `authorizeKey(keyId, sigType, expiry, isAdmin, scoped, allowedCalls, limited, limit, period)` — authorize a new key (root/admin only).
-- `revokeKey(keyId)` — permanently revoke a key (root/admin only; irreversible — a revoked `keyId` can never be reused).
-- `getKey(account, keyId)` — read a key's current state.
+    For **P256**, and for the inner signature of a WebAuthn assertion: the public key must be a valid curve point, and the `s` scalar must be low-s — **normalize before submitting**, as high-s signatures are rejected. A P256 payload also carries `pre_hash`: set it to `false` when signing the effective digest directly, or `true` when the signing API applies SHA-256 first.
 
-**Call scope.** An access key can be restricted to a `{target, selectors}` allow-list. `scoped=false` allows any call; `scoped=true` with an empty list denies everything — scoping is additive and explicit.
+    For **WebAuthn**: the authenticator data must be exactly 37 bytes, so no extensions; at least one of the user-present or user-verified flags must be set; and the client data type must be `webauthn.get`. The unpadded base64url challenge must encode the **effective digest**: the account signing hash for a root signature, or `keccak256(0x04 || signing_hash || account)` for a delegated signature.
 
-**Spend limit.** An access key can be capped by a native-currency spend limit (`limit` per `period`, in wei/seconds). This counts both value transferred *and* any gas the key's account pays for itself. `period=0` creates a lifetime (non-resetting) bucket.
+A passkey-rooted account cannot sign a legacy or EIP-1559 transaction — it can only act through `0x76`. The account may receive funds before its first outgoing transaction; sponsorship is required only while it lacks enough native balance to self-pay.
 
-**Validity windows.** `valid_after`/`valid_before` gate whether a transaction can be included based on block timestamp — useful for scheduled or time-boxed transactions.
+## Delegated keys
 
-**Gas sponsorship.** A separate account (the fee payer) can sign to cover another account's gas for a given transaction. Self-sponsorship is rejected; the sponsor's signature must be produced before the account's own signature.
+Every AA transaction acts for exactly one account. Root, admin, and access are authorization levels for that account, not separate accounts.
 
-## How to use it
+| Authority | What it can do | Restrictions |
+|---|---|---|
+| **Root key** | The account's own key; its address *is* the account. Deploys contracts and manages keys unconditionally. Cannot be revoked. | None |
+| **Admin key** | Authorizes and revokes other delegated keys, including other admin keys. Cannot deploy contracts. Revocable. | Must be unrestricted: no scope, limit, or expiry |
+| **Access key** | Ordinary delegated key, typically a session key. Cannot manage keys. Revocable. | Bound by its scope, spend limit, and expiry |
 
-1. **Build the transaction body** with the fields above; leave `fee_payer_signature` empty unless sponsoring.
-2. **If sponsored**, the fee payer signs first, over a hash that commits to the transaction body and sender address.
-3. **The account signs** — root keys sign directly; keychain (secondary) keys sign an account-bound hash that explicitly names the account, preventing a key's signature from being replayed against a different account.
-4. **Submit** the assembled, signed transaction via standard `eth_sendRawTransaction`.
-5. **Authorize a secondary key** either inline (via `key_authorization` in an AA transaction, atomic with its first use — up to 32 scopes) or directly via `authorizeKey` on the `AccountKeychain` precompile (up to 256 scopes, 64 selectors per scope) — the latter is callable even from a plain, non-AA transaction.
-6. **Revoke a key** with `revokeKey` — permanent, no un-revoke.
-7. **Read key state** via the [`newl1_getKey`](../developers/json_rpc/newl1-api-list.md#newl1_getkey) RPC method: `{sigType, expiry, isRevoked, isAdmin, scoped, spendLimit, spendPeriod, spent}`.
+No delegated key can revoke root, so root always retains control. But an admin key can revoke every *other* delegated key, so a compromised one can lock an account out of its session keys — issue them accordingly.
 
-### Example flows
+Keys are managed through the `AccountKeychain` precompile at `0x0000000000000000000000000000000000004000`, with a companion `SignatureVerifier` at `0x0000000000000000000000000000000000004001`.
 
-- A simple sponsored transfer signed with a passkey (no gas, no private key, on a brand-new device).
-- An atomic batch of several calls in one transaction (e.g. `approve` + `swap` in a single atomic unit).
-- Delegating a time-boxed, spend-capped session key to a game or trading bot, then revoking it when done.
-- An admin key provisioning access keys for a team, without ever exposing the root key.
+### Authorizing a key
+
+Two paths are available:
+
+| Path | How | Max scopes |
+|---|---|---|
+| **Inline** | Attach a signed key authorization to an AA. The authorization runs before the user calls. For authorize-and-use, root signs the grant and the newly authorized key signs the outer AA; an admin-signed grant requires that same admin to sign the outer AA. If a user call reverts, the grant reverts with the batch. | 32 |
+| **Direct call** | Call `authorizeKey` as root or an admin. A secp256k1-rooted account can do this from a plain transaction. A passkey-rooted account must use `0x76`, either self-paid when funded or sponsored when unfunded. | 256 |
+
+Either path allows at most 64 selectors per scope. Prefer inline authorize-and-use when a key's first action is known: splitting authorization and use across two transactions can fail if the first is reordered or reverts.
+
+`authorizeKey` takes the key identifier, its signature scheme, an expiry in unix seconds (zero means never), the admin flag, the scope, and the spend limit.
+
+### Scope, limit, expiry
+
+**Scope.** Unscoped means any target and any calldata. Scoped restricts the key to a list of targets, each optionally narrowed to specific 4-byte selectors; a scoped key with an empty list can do nothing. Root bypasses scope entirely.
+
+**Spend limit.** A cap on native outflow, counting the value moved by successful calls plus, when self-paying, `gas_limit × effective_gas_price`. Size the limit to cover the fee, not just the transfer. A zero period is a lifetime bucket; a non-zero period creates fixed-duration buckets anchored at authorization time. Sponsored gas never counts against the key.
+
+**Revocation is permanent.** A revoked identifier can never be authorized again on that account. An identifier also cannot be re-authorized while its slot is occupied, including one that has expired but not been revoked — rotate to a fresh identifier.
+
+### Reading key state
+
+Call [`newl1_getKey`](../developers/json_rpc/newl1-api-list.md#newl1_getkey) for a key's signature scheme, expiry, revoked and admin flags, scope flag, spend limit, period, and the amount consumed in the current period. A never-authorized key reports blank metadata; a revoked key reports its tombstone.
+
+## Gas
+
+!!! warning "You are charged the `gas_limit` you declare, not the gas you use"
+    Unused gas is **not** refunded and post-execution storage refunds are void, for AA and standard user transactions alike. Blocks are packed by declared gas before execution, so receipts report gas used equal to the gas limit.
+
+    **Over-estimating is not insurance, it is spend.** Size the limit tightly with `newl1_estimateGas`, which prices the declared transaction against the selected state. `eth_call` simulates the call result and `eth_estimateGas` estimates actual execution usage with the prepaid charge-by-limit behavior disabled.
+
+An AA pays normal EVM gas for its calls plus a surcharge for the machinery it uses: about 5,000 for a P256 signature, 5,000 plus a per-byte cost for a WebAuthn assertion, 3,000 for a delegated-key check, and about 27,000 for an inline key authorization. A spend limit and a large scope cost more because the keychain precompile writes additional storage.
+
+The declared limit must clear the intrinsic cost, AA surcharge, and EIP-7623 calldata floor, or the transaction is rejected at submission. No user transaction may declare more than **16,777,216** gas.
+
+## Fee sponsorship
+
+A fee payer can cover another account's native gas. The account still advances its nonce and pays any native value moved by its calls.
+
+- **Self-sponsorship is rejected** — the fee payer must be a different account.
+- Admission requires the sponsor to cover the gas reservation and the account to cover the calls' total native value.
+- Both signing hashes bind the sponsorship to the account and transaction body. See [Signing](#signing).
+
+An optional `token_fee = {token, recipient, amount}` repays the sponsor on-chain. It is supported only on a **root-signed, sponsored** AA; `recipient` must be the recovered fee payer, `token` must be a contract, and `amount` must be non-zero. Both signatures commit to the payment, so no allowance or permit is required.
+
+The token payment runs before the user calls and outside their atomic checkpoint. It therefore remains paid if a later user call reverts. If the token payment itself cannot complete, the user calls do not run; the transaction lands failed and the sponsor is still charged the declared gas limit. Sponsors should simulate before signing because admission does not project arbitrary ERC-20 balances.
+
+## Validity windows
+
+The two optional bounds gate inclusion by **block timestamp**: `valid_after` is inclusive, `valid_before` is exclusive. A not-yet-valid transaction is held and promoted automatically when its window opens; an expired one is dropped.
+
+Nodes also apply a local acceptance policy: `valid_after` may be at most **120 seconds** in the future, and `valid_before` must be more than **3 seconds** away, or the transaction is refused at submission.
+
+## When something goes wrong
+
+There are two terminal on-chain outcomes to plan for.
+
+**Rejected before inclusion.** You get an error or the transaction is dropped; no gas is charged and the nonce does not move. Examples include a bad signature, wrong chain id, malformed batch, `gas_limit` outside the allowed range, invalid acceptance window, self-sponsorship, or a delegated key already known to be revoked or out of scope.
+
+**Included and failed.** If a user call reverts or runs out of gas, all user-call effects and any inline grant roll back, but the receipt reports failure, the declared `gas_limit` is charged, and the nonce advances. For a limited key, the self-paid gas fee counts against its limit while rolled-back call value does not. A successful transaction-level `token_fee` remains paid.
+
+!!! tip "Passing submission does not guarantee success"
+    Delegated-key permission is checked again at execution against state that may have shifted since submission. The key could be revoked or its limit consumed in between. Such a transaction lands as a failed receipt charging the full `gas_limit`, so do not assume a permission problem always fails for free.
+
+## For contracts and indexers receiving AA calls
+
+- **The account remains the execution identity.** `tx.origin` and each top-level user call's `msg.sender` are the account, not the delegated key or sponsor.
+- **Receipts, logs, and block headers retain their standard shapes.** Transaction entries are tagged with type `0x76`; an indexer that decodes transaction bodies must add the `0x76` schema and its batch of calls, while a receipt/log-only indexer needs no special AA path.
+- **A contract can see which key is acting.** The keychain precompile reports the key identifier that signed the current AA — zero meaning root — and the account it acts for. The `SignatureVerifier` precompile can also verify a P256/WebAuthn signature or a keychain-wrapped signature from an active key.
+
+## Contract creation
+
+CREATE is supported only when all of these are true: it is the first user call, the AA is root-signed and self-paid, and there is no inline `key_authorization`. A delegated-key CREATE, sponsored top-level CREATE, later CREATE, or CREATE combined with an inline grant is rejected.
 
 ## Limits
 
-- `nonce_key` must be `0` — parallel-nonce lanes are reserved but not yet enabled.
-- No EIP-7702 (set-code) or EIP-4844 (blob) transactions — both are rejected at the RPC layer and at block import.
-- Max encoded transaction size: 512 KiB. Max 64 calls per batch.
-- Only the **first** call in a batch may be a contract creation (`CREATE`), and only the **root key** can create contracts — a keychain-signed batch containing `CREATE` is rejected. Inline key authorization and `CREATE` cannot appear in the same transaction.
-- Admin keys must always be unrestricted — no scope, spend limit, or expiry.
-- Spend-limit accounting includes gas the key's account pays for itself, not just value transferred.
-- A revoked key can never be re-authorized, and an already-authorized `keyId` (even if expired but not revoked) can't be reused.
-- A sponsored or passkey-derived account can start out completely unfunded — sponsorship covers its very first transaction.
-- Gas cost includes normal EVM execution cost plus AA-specific surcharges for signature verification (P256, WebAuthn) and keychain checks; underfunding a transaction below its required base cost causes it to be rejected outright at submission, with no receipt, no gas charged, and no nonce change.
-
-## Current status
-
-Implemented today: the `0x76` envelope and batching, the root/admin/access key hierarchy, all three signature schemes with protocol-enforced verification, gas sponsorship, validity windows, scope and spend-limit enforcement, and full RPC/pool/miner/import support — live from genesis, with no feature flag or activation height gating it. Deferred to a future iteration: EIP-7702/EIP-4844 support and parallel-nonce lanes (`nonce_key ≠ 0`), both reserved but currently rejected.
+| Item | Value |
+|---|---|
+| Transaction type | `0x76` |
+| Calls per batch | 1–64 |
+| Max encoded size | 128 KiB |
+| Max declared `gas_limit` | 16,777,216 |
+| Scopes per authorization | 32 inline, 256 direct |
+| Selectors per scope | 64 |
+| `nonce_key` | must be `0` |
+| Local `valid_after` / `valid_before` policy | at most 120 s ahead / more than 3 s away |
+| Contract creation | first call, root-signed, self-paid, no inline grant |
+| Unsupported Ethereum transaction types | EIP-4844 blobs, EIP-7702 set-code |
