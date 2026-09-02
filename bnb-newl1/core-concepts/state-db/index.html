@@ -12,13 +12,13 @@
         <meta name="author" content="BNB Chain">
       
       
-        <link rel="canonical" href="https://fynnss.github.io/bnb-chain.github.io/bnb-newl1/developers/transaction-lifecycle/">
+        <link rel="canonical" href="https://fynnss.github.io/bnb-chain.github.io/bnb-newl1/core-concepts/state-db/">
       
       
-        <link rel="prev" href="../transaction-types/">
+        <link rel="prev" href="../async-execution/">
       
       
-        <link rel="next" href="../examples/">
+        <link rel="next" href="../multi-lane/">
       
       
         
@@ -29,7 +29,7 @@
     
     
     
-        <title>Transaction Lifecycle - BNB NewL1</title>
+        <title>State DB - BNB NewL1</title>
     
 
     
@@ -146,7 +146,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#transaction-lifecycle" class="md-skip">
+        <a href="#state-db" class="md-skip">
           Skip to content
         </a>
       
@@ -969,8 +969,6 @@
                 
   
   
-    
-  
   
   
     
@@ -1000,11 +998,11 @@
     
       
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
         
           
           <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
@@ -1025,7 +1023,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1043,7 +1041,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../quick-guide/" class="md-nav__link">
+      <a href="../../developers/quick-guide/" class="md-nav__link">
         
   
   
@@ -1071,7 +1069,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../transaction-types/" class="md-nav__link">
+      <a href="../../developers/transaction-types/" class="md-nav__link">
         
   
   
@@ -1096,37 +1094,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Transaction Lifecycle
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../developers/transaction-lifecycle/" class="md-nav__link">
         
   
   
@@ -1142,159 +1113,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#1-submit-through-a-gateway" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Submit through a Gateway
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-pool-states" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Pool states
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="2. Pool states">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#newl1_gettransactionstatus" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        newl1_getTransactionStatus
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#newl1_debugsendersnapshot" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        newl1_debugSenderSnapshot
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#default-pool-rules" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Default pool rules
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-receive-a-pre-confirmation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Receive a pre-confirmation
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3. Receive a pre-confirmation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#subscribe-over-websocket" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Subscribe over WebSocket
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#one-shot-lookup" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        One-shot lookup
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-order-execute-and-finalize" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Order, execute, and finalize
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-leave-the-local-pool" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Leave the local pool
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#recommended-tracking-flow" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Recommended tracking flow
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1307,7 +1125,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../examples/" class="md-nav__link">
+      <a href="../../developers/examples/" class="md-nav__link">
         
   
   
@@ -1361,7 +1179,7 @@
   
   
   
-    <a href="../json_rpc/json-rpc-endpoint/" class="md-nav__link">
+    <a href="../../developers/json_rpc/json-rpc-endpoint/" class="md-nav__link">
       
   
   
@@ -1400,6 +1218,8 @@
                 
   
   
+    
+  
   
   
     
@@ -1433,11 +1253,11 @@
     
       
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" checked>
         
           
           <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
@@ -1458,7 +1278,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1476,7 +1296,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../core-concepts/consensus/" class="md-nav__link">
+      <a href="../consensus/" class="md-nav__link">
         
   
   
@@ -1504,7 +1324,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../core-concepts/async-execution/" class="md-nav__link">
+      <a href="../async-execution/" class="md-nav__link">
         
   
   
@@ -1529,10 +1349,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../core-concepts/state-db/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    State DB
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1548,6 +1395,153 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-commitment-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the commitment works
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How the commitment works">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#entries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-entry-to-accumulator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        From entry to accumulator
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-header-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The header field
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#applying-a-block" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Applying a block
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#genesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Genesis
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#forks-reorgs-and-restarts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Forks, reorgs, and restarts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-cumulative-matters-for-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why cumulative matters for validation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storage-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storage layout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What changes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current status
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1560,7 +1554,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../core-concepts/multi-lane/" class="md-nav__link">
+      <a href="../multi-lane/" class="md-nav__link">
         
   
   
@@ -1588,7 +1582,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../core-concepts/tx-preconfirmation/" class="md-nav__link">
+      <a href="../tx-preconfirmation/" class="md-nav__link">
         
   
   
@@ -1616,7 +1610,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../core-concepts/account-abstraction/" class="md-nav__link">
+      <a href="../account-abstraction/" class="md-nav__link">
         
   
   
@@ -1644,7 +1638,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../core-concepts/privacy/" class="md-nav__link">
+      <a href="../privacy/" class="md-nav__link">
         
   
   
@@ -2142,33 +2136,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-submit-through-a-gateway" class="md-nav__link">
+  <a href="#how-the-commitment-works" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Submit through a Gateway
+        How the commitment works
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-pool-states" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Pool states
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="2. Pool states">
+    <nav class="md-nav" aria-label="How the commitment works">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#newl1_gettransactionstatus" class="md-nav__link">
+  <a href="#entries" class="md-nav__link">
     <span class="md-ellipsis">
       
-        newl1_getTransactionStatus
+        Entries
       
     </span>
   </a>
@@ -2176,10 +2159,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#newl1_debugsendersnapshot" class="md-nav__link">
+  <a href="#from-entry-to-accumulator" class="md-nav__link">
     <span class="md-ellipsis">
       
-        newl1_debugSenderSnapshot
+        From entry to accumulator
       
     </span>
   </a>
@@ -2187,10 +2170,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#default-pool-rules" class="md-nav__link">
+  <a href="#the-header-field" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Default pool rules
+        The header field
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#applying-a-block" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Applying a block
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#genesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Genesis
       
     </span>
   </a>
@@ -2203,49 +2208,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-receive-a-pre-confirmation" class="md-nav__link">
+  <a href="#forks-reorgs-and-restarts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Receive a pre-confirmation
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3. Receive a pre-confirmation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#subscribe-over-websocket" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Subscribe over WebSocket
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#one-shot-lookup" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        One-shot lookup
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-order-execute-and-finalize" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Order, execute, and finalize
+        Forks, reorgs, and restarts
       
     </span>
   </a>
@@ -2253,10 +2219,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-leave-the-local-pool" class="md-nav__link">
+  <a href="#why-cumulative-matters-for-validation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Leave the local pool
+        Why cumulative matters for validation
       
     </span>
   </a>
@@ -2264,10 +2230,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#recommended-tracking-flow" class="md-nav__link">
+  <a href="#storage-layout" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Recommended tracking flow
+        Storage layout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What changes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current status
       
     </span>
   </a>
@@ -2335,10 +2323,10 @@
     
     
       <li class="md-path__item">
-        <a href="../quick-guide/" class="md-path__link">
+        <a href="../consensus/" class="md-path__link">
           
   <span class="md-ellipsis">
-    Developers
+    Core Concepts
   </span>
 
         </a>
@@ -2357,7 +2345,7 @@
 
 
   
-    <a href="https://github.com/bnb-chain/bnb-chain.github.io/edit/main/docs/bnb-newl1/developers/transaction-lifecycle.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/bnb-chain/bnb-chain.github.io/edit/main/docs/bnb-newl1/core-concepts/state-db.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -2365,233 +2353,146 @@
   
 
 
-<div><h1 id="transaction-lifecycle">Transaction Lifecycle<a class="headerlink" href="#transaction-lifecycle" title="Link to this section">¶</a></h1>
-<p>A transaction progresses from submission to pool admission, optional pre-confirmation, ordering, execution, and finality. Each milestone has a specific RPC signal; this page explains which one a dApp should use.</p>
-<h2 id="1-submit-through-a-gateway">1. Submit through a Gateway<a class="headerlink" href="#1-submit-through-a-gateway" title="Link to this section">¶</a></h2>
-<p>A <strong>Gateway</strong> is a full node used as a transaction-submission edge. A dApp sends an ordinary signed transaction to its standard JSON-RPC endpoint; there is no Gateway-specific transaction format or client RPC.</p>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">"</span><span class="nv">$RPC</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--data<span class="w"> </span><span class="s1">'{"jsonrpc":"2.0","method":"eth_sendRawTransaction","params":["0xSIGNED_TX"],"id":1}'</span>
-</code></pre></div>
-<p>After accepting the transaction, the Gateway keeps custody of it and sends replicas directly to the upcoming block producers selected from the validator schedule. A producer may pack its replica, but does not forward it again. This single-hop routing replaces global mempool broadcast.</p>
-<p>From a dApp’s perspective, the Gateway is simply the RPC endpoint responsible for delivery:</p>
-<ul>
-<li>Submit once with <code>eth_sendRawTransaction</code> and save the returned hash.</li>
-<li>Use the same transaction-status and chain RPCs described below.</li>
-<li>Avoid submitting the same transaction to several Gateways by default. Each accepting Gateway becomes an independent custodian, creating duplicate delivery streams rather than making the transaction inherently faster.</li>
-</ul>
-<p>The current client exposes no Gateway-specific auction or ordering API. Gateway describes the node’s routing role, not an additional on-chain transaction stage.</p>
-<p>A transaction that fails validation is rejected immediately. It never enters the pool, and the submission RPC returns the rejection reason.</p>
-<h2 id="2-pool-states">2. Pool states<a class="headerlink" href="#2-pool-states" title="Link to this section">¶</a></h2>
-<p>Once accepted, the transaction enters the receiving node’s local pool. Its sender nonce determines when it becomes eligible for packing.</p>
+<div><h1 id="state-db">State DB<a class="headerlink" href="#state-db" title="Link to this section">¶</a></h1>
+<p>BNB NewL1 keeps world state in a <strong>flat key-value store</strong> and commits it with a <strong>cumulative lattice hash (LtHash)</strong>: every live account and storage slot is hashed into a fixed-size vector, and the commitment is the sum of them all. The header still carries a 32-byte <code>state_root</code>, so nothing about the field’s shape changes — what changes is how that value is produced, what it costs to produce, and what can be proven from it.</p>
+<p>The property that shapes everything downstream is that the commitment is <strong>updated, not rebuilt</strong>: changing one account costs the same whether the chain holds a thousand accounts or a billion, and the changes in a block can be folded in from any thread, in any order. That is what lets the commitment ride along with <a href="../async-execution/">async execution</a> instead of competing with it for the execution budget.</p>
 <table>
 <thead>
 <tr>
-<th>Pool state</th>
-<th>Meaning</th>
+<th></th>
+<th></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>pending</code></td>
-<td>The node has accepted the transaction and is completing admission. This state is normally brief.</td>
+<td>Committed entries</td>
+<td>Accounts (<code>nonce</code>, <code>balance</code>, <code>code_hash</code>) and non-zero storage slots</td>
 </tr>
 <tr>
-<td><code>parked</code></td>
-<td>The transaction cannot be packed yet, usually because of a nonce gap, a future validity window, or insufficient available balance.</td>
+<td>Entry hash</td>
+<td><code>BLAKE3</code> in extendable-output mode → 2048 bytes = 1024 × <code>u16</code></td>
 </tr>
 <tr>
-<td><code>ready</code></td>
-<td>The transaction is contiguous with the sender’s ordered nonce and currently eligible for packing.</td>
+<td>Accumulator</td>
+<td>Element-wise wrapping <code>u16</code> sum of all live entry hashes (2 KB)</td>
 </tr>
 <tr>
-<td><code>emitted</code></td>
-<td>The transaction is in a streamed sub-block slice. This is still a local-pool state; use the pre-confirmation API for the signed event.</td>
+<td>Header <code>state_root</code></td>
+<td><code>BLAKE3(accumulator)</code> → 32 bytes</td>
 </tr>
 <tr>
-<td><code>ordered</code></td>
-<td>The transaction is in a block known to this node. It remains tracked until finality allows pool cleanup.</td>
+<td>Cost of one state change</td>
+<td>O(1), independent of state size</td>
 </tr>
 <tr>
-<td><code>evicted</code> / <code>removed</code> / <code>rejected</code></td>
-<td>The transaction left the local pool or failed admission. Check <code>reason</code> for the terminal cause.</td>
-</tr>
-<tr>
-<td><code>unknown</code></td>
-<td>This node has no retained information. It does not prove that the network never saw the transaction.</td>
+<td>Canonical on-disk state</td>
+<td>Plain (un-hashed) keys</td>
 </tr>
 </tbody>
 </table>
-<p>A parked transaction can become ready when its nonce gap is filled, its validity window opens, or new funds become available. A reorganization can also move an ordered transaction back into an eligible pool state.</p>
-<h3 id="newl1_gettransactionstatus"><code>newl1_getTransactionStatus</code><a class="headerlink" href="#newl1_gettransactionstatus" title="Link to this section">¶</a></h3>
-<p>Returns this node’s retained pool-plane view of one hash:</p>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">"</span><span class="nv">$RPC</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--data<span class="w"> </span><span class="s1">'{"jsonrpc":"2.0","method":"newl1_getTransactionStatus","params":["0x…"],"id":1}'</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"emitted"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"reason"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"sender"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x…"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"nonce"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x2a"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"ageMs"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xc"</span>
-<span class="p">}</span>
-</code></pre></div>
-<p><code>reason</code> is set for terminal states such as <code>rejected</code>, <code>evicted</code>, and <code>removed</code>. Common values include <code>nonce_gap</code>, <code>replacement_underpriced</code>, <code>ttl</code>, <code>invalid</code>, <code>replaced</code>, and <code>dual_confirmed</code>. <code>sender</code>, <code>nonce</code>, and <code>ageMs</code> are <code>null</code> when the state is <code>unknown</code>.</p>
-<p>This result is node-local. With no global mempool, another node may return a different state or <code>unknown</code>. <code>unknown</code> also covers a result that aged out of the bounded status history; it is not a negative network-wide outcome.</p>
-<h3 id="newl1_debugsendersnapshot"><code>newl1_debugSenderSnapshot</code><a class="headerlink" href="#newl1_debugsendersnapshot" title="Link to this section">¶</a></h3>
-<p>Use the debug snapshot when you need to explain why one sender’s transactions are not progressing:</p>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">"</span><span class="nv">$RPC</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--data<span class="w"> </span><span class="s1">'{"jsonrpc":"2.0","method":"newl1_debugSenderSnapshot","params":["0xSENDER"],"id":1}'</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">"sender"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x…"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"baseAtExecutedTip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x28"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"orderedNonce"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x2a"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"entries"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="p">{</span><span class="nt">"nonce"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x2a"</span><span class="p">,</span><span class="w"> </span><span class="nt">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x…"</span><span class="p">,</span><span class="w"> </span><span class="nt">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"emitted"</span><span class="p">,</span><span class="w"> </span><span class="nt">"ageMs"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xc"</span><span class="p">}</span>
-<span class="w">  </span><span class="p">]</span>
-<span class="p">}</span>
-</code></pre></div>
-<p><code>baseAtExecutedTip</code> is the sender nonce at the executed tip; <code>orderedNonce</code> includes canonical transactions that may not have executed yet. Entries are returned in nonce order.</p>
-<h3 id="default-pool-rules">Default pool rules<a class="headerlink" href="#default-pool-rules" title="Link to this section">¶</a></h3>
-<p>These are node defaults; operators can change them.</p>
-<ul>
-<li>Future nonces may be at most 256 ahead of the current sender nonce.</li>
-<li>A replacement must increase the effective tip by at least 10%, with a strict minimum increase of 1 wei.</li>
-<li>A forwarded replica cannot replace a transaction received directly from a client.</li>
-<li>Pool TTL defaults to 3 hours and the maintenance scan runs every 20 seconds.</li>
-</ul>
-<h2 id="3-receive-a-pre-confirmation">3. Receive a pre-confirmation<a class="headerlink" href="#3-receive-a-pre-confirmation" title="Link to this section">¶</a></h2>
-<p>During its turn, the current block producer repeatedly packs ready transactions into signed sub-block slices. When a slice containing your transaction is broadcast, observers report it as <code>preconfirmed</code>.</p>
-<p>A pre-confirmation provides a fast ordering and inclusion signal, not an execution result or finality guarantee. It may later become:</p>
-<ul>
-<li><code>aborted</code> if the producer withdraws its stream; or</li>
-<li><code>superseded</code> if another block takes the height.</li>
-</ul>
-<p>Treat either event as revocation and continue tracking the transaction. Do not release funds or settle irreversible work from a pre-confirmation alone.</p>
-<h3 id="subscribe-over-websocket">Subscribe over WebSocket<a class="headerlink" href="#subscribe-over-websocket" title="Link to this section">¶</a></h3>
-<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">"jsonrpc"</span><span class="p">:</span><span class="s2">"2.0"</span><span class="p">,</span><span class="nt">"method"</span><span class="p">:</span><span class="s2">"newl1_subscribePreconfirmations"</span><span class="p">,</span><span class="nt">"params"</span><span class="p">:[{</span><span class="nt">"txHash"</span><span class="p">:</span><span class="s2">"0x…"</span><span class="p">}],</span><span class="nt">"id"</span><span class="p">:</span><span class="mi">1</span><span class="p">}</span>
-</code></pre></div>
-<p>The filter is optional; <code>params: []</code> subscribes to every transaction. Notifications use method <code>newl1_preconfirmation</code> and contain:</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">"txHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x…"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"blockNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x961"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"parentHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x…"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"subBlockIndex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x2"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"subBlockHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x…"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"position"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x7"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"leader"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x…"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"timestampMs"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x…"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"preconfirmed"</span>
-<span class="p">}</span>
-</code></pre></div>
-<p><code>status</code> is <code>preconfirmed</code>, <code>aborted</code>, or <code>superseded</code>. If the subscriber falls behind, it receives <code>{"status":"lagged","dropped":N}</code>; perform a one-shot lookup to resynchronize.</p>
-<h3 id="one-shot-lookup">One-shot lookup<a class="headerlink" href="#one-shot-lookup" title="Link to this section">¶</a></h3>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">"</span><span class="nv">$RPC</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--data<span class="w"> </span><span class="s1">'{"jsonrpc":"2.0","method":"newl1_getTransactionPreconfirmation","params":["0x…"],"id":1}'</span>
-</code></pre></div>
-<p>The cache retains at most 8,192 events spanning at most 80 blocks. A <code>null</code> result therefore means “not in this node’s current cache,” not “never pre-confirmed.”</p>
-<p><code>newl1_subscribeSubBlocks</code> exposes the raw signed slices for clients that verify the producer signature and transaction root themselves. The producer explicitly feeds its own published slices to local subscribers, so these subscriptions also work against the producer’s RPC and on a single-node devnet.</p>
-<p>See <a href="../../core-concepts/tx-preconfirmation/">Transaction Pre-confirmation</a> for the verification flow.</p>
-<h2 id="4-order-execute-and-finalize">4. Order, execute, and finalize<a class="headerlink" href="#4-order-execute-and-finalize" title="Link to this section">¶</a></h2>
-<p>After the producer seals and proposes the block, ordering, execution, and their finality signals advance on separate paths:</p>
+<h2 id="how-the-commitment-works">How the commitment works<a class="headerlink" href="#how-the-commitment-works" title="Link to this section">¶</a></h2>
+<h3 id="entries">Entries<a class="headerlink" href="#entries" title="Link to this section">¶</a></h3>
+<p>Every live piece of state is one entry, encoded with a frozen, consensus-critical layout:</p>
 <table>
 <thead>
 <tr>
-<th>Milestone</th>
-<th>What it proves</th>
-<th>How to observe it</th>
+<th>Entry</th>
+<th>Key</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>Ordered</strong></td>
-<td>The transaction has a fixed position in an imported canonical block. It may still be reorganized before finality.</td>
-<td><code>eth_getTransactionByHash</code> returns non-null <code>blockHash</code> and <code>blockNumber</code>.</td>
+<td>Account</td>
+<td><code>0x00 ‖ address</code> (21 B)</td>
+<td><code>nonce</code> (8 B LE) ‖ <code>balance</code> (32 B LE) ‖ <code>code_hash</code> (32 B)</td>
 </tr>
 <tr>
-<td><strong>Executed</strong></td>
-<td>The EVM has run the transaction and produced its receipt and state changes.</td>
-<td><code>eth_getTransactionReceipt</code></td>
-</tr>
-<tr>
-<td><strong>Order-finalized</strong></td>
-<td>Two-thirds of validators have voted for the containing block, making its ordering irreversible.</td>
-<td>Compare the transaction’s block number with <code>finalizedNumber</code> from <code>newl1_subscribeNewHeads</code>.</td>
-</tr>
-<tr>
-<td><strong>Execution-finalized</strong></td>
-<td>The execution result has been committed in a later block, and that committing block is finalized.</td>
-<td>Wait until the transaction’s block number is at or below <code>eth_blockNumber("finalized")</code>.</td>
+<td>Storage slot</td>
+<td><code>0x01 ‖ address ‖ slot</code> (53 B)</td>
+<td><code>value</code> (32 B BE)</td>
 </tr>
 </tbody>
 </table>
-<p><code>eth_getTransactionByHash</code> also returns transactions still held in the queried node’s local pool. A non-null result proves ordering only when <code>blockHash</code> and <code>blockNumber</code> are populated.</p>
-<p>Execution is asynchronous, so an ordered transaction may not have a receipt yet:</p>
+<p>Three encoding decisions are worth understanding, because each one is load-bearing:</p>
 <ul>
-<li><code>eth_getTransactionReceipt</code> returns <strong><code>-38004</code></strong> when the transaction is ordered but not yet executed. Retry.</li>
-<li>It returns <strong><code>null</code></strong> when the hash is unknown. This is not an execution-lag signal.</li>
+<li><strong>The leading kind byte is domain separation, not decoration.</strong> Without it, an attacker could choose a 53-byte storage key that re-encodes the bytes of a 21-byte account key, and produce two different states with the same commitment.</li>
+<li><strong>Bytecode is committed by hash, not by content.</strong> Only <code>code_hash</code> is part of an account entry; the code itself is stored content-addressed alongside, so identical bytecode deployed a thousand times is stored once and still commits distinctly per account.</li>
+<li><strong>A slot holding zero is not an entry.</strong> The EVM cannot distinguish an unset slot from an explicitly-zeroed one, so committing them separately would let the same observable state have two different commitments.</li>
 </ul>
-<p>BNB NewL1 extends <code>eth_blockNumber</code> with an optional tag parameter:</p>
+<h3 id="from-entry-to-accumulator">From entry to accumulator<a class="headerlink" href="#from-entry-to-accumulator" title="Link to this section">¶</a></h3>
+<p>Each entry is hashed as <code>BLAKE3(domain_tag ‖ 0x00 ‖ key ‖ 0x00 ‖ value)</code> in extendable-output mode and read out as <strong>1024 little-endian <code>u16</code> elements</strong>. That vector is the entry’s lattice hash. The domain tag and the null separators are part of chain identity — they make it impossible for a different <code>(domain, key, value)</code> triple to concatenate into the same input.</p>
+<p>The <strong>world accumulator</strong> is the element-wise wrapping <code>u16</code> sum of the lattice hashes of every live entry. Empty state is the all-zero vector. Three properties follow, and they are the whole point:</p>
+<ul>
+<li><strong>Homomorphic.</strong> Adding an entry is wrapping addition (<code>mix_in</code>); removing it is wrapping subtraction (<code>mix_out</code>). They are exact inverses, so updating one entry is <code>mix_out(old) + mix_in(new)</code> — <strong>O(1) regardless of how large the state is</strong>, and reversible: a change can be backed out exactly, given the entry it came from.</li>
+<li><strong>Commutative.</strong> The order in which a block’s state changes are folded in does not affect the result, so a block’s diff can be hashed in parallel shards and reduced without locks — which is what keeps the commitment out of the way of parallel execution.</li>
+<li><strong>Bit-identical everywhere.</strong> Plain <code>wrapping_add</code>/<code>wrapping_sub</code> over <code>[u16; 1024]</code> — no SIMD intrinsics, no floating point, no architecture-dependent behaviour. Every validator on every platform computes the same bytes, which is a hard requirement for something consensus votes on.</li>
+</ul>
+<p>Security rests on the Short Integer Solution problem: forging a second state set with the same accumulator means finding a short lattice vector that sums to zero. The 1024 × <code>u16</code> dimension targets ~128-bit security, following Bellare–Micciancio (1997) and the same construction Solana adopted in SIMD-0215.</p>
+<h3 id="the-header-field">The header field<a class="headerlink" href="#the-header-field" title="Link to this section">¶</a></h3>
+<p>The 2048-byte accumulator is compressed to the header’s 32-byte <code>state_root</code> as <code>BLAKE3(accumulator_bytes)</code>. Nodes keep the full accumulator; the chain publishes its digest, so the header stays the same size and shape as any EVM chain’s.</p>
+<h3 id="applying-a-block">Applying a block<a class="headerlink" href="#applying-a-block" title="Link to this section">¶</a></h3>
+<p>Execution hands the accumulator a <strong>diff</strong>, never a full state scan. When the EVM finishes a block, its post-execution bundle is projected into three kinds of change — account created or updated, account deleted, storage slot written — and each one folds into the parent block’s accumulator. The result is the block’s post-state commitment, published in its <a href="../async-execution/#how-it-works"><code>ExecutionCommitment</code></a>.</p>
+<p>Because the accumulator is bit-identical only when its inputs are, the projection has to be exact about cases where “changed” is subtle:</p>
+<ul>
+<li><strong>No-op writes are skipped.</strong> A storage write whose old and new value are equal contributes nothing; folding it in as a change would be harmless arithmetically but is skipped so the work scales with real changes.</li>
+<li><strong><code>SELFDESTRUCT</code> under EIP-6780</strong> only removes accounts created in the same transaction, whose pre-state storage is empty by construction — so there are no stale slot entries to subtract. A <code>SELFDESTRUCT</code> against a pre-existing contract zeroes its balance and leaves the account in place, which is an ordinary account update.</li>
+<li><strong>EIP-161 empty-account cleanup</strong> deletes an account that has no storage, so a single account-entry subtraction is the whole change.</li>
+</ul>
+<h3 id="genesis">Genesis<a class="headerlink" href="#genesis" title="Link to this section">¶</a></h3>
+<p>The genesis accumulator is folded over the chainspec’s <code>alloc</code> under the same rules — every listed account included unconditionally, zero-valued slots excluded — and its digest becomes the genesis header’s <code>state_root</code>. There is no fork-activation gate: the chain has used one commitment scheme since block 0.</p>
+<h2 id="forks-reorgs-and-restarts">Forks, reorgs, and restarts<a class="headerlink" href="#forks-reorgs-and-restarts" title="Link to this section">¶</a></h2>
+<p>Accumulators are tracked <strong>per block hash</strong>, not per height. A node keeps the accumulators for the last 256 blocks in memory, so competing branches each carry their own state commitment simultaneously.</p>
+<p>This makes reorg handling structural rather than expensive. Switching to a sibling branch is a map lookup of that branch’s parent accumulator, not a state rewind and re-hash; and because <code>mix_in</code> and <code>mix_out</code> are exact inverses, backing out a block’s changes is subtraction rather than recomputation. Below that window, only finalized accumulators matter, and those are on disk.</p>
+<p>Two guards are worth knowing about if you run a node:</p>
+<ul>
+<li><strong>Genesis mismatch is fatal at boot.</strong> If the accumulator stored in the datadir disagrees with the one computed from the chainspec — an operator pointing an existing datadir at a different chain, or an edited <code>alloc</code> — the node refuses to start rather than silently forking its view from its peers.</li>
+<li><strong>Restart replays a short window.</strong> On boot the node reseeds from the persisted finalized tip and re-executes the trailing persisted blocks, so it needs those blocks’ parent accumulators retained; the restored window is sized to the maximum execution lag.</li>
+</ul>
+<h2 id="why-cumulative-matters-for-validation">Why cumulative matters for validation<a class="headerlink" href="#why-cumulative-matters-for-validation" title="Link to this section">¶</a></h2>
+<p>Because the accumulator is a running sum over all live state, it is not a per-block checksum — every block’s commitment depends on all state that came before it. A single divergent entry anywhere poisons that block’s commitment <em>and every descendant’s</em>, and no subsequent block can quietly repair it.</p>
+<p>That is what makes <a href="../async-execution/#correctness-enforcement">execution-result disputes decidable</a> in a chain where validators vote on ordering rather than on someone else’s execution result: a validator that executes a block locally and computes a different accumulator abstains, and a wrong result can never gather the vote quorum it needs to finalize. Divergence detection itself is a 32-byte comparison — no tree walk, no per-account reconciliation, and it happens within a bounded number of blocks.</p>
+<h2 id="storage-layout">Storage layout<a class="headerlink" href="#storage-layout" title="Link to this section">¶</a></h2>
+<p>The commitment is defined over <strong>plain</strong> keys, so plain state — not keccak-hashed state — is the canonical on-disk representation. Hashing the keys would discard the address preimages, and those preimages are what state sync serves and what an audit re-derives the accumulator from: any node can walk its own plain state, recompute the accumulator from scratch, and compare it against what the chain published.</p>
+<p>State is split across three stores, each matched to its write pattern:</p>
 <table>
 <thead>
 <tr>
-<th>Call</th>
-<th>Result</th>
+<th>Store</th>
+<th>Holds</th>
+<th>Why</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>eth_blockNumber()</code> / <code>eth_blockNumber("latest")</code> / <code>eth_blockNumber("pending")</code></td>
-<td>Executed tip</td>
+<td><strong>MDBX</strong></td>
+<td>Plain account and storage state, LtHash accumulators, consensus snapshots</td>
+<td>Canonical state; transactional reads on the execution path</td>
 </tr>
 <tr>
-<td><code>eth_blockNumber("safe")</code></td>
-<td>Latest published execution commitment at or before the justified block</td>
+<td><strong>Static files</strong></td>
+<td>Headers, transactions, receipts, senders, account/storage changesets</td>
+<td>Append-only, sequential writes with no index to maintain</td>
 </tr>
 <tr>
-<td><code>eth_blockNumber("finalized")</code></td>
-<td>Latest published execution commitment at or before the FFG-finalized block</td>
-</tr>
-<tr>
-<td><code>eth_blockNumber("earliest")</code></td>
-<td>Block 0</td>
+<td><strong>RocksDB</strong></td>
+<td>History indices, transaction-hash lookup</td>
+<td>Random-keyed writes that degrade a B-tree over time; an LSM absorbs them</td>
 </tr>
 </tbody>
 </table>
-<p>The <code>safe</code> and <code>finalized</code> values are commitment-backed execution heights, not the raw consensus pointers. For the raw ordered, justified, and finalized heights, subscribe to <code>newl1_subscribeNewHeads</code>; standard <code>eth_subscribe("newHeads")</code> follows the executed-block feed instead.</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">"jsonrpc"</span><span class="p">:</span><span class="s2">"2.0"</span><span class="p">,</span><span class="nt">"method"</span><span class="p">:</span><span class="s2">"newl1_subscribeNewHeads"</span><span class="p">,</span><span class="nt">"params"</span><span class="p">:[],</span><span class="nt">"id"</span><span class="p">:</span><span class="mi">1</span><span class="p">}</span>
-</code></pre></div>
-<p>Each <code>newl1_newHeads</code> notification carries:</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x…"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x961"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"justifiedHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x…"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"justifiedNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x95f"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"finalizedHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x…"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"finalizedNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x95e"</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>See <a href="../../core-concepts/async-execution/">Async Execution</a> for how the ordered, executed, and committed tips relate.</p>
-<p>For anything that depends only on transaction order, order finality is sufficient. For anything that depends on execution success or state changes, wait for execution finality and re-check that the canonical block hash still matches the transaction’s <code>blockHash</code>.</p>
-<h2 id="5-leave-the-local-pool">5. Leave the local pool<a class="headerlink" href="#5-leave-the-local-pool" title="Link to this section">¶</a></h2>
-<p>A transaction is removed from a node’s pool when any of the following happens:</p>
+<p>Finalized accumulators are archived one 2 KB row per block, written in the same transaction as the block, its receipts, and its state — roughly 0.9 GB per day at a 200 ms block interval. They are archive data on the same footing as receipts and state history, and are retained in full today; pruning them on the same retention distance as receipts is a scheduled follow-up.</p>
+<h2 id="what-changes">What changes<a class="headerlink" href="#what-changes" title="Link to this section">¶</a></h2>
+<p><strong>If you write contracts or dApps</strong>, nothing does. Contracts, opcodes, gas costs, and ordinary state reads (<code>eth_getBalance</code>, <code>eth_getStorageAt</code>, <code>eth_call</code>) behave exactly as on any EVM chain, and <code>stateRoot</code> is still a 32-byte field on the header.</p>
+<p><strong>If you build bridges, light clients, or anything proof-based</strong>, <code>eth_getProof</code> always rejects with <code>-32004</code>. The commitment is a sum, not a tree, so there is no inclusion path to hand over as a proof: it can attest that a <em>whole state</em> is what it claims to be, but not that one account belongs to it. Until an accumulator-native inclusion proof ships, verification has to rest on the chain’s <a href="../consensus/">BLS finality votes</a> and full-node responses rather than on a self-verifying state proof.</p>
+<p><strong>If you run infrastructure</strong>, two operational differences matter:</p>
 <ul>
-<li>both execution and finality have advanced far enough to clean it up (<code>reason: "dual_confirmed"</code>);</li>
-<li>another transaction with the same sender and nonce replaces it with a sufficiently higher fee;</li>
-<li>a chain-state change makes its nonce or balance invalid; or</li>
-<li>it exceeds the local pool TTL.</li>
+<li><strong>Snap sync does not exist.</strong> It replicates a hashed state tree, and there isn’t one to replicate. New nodes backfill over the chain’s own P2P protocol; a checkpoint-accumulator state sync is planned to replace it.</li>
+<li><strong>Whole-state debug reads reject with <code>-32004</code></strong> — <code>debug_dumpBlock</code>, <code>debug_accountRange</code>, <code>debug_storageRangeAt</code>, <code>debug_stateSize</code>, <code>debug_intermediateRoots</code>. They fail with an explicit “not supported here” rather than <code>-32601</code>, so clients don’t waste a retry against another endpoint. Per-block and per-account reads are unaffected.</li>
 </ul>
-<p>Replacement and eviction are local to the nodes that hold the transaction. A local <code>evicted</code>, <code>removed</code>, or <code>unknown</code> result is therefore not a network-wide failure signal; check canonical inclusion before deciding whether to resubmit.</p>
-<h2 id="recommended-tracking-flow">Recommended tracking flow<a class="headerlink" href="#recommended-tracking-flow" title="Link to this section">¶</a></h2>
-<ol>
-<li>Save the hash returned by <code>eth_sendRawTransaction</code>.</li>
-<li>Optionally watch pre-confirmations for a low-latency, revocable signal.</li>
-<li>Poll <code>eth_getTransactionByHash</code> until the transaction is ordered.</li>
-<li>Poll <code>eth_getTransactionReceipt</code>; retry <code>-38004</code> while execution catches up.</li>
-<li>Wait for the transaction’s block to fall at or below <code>eth_blockNumber("finalized")</code> before relying irreversibly on its execution result.</li>
-<li>Use <code>newl1_getTransactionStatus</code> only to explain the local pool path, not as the source of chain finality.</li>
-</ol>
-<p>For runnable commands that follow this sequence, see <a href="../examples/#follow-one-transaction-through-every-stage">Examples</a>.</p></div>
+<p>See <a href="../../developers/json_rpc/json-rpc-endpoint/">JSON-RPC Endpoint</a> for the complete RPC-surface differences.</p>
+<h2 id="current-status">Current status<a class="headerlink" href="#current-status" title="Link to this section">¶</a></h2>
+<p>The LtHash commitment and the plain-state storage layout are live on the devnet, from genesis onward. Three follow-ups are outstanding: the checkpoint-based state sync that replaces snap sync, a native inclusion-proof scheme that would let <code>eth_getProof</code> be served again, and pruning for the finalized-accumulator archive.</p></div>
 
 
 
@@ -2612,7 +2513,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 1, 2026 10:51:17 UTC">September 1, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 2, 2026 06:15:24 UTC">September 2, 2026</span>
   </span>
 
     

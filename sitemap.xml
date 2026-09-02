@@ -482,7 +482,7 @@
     </url>
     <url>
          <loc>https://fynnss.github.io/bnb-chain.github.io/bnb-newl1/overview/</loc>
-         <lastmod>2026-09-01</lastmod>
+         <lastmod>2026-09-02</lastmod>
     </url>
     <url>
          <loc>https://fynnss.github.io/bnb-chain.github.io/bnb-newl1/core-concepts/account-abstraction/</loc>
@@ -490,7 +490,7 @@
     </url>
     <url>
          <loc>https://fynnss.github.io/bnb-chain.github.io/bnb-newl1/core-concepts/async-execution/</loc>
-         <lastmod>2026-09-01</lastmod>
+         <lastmod>2026-09-02</lastmod>
     </url>
     <url>
          <loc>https://fynnss.github.io/bnb-chain.github.io/bnb-newl1/core-concepts/consensus/</loc>
@@ -502,6 +502,10 @@
     </url>
     <url>
          <loc>https://fynnss.github.io/bnb-chain.github.io/bnb-newl1/core-concepts/privacy/</loc>
+         <lastmod>2026-09-02</lastmod>
+    </url>
+    <url>
+         <loc>https://fynnss.github.io/bnb-chain.github.io/bnb-newl1/core-concepts/state-db/</loc>
          <lastmod>2026-09-02</lastmod>
     </url>
     <url>
@@ -530,11 +534,11 @@
     </url>
     <url>
          <loc>https://fynnss.github.io/bnb-chain.github.io/bnb-newl1/developers/json_rpc/newl1-api-list/</loc>
-         <lastmod>2026-09-01</lastmod>
+         <lastmod>2026-09-02</lastmod>
     </url>
     <url>
          <loc>https://fynnss.github.io/bnb-chain.github.io/bnb-newl1/get-started/migrate-from-bsc/</loc>
-         <lastmod>2026-09-01</lastmod>
+         <lastmod>2026-09-02</lastmod>
     </url>
     <url>
          <loc>https://fynnss.github.io/bnb-chain.github.io/bnb-newl1/get-started/network-info/</loc>
