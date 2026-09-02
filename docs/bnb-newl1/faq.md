@@ -23,7 +23,7 @@ No. Pre-confirmation is a fast (~20ms), best-effort signal that can still be rev
 No — the circuits are unaudited, and the deployment runs on an imported trusted setup rather than a BNB NewL1 ceremony. Both are open items before mainnet. See the warning in [Privacy](./core-concepts/privacy.md).
 
 **Why doesn't `eth_getProof` work?**
-BNB NewL1 commits state with a cumulative hash accumulator instead of a Merkle-Patricia trie, so there's no trie-based proof to serve. See [JSON-RPC Endpoint](./developers/json_rpc/json-rpc-endpoint.md).
+BNB NewL1 commits state with a cumulative hash accumulator instead of a Merkle-Patricia trie, so there's no trie-based proof to serve. See [State DB](./core-concepts/state-db.md).
 
 **How do I get my contract reserved capacity?**
 Register your contract's address in the `LaneRegistry` system contract with a basis-point gas reservation, via [governance](./governance/overview.md). See [Multi-Lane](./core-concepts/multi-lane.md).

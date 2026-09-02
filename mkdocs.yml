@@ -170,6 +170,7 @@ nav:
     - Core Concepts:
       - Consensus: ./bnb-newl1/core-concepts/consensus.md
       - Async Execution: ./bnb-newl1/core-concepts/async-execution.md
+      - State DB: ./bnb-newl1/core-concepts/state-db.md
       - Multi-Lane: ./bnb-newl1/core-concepts/multi-lane.md
       - Pre-confirmation: ./bnb-newl1/core-concepts/tx-preconfirmation.md
       - Account Abstraction: ./bnb-newl1/core-concepts/account-abstraction.md

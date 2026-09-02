@@ -56,7 +56,7 @@ Where [async execution](../core-concepts/async-execution.md) shows up — the bi
 
 - **`latest` means executed, not ordered.** State reads trail the head you see on a `newHeads` subscription. Expected, not a lagging node.
 - **`-38004` is retryable, `-38001` is not.** Ordered-but-unexecuted versus no-such-block. `eth_getTransactionReceipt` uses `-38004` for "block not executed yet" and `null` for "unknown transaction" — keep polling on the former.
-- **`eth_getProof` rejects with `-32004`.** State is committed with an LtHash accumulator, not an MPT. Light clients, proof-based bridges, and similar need a different design; an accumulator-native proof scheme is planned.
+- **`eth_getProof` rejects with `-32004`.** State is committed with an LtHash accumulator, not an MPT ([State DB](../core-concepts/state-db.md)). Light clients, proof-based bridges, and similar need a different design; an accumulator-native proof scheme is planned.
 - **`eth_syncing` is always `false`** — use `eth_health` plus block-number progress. Snap sync doesn't exist.
 
 ## Indexers and explorers

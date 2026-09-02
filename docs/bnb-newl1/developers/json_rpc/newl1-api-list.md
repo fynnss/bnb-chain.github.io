@@ -50,7 +50,7 @@ curl -X POST "$RPC" -H "Content-Type: application/json" \
 
 | Behavior | Difference |
 |---|---|
-| `eth_getProof` | **Always rejects** with `-32004`. State is committed with a cumulative hash accumulator (LtHash), not a Merkle-Patricia trie, so there is no trie inclusion proof to serve. An accumulator-native scheme is planned. |
+| `eth_getProof` | **Always rejects** with `-32004`. State is committed with a cumulative hash accumulator (LtHash), not a Merkle-Patricia trie, so there is no trie inclusion proof to serve ([State DB](../../core-concepts/state-db.md)). An accumulator-native scheme is planned. |
 | Gas accounting | A transaction pays its **declared gas limit**, not gas used. `gasUsed` in a receipt therefore equals the transaction's `gas` field, and `header.gasUsed` is the sum of declared limits. `eth_estimateGas` and `eth_call` simulate with this model disabled, so an estimate still measures true usage. Per-transaction gas limit is capped at 16,777,216 (BEP-652 / EIP-7825). See [Migrating from BSC](../../get-started/migrate-from-bsc.md#you-pay-for-your-declared-gas-limit). |
 | Fees | The base fee is consensus-pinned to zero (BEP-222), so the effective gas price is `min(maxFeePerGas, maxPriorityFeePerGas)`. A transaction that tips zero pays nothing and is rejected by the pool's minimum-price gate (1 wei default, matching geth's `PriceLimit`). |
 | Mempool | No global mempool — transactions route directly to the current and next block producer. There is no `txpool_*` namespace. `eth_subscribe("newPendingTransactions")` reports only the node's **own** local-pool admissions. |
