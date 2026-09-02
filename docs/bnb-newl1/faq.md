@@ -20,7 +20,7 @@ No. BNB NewL1's account abstraction is native — enforced by consensus, not by 
 No. Pre-confirmation is a fast (~20ms), best-effort signal that can still be revoked before the block finalizes. Wait for **finalized** status for anything irreversible. See [Transaction Pre-confirmation](./core-concepts/tx-preconfirmation.md).
 
 **Is the shielded pool safe to use with real funds today?**
-No — it currently runs on a single-contributor development trusted setup, meaning proofs can be forged, and the feature is unaudited. See the warning in [Privacy](./core-concepts/privacy.md).
+No — the circuits are unaudited, and the deployment runs on an imported trusted setup rather than a BNB NewL1 ceremony. Both are open items before mainnet. See the warning in [Privacy](./core-concepts/privacy.md).
 
 **Why doesn't `eth_getProof` work?**
 BNB NewL1 commits state with a cumulative hash accumulator instead of a Merkle-Patricia trie, so there's no trie-based proof to serve. See [JSON-RPC Endpoint](./developers/json_rpc/json-rpc-endpoint.md).

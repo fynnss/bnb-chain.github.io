@@ -59,15 +59,14 @@ A self-authenticating transaction against the [shielded pool](../core-concepts/p
 | Field | Notes |
 |---|---|
 | `chain_id` | Checked at import. |
-| `gas_limit` | Bounds execution of the synthesized `transact` call. |
 | `pool_proof`, `auth_proof` | Two PLONK proof blobs, **exactly 864 bytes each** (gnark BN254 `MarshalSolidity`). |
-| `pub_signals` | 29 public signals, ABI-identical to the contract's `uint256[29]`. |
+| `pub_signals` | 30 public signals, ABI-identical to the contract's `uint256[30]`. Carries the gas limit, which is why the body has no `gas_limit` field. |
 | `output_note_data` | Three output-note delivery ciphertexts. |
 | `call_data` | Atomic-call payload; empty for transfer and withdraw. |
 
-There is **no per-gas fee field**. The fee is the public `gasFee` in `pub_signals[28]`, unshielded to the system address by the contract — so a shielded transaction's fee is committed inside the proof, not bid at submission time.
+There is **no per-gas fee field and no gas-limit field**. Both are public signals — `feePerGas` at `[28]` and `gasLimit` at `[29]` — and the contract unshields their product to the system address. The fee is therefore committed inside the proof, not bid at submission time, and the same proof cannot be re-broadcast under a different limit. `gasFee` itself is deliberately not a signal: the circuit bounds the two factors and the contract re-derives the product, so there is exactly one source of truth for it.
 
-Key public signals: `[0]` Merkle root, `[1..2]` spend nullifiers, `[3..5]` output commitments, `[12]` operation (`0` transfer, `1` withdraw, `2` atomic call), `[13]`/`[14]` public amount and recipient, `[20]` `intentReplayId`, `[23]` `validUntil` deadline, `[24]` chain id, `[28]` `gasFee`.
+Key public signals: `[0]` Merkle root, `[1..2]` spend nullifiers, `[3..5]` output note bodies, `[12]` operation (`0` transfer, `1` withdraw, `2` atomic call), `[13]`/`[14]` public amount and recipient, `[20]` `intentReplayId`, `[23]` `validUntil` deadline, `[24]` chain id, `[28]`/`[29]` `feePerGas` and `gasLimit`.
 
 ### The public path (no `0x77` needed)
 
@@ -82,7 +81,7 @@ cast send $POOL --value $AMOUNT "privDeposit(uint256,uint8,uint256,bytes)" \
 cast send $POOL "deferBatchInsert(uint256)" 100
 
 # 3. spend — transfer, withdraw, or atomic call
-cast send $POOL "transact(bytes,bytes,uint256[29],bytes[3],bytes)" \
+cast send $POOL "transact(bytes,bytes,uint256[30],bytes[3],bytes)" \
   $POOL_PROOF $AUTH_PROOF $PUB_SIGNALS "[0x,0x,0x]" 0x
 ```
 
@@ -94,6 +93,8 @@ Useful reads: `merkleRoot()`, `nullifierSpent(uint256)`, `pendingCount()` / `pen
 - **Proofs are pinned to a root, a chain, and a deadline.** A stale `pub_signals[0]` root, a wrong chain id, or an expired `validUntil` is rejected. Rebuild the proof rather than retrying it.
 - **Nullifiers are the replay guard** — resubmitting a spent proof fails on `nullifierSpent`.
 - **The proof blob length is validated at decode.** Anything other than 864 bytes is rejected before execution, so a truncated proof costs a decode, not a transaction.
+- **`eth_estimateGas` does not apply.** The gas limit is bound inside the proof, so it has to be chosen *before* proving — read `newl1_shieldedGasConstants` and size it from there. An accepted `0x77` is charged its full declared limit.
+- **An atomic call's payload does not go to `transact`.** The spend settles and escrows the payout first; the call itself runs in a second frame, issued as `deliver`. A reverted call leaves the settlement committed and the escrow retryable — it does not undo the spend or refund the fee.
 
 ### Tooling
 
