@@ -31,7 +31,7 @@ BSC remains the broad-base chain for the existing ecosystem. BNB NewL1 is a clea
 | **Execution** | Parallel EVM with ordering and execution decoupled, so consensus liveness never depends on execution throughput. Multi-Lane reserves gas capacity per transaction class, so latency-sensitive traffic can't be crowded out | [Async Execution](./core-concepts/async-execution.md) · [Multi-Lane](./core-concepts/multi-lane.md) |
 | **Consensus** | Enhanced Parlia: 200 ms blocks and BLS fast finality, so blocks become irreversible in roughly one block interval. Sub-blocks stream ordering commitments every 20 ms, giving a pre-confirmation well before the block lands | [Consensus](./core-concepts/consensus.md) · [Pre-confirmation](./core-concepts/tx-preconfirmation.md) |
 | **Network** | P2P block and sub-block gossip, with transactions routed straight to the current and next proposer instead of a global mempool | [JSON-RPC Endpoint](./developers/json_rpc/json-rpc-endpoint.md) |
-| **Storage** | Flat key-value store under a cumulative lattice-hash (LtHash) commitment instead of a Merkle-Patricia trie | [State Commitment](./core-concepts/async-execution.md#lthash-state-commitment) |
+| **Storage** | Flat key-value store under a cumulative lattice-hash (LtHash) commitment instead of a Merkle-Patricia trie | [State DB](./core-concepts/state-db.md) |
 | **Governance** | Token-weighted (govBNB) proposal / vote / timelock control over protocol parameters, including the Multi-Lane quotas | [Governance](./governance/overview.md) |
 
 ## What this means for developers

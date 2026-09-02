@@ -1,8 +1,8 @@
 ---
-title: Async Execution & State Commitment - BNB NewL1
+title: Async Execution - BNB NewL1
 ---
 
-# Async Execution & State Commitment
+# Async Execution
 
 Conventional blockchains interleave execution with consensus: a block proposal carries the post-execution state root, so the leader must execute before proposing and every validator must re-execute before voting. The consequences compound — execution runs twice per block, the gas limit is sized against the slowest node's worst case, and the execution budget shrinks to a fraction of the block time.
 
@@ -69,16 +69,11 @@ Only an account's own transactions can spend its native balance, so this account
 
 Interleaved chains build and sign system transactions — validator-set updates, reward distribution, slashing — at proposal time, because execution results are already on hand. On BNB NewL1 they aren't: those results don't exist until slot `N+D`. System transactions therefore don't exist at ordering time at all. They are **generated during execution**, and their effects land in the block's `ExecutionCommitment`. Validators order and vote on user transactions only.
 
-## LtHash state commitment
+## State commitment
 
-BNB NewL1 commits state with a cumulative hash accumulator (`BLAKE3` over a lattice hash, "LtHash") over a flat key-value store, rather than Ethereum's Merkle-Patricia trie. This is what makes async execution practical: updating a cumulative hash as execution completes is cheap, whereas maintaining an MPT is exactly the kind of synchronous-with-execution bookkeeping this design avoids. Because the accumulator is cumulative, any divergence at one block propagates into every descendant commitment.
+Decoupling makes execution the throughput bottleneck, so what execution spends its budget on starts to matter. BNB NewL1 commits state with a cumulative lattice-hash accumulator (LtHash) over a flat key-value store: advancing it costs O(1) per changed entry no matter how large the state is, and because it is cumulative, any divergence propagates into every descendant commitment.
 
-Two concrete consequences for anyone integrating with the chain:
-
-- **`eth_getProof` is not supported** (rejected with `-32004`) — there's no trie to produce a Merkle inclusion proof from. An LtHash-native inclusion proof scheme is a planned follow-up, not available today.
-- **Snap sync is not supported.** A new node backfills over the chain's own P2P protocol rather than replicating a trie.
-
-See [JSON-RPC Endpoint](../developers/json_rpc/json-rpc-endpoint.md) for the full list of RPC differences this causes.
+That choice is what makes `eth_getProof` and snap sync unavailable. See [State DB](./state-db.md) for the construction, the storage layout, and the full list of consequences.
 
 ## Correctness enforcement
 
@@ -103,7 +98,7 @@ Practical guidance:
 
 ## Current status
 
-The async execution pipeline is live and running today on the devnet. The LtHash state-commitment migration is functional; follow-up work (a checkpoint-based state sync to replace snap sync, and a native LtHash inclusion-proof scheme for `eth_getProof`) is still in progress.
+The async execution pipeline is live and running today on the devnet, on top of the [LtHash state commitment](./state-db.md).
 
 ## What's next
 
