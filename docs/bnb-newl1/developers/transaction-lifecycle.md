@@ -6,6 +6,8 @@ title: Transaction Lifecycle - BNB NewL1
 
 A transaction progresses from submission to pool admission, optional pre-confirmation, ordering, execution, and finality. Each milestone has a specific RPC signal; this page explains which one a dApp should use.
 
+![BNB NewL1 transaction lifecycle](../../assets/newl1-transaction-lifecycle.svg)
+
 ## 1. Submit through a Gateway
 
 A **Gateway** is a full node used as a transaction-submission edge. A dApp sends an ordinary signed transaction to its standard JSON-RPC endpoint; there is no Gateway-specific transaction format or client RPC.
