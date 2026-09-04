@@ -9,15 +9,15 @@ title: Network Information - BNB NewL1
 | Network Name | BNB NewL1 |
 | Description | High-performance EVM Layer 1 in the BNB Chain ecosystem. |
 | RPC Endpoint | Not available yet |
-| Chain ID | `48879` (`0xBEEF`, devnet) |
+| Chain ID | Not finalized yet |
 | Currency Symbol | BNB |
 | Block Explorer | Not available yet |
 | Bridge | BNB NewL1 ↔ BSC bridge in development |
 
 !!! note "Devnet stage"
-    There is no public testnet or mainnet endpoint, faucet, or hosted explorer yet. The values below reflect the current devnet client and may change — public network details will land on this page once they exist.
+    There is no public testnet or mainnet endpoint, faucet, or hosted explorer yet. The values below reflect the current devnet client and may change. Public network details will land on this page once they exist.
 
-## Protocol parameters
+## Protocol Parameters
 
 | Parameter | Value |
 |---|---|
@@ -26,7 +26,7 @@ title: Network Information - BNB NewL1
 | Turn length (blocks per validator, per rotation) | 16 |
 | Epoch length | 2,250 blocks (7.5 minutes) |
 | EVM | Full Prague from genesis, no fork ramp |
-| Base fee | Pinned to `0` (BEP-222) — the priority fee is the entire price |
+| Base fee | Pinned to `0` (BEP-222), so the priority fee is the entire price |
 | Fee model | Charged on the declared gas limit, not gas used ([details](./migrate-from-bsc.md#you-pay-for-your-declared-gas-limit)) |
 | Per-transaction gas cap | 16,777,216 (BEP-652 / EIP-7825) |
 | Block gas limit | 600,000,000 (devnet genesis) |

@@ -12,14 +12,14 @@ Examples below assume `RPC` is set to a node's HTTP endpoint and `WS` to its Web
 
 Because ordering and execution are decoupled, the node tracks two heights:
 
-- **ordered tip** — the freshest block accepted by consensus.
-- **executed tip** — the highest block whose post-state and receipts are materialized. It trails the ordered tip by the proposer-chosen delay.
+- **Ordered tip.** The freshest block accepted by consensus.
+- **Executed tip.** The highest block whose post-state and receipts are materialized. It trails the ordered tip by the proposer-chosen delay.
 
-There are **no custom tag strings on the wire** — only the five standard Ethereum tags plus an explicit number:
+There are no custom tag strings on the wire, only the five standard Ethereum tags plus an explicit number:
 
 | Tag | Resolves to |
 |---|---|
-| `latest` / `pending` | The **executed** tip. `pending` is an alias for `latest`; there is no mempool-simulated pending state. |
+| `latest` / `pending` | The executed tip. `pending` is an alias for `latest`; there is no mempool-simulated pending state. |
 | `safe` / `finalized` | The height of the nearest published execution commitment at or before the justified / finalized block. Always at or below the executed tip. |
 | `earliest` | Block 0. |
 | explicit number | That block, subject to the gating below. |
@@ -28,13 +28,13 @@ State-dependent reads (`eth_call`, `eth_getBalance`, `eth_getCode`, `eth_getStor
 
 Two error codes distinguish the failure modes an explicit number can hit:
 
-- **`-38004`** — the block is ordered but not yet executed. Retry once execution catches up.
-- **`-38001`** — the block number is beyond the ordered head, or an EIP-1898 block hash doesn't resolve to a canonical block. No such block exists; retrying is pointless.
+- `-38004`: the block is ordered but not yet executed. Retry once execution catches up.
+- `-38001`: the block number is beyond the ordered head, or an EIP-1898 block hash doesn't resolve to a canonical block. No such block exists, so retrying is pointless.
 
-Block *header* lookups (`eth_getBlockByNumber` / `eth_getBlockByHash`) are not execution-gated: an ordered-but-unexecuted block is readable by its explicit number, and its four execution-derived fields (`stateRoot`, `receiptsRoot`, `logsBloom`, `gasUsed`) are `null` until a later block publishes the matching commitment.
+Block header lookups (`eth_getBlockByNumber` / `eth_getBlockByHash`) are not execution-gated: an ordered-but-unexecuted block is readable by its explicit number, and its four execution-derived fields (`stateRoot`, `receiptsRoot`, `logsBloom`, `gasUsed`) are `null` until a later block publishes the matching commitment.
 
 !!! warning "`eth_getTransactionCount("latest")` is the deliberate exception"
-    It returns the **ordered-tip** nonce, not the executed-tip one, so a sender accounts for its own already-ordered-but-unexecuted transactions instead of reusing a nonce. It does not look ahead into the not-yet-ordered pool — a sender pipelining transactions back-to-back must poll `latest` and wait for each to be ordered before using the next nonce.
+    It returns the ordered-tip nonce, not the executed-tip one, so a sender accounts for its own already-ordered-but-unexecuted transactions instead of reusing a nonce. It does not look ahead into the not-yet-ordered pool, so a sender pipelining transactions back-to-back must poll `latest` and wait for each to be ordered before using the next nonce.
 
 ```bash
 ## executed tip
@@ -50,27 +50,27 @@ curl -X POST "$RPC" -H "Content-Type: application/json" \
 
 | Behavior | Difference |
 |---|---|
-| `eth_getProof` | **Always rejects** with `-32004`. State is committed with a cumulative hash accumulator (LtHash), not a Merkle-Patricia trie, so there is no trie inclusion proof to serve ([State DB](../../core-concepts/state-db.md)). An accumulator-native scheme is planned. |
-| Gas accounting | A transaction pays its **declared gas limit**, not gas used. `gasUsed` in a receipt therefore equals the transaction's `gas` field, and `header.gasUsed` is the sum of declared limits. `eth_estimateGas` and `eth_call` simulate with this model disabled, so an estimate still measures true usage. Per-transaction gas limit is capped at 16,777,216 (BEP-652 / EIP-7825). See [Migrating from BSC](../../get-started/migrate-from-bsc.md#you-pay-for-your-declared-gas-limit). |
+| `eth_getProof` | Always rejects with `-32004`. State is committed with a cumulative hash accumulator (LtHash), not a Merkle-Patricia trie, so there is no trie inclusion proof to serve ([State DB](../../core-concepts/state-db.md)). An accumulator-native scheme is planned. |
+| Gas accounting | A transaction pays its declared gas limit, not gas used. `gasUsed` in a receipt therefore equals the transaction's `gas` field, and `header.gasUsed` is the sum of declared limits. `eth_estimateGas` and `eth_call` simulate with this model disabled, so an estimate still measures true usage. Per-transaction gas limit is capped at 16,777,216 (BEP-652 / EIP-7825). See [Migrating from BSC](../../get-started/migrate-from-bsc.md#you-pay-for-your-declared-gas-limit). |
 | Fees | The base fee is consensus-pinned to zero (BEP-222), so the effective gas price is `min(maxFeePerGas, maxPriorityFeePerGas)`. A transaction that tips zero pays nothing and is rejected by the pool's minimum-price gate (1 wei default, matching geth's `PriceLimit`). |
-| Mempool | No global mempool — transactions route directly to the current and next block producer. There is no `txpool_*` namespace. `eth_subscribe("newPendingTransactions")` reports only the node's **own** local-pool admissions. |
+| Mempool | No global mempool: transactions route directly to the current and next block producer. There is no `txpool_*` namespace. `eth_subscribe("newPendingTransactions")` reports only the node's own local-pool admissions. |
 | Replace-by-fee | Works, but only locally: a same-nonce resubmission must beat the incumbent's effective tip by 10%, and displaces it only in the pools that hold it. A transaction forwarded from another node never displaces one received directly from a client. |
 | Transaction expiry | A pooled transaction not included within the pool TTL (3 h default, scanned every 20 s) is evicted, and a nonce more than 256 ahead of the account's current nonce is rejected at submission. Both time values are operator-configurable. |
-| Transaction types | EIP-4844 (blob) and EIP-7702 (set-code) transactions are rejected by the pool's type gate. Two native types are added — see [Transaction Types](../transaction-types.md). |
-| `eth_syncing` | Always `false` — there is no staged-sync driver to report progress from. |
+| Transaction types | EIP-4844 (blob) and EIP-7702 (set-code) transactions are rejected by the pool's type gate. Two native types are added; see [Transaction Types](../transaction-types.md). |
+| `eth_syncing` | Always `false`: there is no staged-sync driver to report progress from. |
 | Uncle methods | Compatibility stubs: counts are always `0x0`, bodies always `null`. |
 | Block bodies | `eth_getBlockBy*` carries two extra fields, `systemTransactionsRoot` and `commitments`. Standard deserializers ignore them. |
 
 ## Pre-confirmation API
 
-Pre-confirmations are **soft, revocable advisories** — never proofs, and never a substitute for finality.
+Pre-confirmations are soft, revocable advisories, never proofs and never a substitute for finality.
 
 !!! warning "This surface is unauthenticated"
     `newl1_subscribePreconfirmations`, `newl1_subscribeSubBlocks`, and `newl1_getTransactionPreconfirmation` are unauthenticated by design, and each subscription holds server-side memory. Firewall the RPC bind address, or place this surface behind a separate admin port, on any non-loopback deployment.
 
 ### newl1_getValidatorSchedule
 
-Returns the current validator set and leader schedule — used to discover where to send transactions, and to independently verify pre-confirmation signers.
+Returns the current validator set and leader schedule, which is what you need to discover where to send transactions and to independently verify pre-confirmation signers.
 
 **Parameters**
 
@@ -104,14 +104,14 @@ One-shot lookup of a transaction's last known pre-confirmation status, from a sh
 
 **Hash** String (REQUIRED)
 
-* HEX String — the hash of the transaction
+* HEX String - the hash of the transaction
 
 ```bash
 curl -X POST "$RPC" -H "Content-Type: application/json" \
   --data '{"jsonrpc":"2.0","method":"newl1_getTransactionPreconfirmation","params":["0x…"],"id":1}'
 ```
 
-A `null` result does **not** mean the transaction was never pre-confirmed — only that it fell outside the retention window or wasn't tracked.
+A `null` result does not mean the transaction was never pre-confirmed, only that it fell outside the retention window or wasn't tracked.
 
 ### newl1_subscribePreconfirmations
 
@@ -121,7 +121,7 @@ WebSocket only. Streams node-interpreted pre-confirmation events; notification m
 
 **Filter** Object (OPTIONAL)
 
-* `{"txHash": "0x…"}` — stream only this transaction's events. Omitted or `null` streams all. There is no sender-level filter.
+* `{"txHash": "0x…"}` - stream only this transaction's events. Omitted or `null` streams all. There is no sender-level filter.
 
 ```bash
 echo '{"jsonrpc":"2.0","method":"newl1_subscribePreconfirmations","params":[],"id":1}' \
@@ -144,7 +144,7 @@ Each notification carries:
 }
 ```
 
-If a subscriber falls behind, the node sends `{"status": "lagged", "dropped": n}` rather than silently dropping a revocation — re-query `newl1_getTransactionPreconfirmation` when you see it.
+If a subscriber falls behind, the node sends `{"status": "lagged", "dropped": n}` rather than silently dropping a revocation; re-query `newl1_getTransactionPreconfirmation` when you see it.
 
 The producer explicitly feeds its own published slices to local subscribers, so this subscription works against the producer's RPC and on a single-node devnet.
 
@@ -183,17 +183,17 @@ Standard `eth_subscribe` with `"newHeads"` or `"newPendingTransactions"` is also
 
 ### newl1_getKey
 
-Reads the on-chain state of a delegated key in the `AccountKeychain` precompile — the key registry behind the native `0x76` [account-abstraction transaction](../transaction-types.md).
+Reads the on-chain state of a delegated key in the `AccountKeychain` precompile, the key registry behind the native `0x76` [account-abstraction transaction](../transaction-types.md).
 
 **Parameters**
 
 **Account** String (REQUIRED)
 
-* HEX String — the 20-byte account address
+* HEX String - the 20-byte account address
 
 **KeyId** String (REQUIRED)
 
-* HEX String — the key identifier
+* HEX String - the key identifier
 
 **BlockNumber** QUANTITY|TAG (OPTIONAL)
 
@@ -223,7 +223,7 @@ This simulates `AccountKeychain.getKey` against executed state, so it accepts th
 
 ### newl1_laneConfig
 
-Returns the live, governance-resolved [Multi-Lane](../../core-concepts/multi-lane.md) configuration for the current canonical head — the resolver's view (parent context, anchor depth, branch-aware), not a raw registry dump.
+Returns the live, governance-resolved [Multi-Lane](../../core-concepts/multi-lane.md) configuration for the current canonical head: the resolver's view (parent context, anchor depth, branch-aware), not a raw registry dump.
 
 **Parameters**
 
@@ -254,13 +254,13 @@ curl -X POST "$RPC" -H "Content-Type: application/json" \
 
 ### newl1_getTransactionStatus
 
-Pool-plane status of a transaction — where it sits in this node's local pool, which is a different question from "is it in a block" (`eth_getTransactionReceipt`).
+Pool-plane status of a transaction: where it sits in this node's local pool, which is a different question from "is it in a block" (`eth_getTransactionReceipt`).
 
 **Parameters**
 
 **Hash** String (REQUIRED)
 
-* HEX String — the hash of the transaction
+* HEX String - the hash of the transaction
 
 ```bash
 curl -X POST "$RPC" -H "Content-Type: application/json" \
@@ -277,17 +277,17 @@ curl -X POST "$RPC" -H "Content-Type: application/json" \
 }
 ```
 
-`sender`, `nonce`, and `ageMs` are `null` for `unknown`. That state is ambiguous by design — it covers both "never seen" and "aged out of the bounded status ring". Treat it as "no information", not as a negative outcome. This is a **local** view: it answers for the node you asked, not the network. See [Transaction Lifecycle](../transaction-lifecycle.md#2-pool-states) for state transitions and terminal reasons.
+`sender`, `nonce`, and `ageMs` are `null` for `unknown`. That state is ambiguous by design: it covers both "never seen" and "aged out of the bounded status ring". Treat it as "no information", not as a negative outcome. This is a local view: it answers for the node you asked, not the network. See [Transaction Lifecycle](../transaction-lifecycle.md#pool-states) for state transitions and terminal reasons.
 
 ### newl1_debugSenderSnapshot
 
-Debug surface: one sender's live pool lane — every entry nonce-ascending with its state and age, plus the watermarks the block packer works from (`baseAtExecutedTip`, `orderedNonce`). Answers "why isn't this sender's transaction being packed" without reading node logs.
+Debug surface for one sender's live pool lane: every entry nonce-ascending with its state and age, plus the watermarks the block packer works from (`baseAtExecutedTip`, `orderedNonce`). Answers "why isn't this sender's transaction being packed" without reading node logs.
 
 **Parameters**
 
 **Address** String (REQUIRED)
 
-* HEX String — the 20-byte sender address
+* HEX String - the 20-byte sender address
 
 ```bash
 curl -X POST "$RPC" -H "Content-Type: application/json" \
@@ -311,13 +311,13 @@ curl -X POST "$RPC" -H "Content-Type: application/json" \
 
 ### newl1_getSystemReceiptsByBlock
 
-Receipts for a block's **system transactions** — slashing, deposits, finality rewards, validator-set updates, and shielded-pool drains. These run in the block executor after ordinary transactions and have no place in `transactions_root`, so they never appear in `eth_getBlockReceipts` or in the block's transaction list. This method is the only way to see them.
+Receipts for a block's system transactions: slashing, deposits, finality rewards, validator-set updates, and shielded-pool drains. These run in the block executor after ordinary transactions and have no place in `transactions_root`, so they never appear in `eth_getBlockReceipts` or in the block's transaction list. This method is the only way to see them.
 
 **Parameters**
 
 **BlockNumber** QUANTITY|TAG (OPTIONAL)
 
-* HEX String — an integer block number
+* HEX String - an integer block number
 * String `"earliest"` / `"latest"` / `"pending"` / `"safe"` / `"finalized"`
 
 Defaults to `latest`.
@@ -327,7 +327,7 @@ curl -X POST "$RPC" -H "Content-Type: application/json" \
   --data '{"jsonrpc":"2.0","method":"newl1_getSystemReceiptsByBlock","params":["latest"],"id":1}'
 ```
 
-Returns `null` — distinct from an empty array — when the block's system transactions haven't been committed by a descendant block yet. Because the system-tx hash index is populated only at finalized-persist time, a hash returned here can still resolve to `null` on `eth_getTransactionReceipt` until finality catches up.
+Returns `null`, distinct from an empty array, when the block's system transactions haven't been committed by a descendant block yet. Because the system-tx hash index is populated only at finalized-persist time, a hash returned here can still resolve to `null` on `eth_getTransactionReceipt` until finality catches up.
 
 ## Finality API
 
@@ -372,7 +372,7 @@ curl -X POST "$RPC" -H "Content-Type: application/json" \
   --data '{"jsonrpc":"2.0","method":"eth_getFinalizedBlock","params":[15,false],"id":1}'
 ```
 
-### Parlia snapshot methods
+### Parlia Snapshot Methods
 
 | Method | Returns |
 |---|---|
@@ -397,7 +397,7 @@ curl -X POST "$RPC" -H "Content-Type: application/json" \
   --data '{"jsonrpc":"2.0","method":"eth_health","params":[],"id":1}'
 ```
 
-Use this together with block-number progress for health checks — `eth_syncing` is always `false` on BNB NewL1 and reports nothing useful.
+Use this together with block-number progress for health checks; `eth_syncing` is always `false` on BNB NewL1 and reports nothing useful.
 
 ### eth_getTransactionsByBlockNumber
 
@@ -407,7 +407,7 @@ Get all the transactions for the given block number.
 
 **BlockNumber** QUANTITY|TAG
 
-* HEX String — an integer block number
+* HEX String - an integer block number
 * String `"earliest"` / `"latest"` / `"pending"` / `"safe"` / `"finalized"`
 
 ```bash
@@ -417,13 +417,13 @@ curl -X POST "$RPC" -H "Content-Type: application/json" \
 
 ### eth_getTransactionReceiptsByBlockNumber
 
-Get all receipts for the given block number. Ordinary transactions only — system-transaction receipts come from [`newl1_getSystemReceiptsByBlock`](#newl1_getsystemreceiptsbyblock).
+Get all receipts for the given block number. Ordinary transactions only; system-transaction receipts come from [`newl1_getSystemReceiptsByBlock`](#newl1_getsystemreceiptsbyblock).
 
 **Parameters**
 
 **BlockNumber** QUANTITY|TAG
 
-* HEX String — an integer block number
+* HEX String - an integer block number
 * String `"earliest"` / `"latest"` / `"pending"` / `"safe"` / `"finalized"`
 
 ```bash
@@ -436,9 +436,9 @@ curl -X POST "$RPC" -H "Content-Type: application/json" \
 | Code | Meaning |
 |---:|---|
 | `-32602` | Malformed params, or a log-filter range exceeding the configured maximum. |
-| `-32601` | Method not found — also used for "registered but not yet meaningfully implemented". |
+| `-32601` | Method not found. Also used for "registered but not yet meaningfully implemented". |
 | `-38004` | The requested block or transaction is ordered but not yet executed. Retry. |
-| `-38001` | The requested block doesn't exist — beyond the ordered head, or a non-canonical hash. Don't retry. |
-| `-32004` | Protocol-shape mismatch — today only `eth_getProof`. |
+| `-38001` | The requested block doesn't exist: beyond the ordered head, or a non-canonical hash. Don't retry. |
+| `-32004` | Protocol-shape mismatch, today only `eth_getProof`. |
 | `-32000` | A simulated call reverted (`data` carries the ABI-encoded revert reason) or halted. |
 | `-32603` | Internal error. |

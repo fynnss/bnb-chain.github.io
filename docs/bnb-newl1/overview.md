@@ -2,13 +2,15 @@
 title: BNB NewL1 Overview - BNB NewL1
 ---
 
-# BNB NewL1 — High-Performance EVM L1
+# BNB NewL1 - High-Performance EVM L1
 
-BNB NewL1 is a high-performance, EVM-compatible Layer 1 and the newest member of the BNB Chain family, built for workloads that need sub-second finality and predictable inclusion: high-frequency trading, real-time payments, confidential finance, and agent-driven activity. **BNB is the native asset — no new token is issued**, and a native BSC ↔ BNB NewL1 bridge (in development) moves it between chains.
+BNB NewL1 is an EVM-compatible Layer 1 and the newest chain in the BNB Chain family. It targets workloads that need sub-second finality and predictable inclusion: high-frequency trading, real-time payments, confidential finance, and agent-driven activity. Blocks land every 200 ms and become irreversible in roughly one block interval through BLS fast finality, while sub-blocks give a client a pre-confirmation about 20 ms after submission.
 
-Three bets separate it from a general-purpose EVM chain: execution runs **off the consensus critical path** rather than on it; state lives in a **flat key-value store under a lattice-hash commitment** rather than a Merkle-Patricia trie; and account UX and privacy are **protocol primitives** rather than contracts layered on top.
+## Key Features and Advantages
 
-## Where BNB NewL1 fits
+Execution runs off the consensus critical path, so ordering never waits on it. State lives in a flat key-value store under a cumulative lattice-hash commitment, with no Merkle-Patricia trie underneath. Account UX and privacy are protocol primitives, not contracts layered on top of the EVM.
+
+## Where BNB NewL1 Fits
 
 | | | |
 |---|---|---|
@@ -16,9 +18,9 @@ Three bets separate it from a general-purpose EVM chain: execution runs **off th
 | 2019 | Beacon Chain | governance and staking |
 | 2020 | BSC | general-purpose EVM L1 |
 | 2023 | opBNB + Greenfield | scaling and decentralized storage |
-| Next | **BNB NewL1** | vertically optimized, latency-first EVM L1 |
+| Next | BNB NewL1 | latency-first EVM L1, optimized end to end |
 
-BSC remains the broad-base chain for the existing ecosystem. BNB NewL1 is a clean-slate design for the workloads that outgrow it, keeping what defines the family: full EVM compatibility, BNB as the economic center, and shared tooling with BSC, opBNB, and Greenfield.
+BSC remains the broad-base chain for the existing ecosystem. BNB NewL1 is a clean-slate design for the workloads that outgrow it. It stays fully EVM-compatible and keeps BNB at the economic center, on the same tooling as BSC, opBNB, and Greenfield.
 
 ## Architecture
 
@@ -26,26 +28,30 @@ BSC remains the broad-base chain for the existing ecosystem. BNB NewL1 is a clea
 
 | Layer | What's in it | Read more |
 |---|---|---|
-| **Application** | DeFi, payments, confidential finance, AI agents. An opt-in native shielded pool hides sender, recipient, and amount, alongside fully transparent transactions | [Privacy](./core-concepts/privacy.md) |
-| **Account & UX** | Gas sponsorship, passkey (WebAuthn/P256) signing, batched calls, and scoped access keys as a native transaction type (`0x76`) — no bundler or entry-point contract, and no need for the sender to hold BNB | [Account Abstraction](./core-concepts/account-abstraction.md) |
-| **Execution** | Parallel EVM with ordering and execution decoupled, so consensus liveness never depends on execution throughput. Multi-Lane reserves gas capacity per transaction class, so latency-sensitive traffic can't be crowded out | [Async Execution](./core-concepts/async-execution.md) · [Multi-Lane](./core-concepts/multi-lane.md) |
-| **Consensus** | Enhanced Parlia: 200 ms blocks and BLS fast finality, so blocks become irreversible in roughly one block interval. Sub-blocks stream ordering commitments every 20 ms, giving a pre-confirmation well before the block lands | [Consensus](./core-concepts/consensus.md) · [Pre-confirmation](./core-concepts/tx-preconfirmation.md) |
-| **Network** | P2P block and sub-block gossip, with transactions routed straight to the current and next proposer instead of a global mempool | [JSON-RPC Endpoint](./developers/json_rpc/json-rpc-endpoint.md) |
-| **Storage** | Flat key-value store under a cumulative lattice-hash (LtHash) commitment instead of a Merkle-Patricia trie | [State DB](./core-concepts/state-db.md) |
-| **Governance** | Token-weighted (govBNB) proposal / vote / timelock control over protocol parameters, including the Multi-Lane quotas | [Governance](./governance/overview.md) |
+| Application | DeFi, payments, confidential finance, AI agents. An opt-in native shielded pool hides sender, recipient, and amount, and transparent transactions are unaffected | [Privacy](./core-concepts/privacy.md) |
+| Account & UX | Gas sponsorship, passkey (WebAuthn/P256) signing, batched calls, and scoped access keys, all as a native transaction type (`0x76`). No bundler, no entry-point contract, and the sender need not hold BNB | [Account Abstraction](./core-concepts/account-abstraction.md) |
+| Execution | Parallel EVM, with ordering decoupled from execution: consensus liveness does not depend on execution throughput. Multi-Lane reserves gas capacity per transaction class, so latency-sensitive traffic can't be crowded out | [Async Execution](./core-concepts/async-execution.md) · [Multi-Lane](./core-concepts/multi-lane.md) |
+| Consensus | Enhanced Parlia: 200 ms blocks and BLS fast finality, so blocks become irreversible in roughly one block interval. Sub-blocks stream ordering commitments every 20 ms, and a client sees that pre-confirmation well before the block lands | [Consensus](./core-concepts/consensus.md) · [Pre-confirmation](./core-concepts/tx-preconfirmation.md) |
+| Network | P2P block and sub-block gossip. Transactions are routed straight to the current and next proposer instead of a global mempool | [JSON-RPC Endpoint](./developers/json_rpc/json-rpc-endpoint.md) |
+| Storage | Flat key-value store under a cumulative lattice-hash (LtHash) commitment instead of a Merkle-Patricia trie | [State DB](./core-concepts/state-db.md) |
+| Governance | Token-weighted (govBNB) proposal / vote / timelock control over protocol parameters, including the Multi-Lane quotas | [Governance](./governance/overview.md) |
 
-## What this means for developers
+## Role of BNB
 
-Existing Solidity contracts and standard wallet flows run unchanged — contracts, opcodes, and per-operation gas costs behave exactly as on any other EVM chain (execution builds on [reth](https://github.com/paradigmxyz/reth) and [revm](https://github.com/bluealloy/revm)). The rebuilt layers around the EVM do change four things worth knowing before you port anything:
+BNB is the native asset of BNB NewL1, and no new token is issued. It is bridged from BSC and pays for gas, through a native BSC ↔ BNB NewL1 bridge that is still in development. Staking it with `StakeHub` mints govBNB 1:1, a non-transferable voting ledger that carries governance weight once it is delegated.
 
-- **You pay for your declared gas limit**, not gas used — block space is sold by declared gas before execution runs ([details](./get-started/migrate-from-bsc.md#you-pay-for-your-declared-gas-limit)).
+## What This Means for Developers
+
+Existing Solidity contracts and standard wallet flows run unchanged. Contracts, opcodes, and per-operation gas costs behave exactly as on any other EVM chain, since execution builds on [reth](https://github.com/paradigmxyz/reth) and [revm](https://github.com/bluealloy/revm). Four things around it changed:
+
+- **You pay for your declared gas limit, not gas used.** Block space is sold by declared gas before execution runs ([details](./get-started/migrate-from-bsc.md#you-pay-for-your-declared-gas-limit)).
 - **There is no global mempool.** Transactions go directly to the current and next block producer, which is part of what makes pre-confirmation and Multi-Lane packing possible.
-- **`eth_getProof` is unsupported, and so are EIP-4844/EIP-7702 transactions** — see [JSON-RPC Endpoint](./developers/json_rpc/json-rpc-endpoint.md) for the complete list of RPC-surface differences.
-- **New features are additive.** Account abstraction, pre-confirmation, Multi-Lane, and the shielded pool run alongside standard transactions; none of them change how an existing contract behaves.
+- **`eth_getProof` is unsupported, and so are EIP-4844 and EIP-7702 transactions.** [JSON-RPC Endpoint](./developers/json_rpc/json-rpc-endpoint.md) lists every difference in the RPC surface.
+- **New features are additive.** Account abstraction, pre-confirmation, Multi-Lane, and the shielded pool run alongside standard transactions, and none of them change how an existing contract behaves.
 
 Start with [Migrating from BSC](./get-started/migrate-from-bsc.md) if you already ship on BSC, or the [Quick Guide](./developers/quick-guide.md) if you don't.
 
-## Network parameters
+## Network Parameters
 
 | Parameter | Value |
 |---|---|
@@ -57,8 +63,8 @@ Start with [Migrating from BSC](./get-started/migrate-from-bsc.md) if you alread
 | Consensus | Parlia PoSA, up to 64 validators |
 | Gas asset | BNB (bridged from BSC) |
 
-## Current status
+## Current Status
 
-BNB NewL1 runs today as a multi-validator devnet with real block production, P2P gossip, and end-to-end finality, and is under active development ahead of a public testnet/mainnet launch. Each feature page calls out what's shipped versus still in progress.
+BNB NewL1 runs today as a multi-validator devnet with real block production, P2P gossip, and end-to-end finality. Public testnet and mainnet are still ahead, and each feature page calls out what's shipped versus still in progress.
 
-Every interface in this manual — the `eth_*`/`newl1_*` RPC surface, the full governance lifecycle, account-abstraction key management and the `0x76` envelope, and the complete shielded-pool flow — has been exercised against a devnet built from source, with no discrepancies beyond minor response-shape corrections already reflected here. The client has moved on since: the [JSON-RPC Endpoint](./developers/json_rpc/json-rpc-endpoint.md) page is kept current against client source, so newer methods are documented from the implementation rather than from a live call.
+Every interface in this manual has been exercised against a devnet built from source: the `eth_*`/`newl1_*` RPC surface, the full governance lifecycle, account-abstraction key management and the `0x76` envelope, and the complete shielded-pool flow. The only corrections that came out of it were minor response shapes, already reflected here. The client has moved on since, so the [JSON-RPC Endpoint](./developers/json_rpc/json-rpc-endpoint.md) page is kept current against client source, and its newer methods are documented from the implementation rather than from a live call.
