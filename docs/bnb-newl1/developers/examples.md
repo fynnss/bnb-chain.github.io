@@ -21,9 +21,9 @@ rpc() { curl -s $RPC -H 'content-type: application/json' \
 Needs `curl` and `jq`. Sending transactions uses Foundry's `cast`; the subscription uses any WebSocket client.
 
 !!! note "No endpoint yet"
-    BNB NewL1 has no public network, so there is nothing to point `RPC` at today — see [Network Information](../get-started/network-info.md). These are protocol demonstrations, not an ecosystem showcase.
+    BNB NewL1 has no public network, so there is nothing to point `RPC` at today; see [Network Information](../get-started/network-info.md). These are protocol demonstrations, not an ecosystem showcase.
 
-## Ordering, execution, and finality move separately
+## Ordering, Execution, and Finality Move Separately
 
 ```bash
 rpc eth_blockNumber                      # executed tip (no params = "latest")
@@ -33,7 +33,7 @@ rpc eth_blockNumber '["safe"]'           # same, under the justified block
 
 Poll them in a loop and they advance independently. For the ordered tip plus both consensus pointers in one frame, subscribe to `newl1_subscribeNewHeads` (below).
 
-## Watch pre-confirmations live
+## Watch Pre-confirmations Live
 
 Any WebSocket client works; `websocat` here:
 
@@ -48,7 +48,7 @@ Filter to a single transaction with `"params":[{"txHash":"0x…"}]`. Chain tips 
 
 The producer feeds its own published slices to local subscribers as well as gossiping them to peers, so `WS` may point at either a producing or non-producing node.
 
-## Follow one transaction through every stage
+## Follow One Transaction Through Every Stage
 
 ```bash
 TX=$(cast send --private-key $SK --legacy --gas-price 1000000000 --gas-limit 21000 \
@@ -57,12 +57,12 @@ TX=$(cast send --private-key $SK --legacy --gas-price 1000000000 --gas-limit 210
 rpc newl1_getTransactionPreconfirmation "[\"$TX\"]"   # leader committed to including it
 rpc newl1_getTransactionStatus          "[\"$TX\"]"   # pool-plane state: ready/parked/ordered/…
 rpc eth_getTransactionByHash            "[\"$TX\"]"   # in an ordered block (not execution-gated)
-rpc eth_getTransactionReceipt           "[\"$TX\"]"   # executed — errors -38004 until then
+rpc eth_getTransactionReceipt           "[\"$TX\"]"   # executed - errors -38004 until then
 ```
 
-That ladder is the chain's design in miniature: pre-confirmed → ordered → executed → finalized, each observable on its own. A `-38004` from the receipt call means "not executed yet, retry" — distinct from `null`, which means the transaction is unknown.
+The ladder runs pre-confirmed → ordered → executed → finalized, each stage observable on its own. A `-38004` from the receipt call means "not executed yet, retry", distinct from `null`, which means the transaction is unknown.
 
-## Prove you're charged for the gas limit, not gas used
+## Prove You're Charged for the Gas Limit, Not Gas Used
 
 Send a plain transfer with a deliberately padded limit:
 
@@ -72,7 +72,7 @@ TX=$(cast send --private-key $SK --legacy --gas-price 1000000000 --gas-limit 100
 rpc eth_getTransactionReceipt "[\"$TX\"]" | jq '{gasUsed, effectiveGasPrice}'
 ```
 
-`gasUsed` comes back as `0x186a0` (100,000) — the declared limit — not the 21,000 a transfer actually burns. You paid `effectiveGasPrice × 100000`. Compare against what the work really costs:
+`gasUsed` comes back as `0x186a0` (100,000), the declared limit, not the 21,000 a transfer actually burns. You paid `effectiveGasPrice × 100000`. Compare against what the work really costs:
 
 ```bash
 rpc eth_estimateGas "[{\"from\":\"$FROM\",\"to\":\"$TO\",\"value\":\"0x1\"}]"   # 0x5208 = 21000
@@ -80,7 +80,7 @@ rpc eth_estimateGas "[{\"from\":\"$FROM\",\"to\":\"$TO\",\"value\":\"0x1\"}]"   
 
 Estimation runs with charge-by-limit disabled, so it measures real usage. [Details](../get-started/migrate-from-bsc.md#you-pay-for-your-declared-gas-limit).
 
-## Read the chain's own features
+## Read the Chain's Own Features
 
 ```bash
 rpc newl1_laneConfig                                    # live Multi-Lane quota + routes
@@ -89,6 +89,6 @@ rpc newl1_getSystemReceiptsByBlock '["latest"]'         # slashing/reward/valida
 rpc eth_getProof '[]'                                   # -32004: LtHash, not an MPT
 ```
 
-`newl1_getSystemReceiptsByBlock` is the only way to see system transactions — they never appear in `eth_getBlockReceipts` or the block's transaction list.
+`newl1_getSystemReceiptsByBlock` is the only way to see system transactions; they never appear in `eth_getBlockReceipts` or the block's transaction list.
 
 Full method list, parameters, and response shapes: [BNB NewL1 API List](./json_rpc/newl1-api-list.md).

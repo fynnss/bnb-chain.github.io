@@ -4,13 +4,13 @@ title: Transaction Lifecycle - BNB NewL1
 
 # Transaction Lifecycle
 
-A transaction progresses from submission to pool admission, optional pre-confirmation, ordering, execution, and finality. Each milestone has a specific RPC signal; this page explains which one a dApp should use.
+A transaction progresses from submission to pool admission, optional pre-confirmation, ordering, execution, and finality. Each milestone has its own RPC signal.
 
 ![BNB NewL1 transaction lifecycle](../../assets/newl1-transaction-lifecycle.svg)
 
-## 1. Submit through a Gateway
+## Submit Through a Gateway
 
-A **Gateway** is a full node used as a transaction-submission edge. A dApp sends an ordinary signed transaction to its standard JSON-RPC endpoint; there is no Gateway-specific transaction format or client RPC.
+A Gateway is a full node used as a transaction-submission edge. A dApp sends an ordinary signed transaction to its standard JSON-RPC endpoint; there is no Gateway-specific transaction format or client RPC.
 
 ```bash
 curl -X POST "$RPC" -H "Content-Type: application/json" \
@@ -29,7 +29,7 @@ The current client exposes no Gateway-specific auction or ordering API. Gateway 
 
 A transaction that fails validation is rejected immediately. It never enters the pool, and the submission RPC returns the rejection reason.
 
-## 2. Pool states
+## Pool States
 
 Once accepted, the transaction enters the receiving node's local pool. Its sender nonce determines when it becomes eligible for packing.
 
@@ -90,7 +90,7 @@ curl -X POST "$RPC" -H "Content-Type: application/json" \
 
 `baseAtExecutedTip` is the sender nonce at the executed tip; `orderedNonce` includes canonical transactions that may not have executed yet. Entries are returned in nonce order.
 
-### Default pool rules
+### Default Pool Rules
 
 These are node defaults; operators can change them.
 
@@ -99,7 +99,7 @@ These are node defaults; operators can change them.
 - A forwarded replica cannot replace a transaction received directly from a client.
 - Pool TTL defaults to 3 hours and the maintenance scan runs every 20 seconds.
 
-## 3. Receive a pre-confirmation
+## Receive a Pre-confirmation
 
 During its turn, the current block producer repeatedly packs ready transactions into signed sub-block slices. When a slice containing your transaction is broadcast, observers report it as `preconfirmed`.
 
@@ -134,36 +134,36 @@ The filter is optional; `params: []` subscribes to every transaction. Notificati
 
 `status` is `preconfirmed`, `aborted`, or `superseded`. If the subscriber falls behind, it receives `{"status":"lagged","dropped":N}`; perform a one-shot lookup to resynchronize.
 
-### One-shot lookup
+### One-Shot Lookup
 
 ```bash
 curl -X POST "$RPC" -H "Content-Type: application/json" \
   --data '{"jsonrpc":"2.0","method":"newl1_getTransactionPreconfirmation","params":["0x…"],"id":1}'
 ```
 
-The cache retains at most 8,192 events spanning at most 80 blocks. A `null` result therefore means “not in this node's current cache,” not “never pre-confirmed.”
+The cache retains at most 8,192 events spanning at most 80 blocks. A `null` result therefore means "not in this node's current cache", not "never pre-confirmed".
 
 `newl1_subscribeSubBlocks` exposes the raw signed slices for clients that verify the producer signature and transaction root themselves. The producer explicitly feeds its own published slices to local subscribers, so these subscriptions also work against the producer's RPC and on a single-node devnet.
 
 See [Transaction Pre-confirmation](../core-concepts/tx-preconfirmation.md) for the verification flow.
 
-## 4. Order, execute, and finalize
+## Order, Execute, and Finalize
 
 After the producer seals and proposes the block, ordering, execution, and their finality signals advance on separate paths:
 
 | Milestone | What it proves | How to observe it |
 |---|---|---|
-| **Ordered** | The transaction has a fixed position in an imported canonical block. It may still be reorganized before finality. | `eth_getTransactionByHash` returns non-null `blockHash` and `blockNumber`. |
-| **Executed** | The EVM has run the transaction and produced its receipt and state changes. | `eth_getTransactionReceipt` |
-| **Order-finalized** | Two-thirds of validators have voted for the containing block, making its ordering irreversible. | Compare the transaction's block number with `finalizedNumber` from `newl1_subscribeNewHeads`. |
-| **Execution-finalized** | The execution result has been committed in a later block, and that committing block is finalized. | Wait until the transaction's block number is at or below `eth_blockNumber("finalized")`. |
+| Ordered | The transaction has a fixed position in an imported canonical block. It may still be reorganized before finality. | `eth_getTransactionByHash` returns non-null `blockHash` and `blockNumber`. |
+| Executed | The EVM has run the transaction and produced its receipt and state changes. | `eth_getTransactionReceipt` |
+| Order-finalized | Two-thirds of validators have voted for the containing block, making its ordering irreversible. | Compare the transaction's block number with `finalizedNumber` from `newl1_subscribeNewHeads`. |
+| Execution-finalized | The execution result has been committed in a later block, and that committing block is finalized. | Wait until the transaction's block number is at or below `eth_blockNumber("finalized")`. |
 
 `eth_getTransactionByHash` also returns transactions still held in the queried node's local pool. A non-null result proves ordering only when `blockHash` and `blockNumber` are populated.
 
 Execution is asynchronous, so an ordered transaction may not have a receipt yet:
 
-- `eth_getTransactionReceipt` returns **`-38004`** when the transaction is ordered but not yet executed. Retry.
-- It returns **`null`** when the hash is unknown. This is not an execution-lag signal.
+- `eth_getTransactionReceipt` returns `-38004` when the transaction is ordered but not yet executed. Retry.
+- It returns `null` when the hash is unknown. This is not an execution-lag signal.
 
 BNB NewL1 extends `eth_blockNumber` with an optional tag parameter:
 
@@ -197,7 +197,7 @@ See [Async Execution](../core-concepts/async-execution.md) for how the ordered, 
 
 For anything that depends only on transaction order, order finality is sufficient. For anything that depends on execution success or state changes, wait for execution finality and re-check that the canonical block hash still matches the transaction's `blockHash`.
 
-## 5. Leave the local pool
+## Leave the Local Pool
 
 A transaction is removed from a node's pool when any of the following happens:
 
@@ -208,7 +208,7 @@ A transaction is removed from a node's pool when any of the following happens:
 
 Replacement and eviction are local to the nodes that hold the transaction. A local `evicted`, `removed`, or `unknown` result is therefore not a network-wide failure signal; check canonical inclusion before deciding whether to resubmit.
 
-## Recommended tracking flow
+## Recommended Tracking Flow
 
 1. Save the hash returned by `eth_sendRawTransaction`.
 2. Optionally watch pre-confirmations for a low-latency, revocable signal.
