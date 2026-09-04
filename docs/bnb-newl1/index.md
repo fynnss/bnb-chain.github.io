@@ -14,7 +14,7 @@ title: BNB NewL1 - High-Performance EVM L1
 <div class="section-head">
     <div class="left">
         <h1>BNB NewL1</h1>
-        <p>BNB NewL1 is a high-performance, EVM-compatible Layer 1 built for latency-sensitive on-chain activity — with sub-second finality, native account abstraction, transaction pre-confirmation, Multi-Lane reserved capacity, and an on-chain shielded (privacy) pool.</p>
+        <p>BNB NewL1 is a high-performance, EVM-compatible Layer 1 built for latency-sensitive on-chain activity: sub-second finality, native account abstraction, transaction pre-confirmation, Multi-Lane reserved capacity, and an on-chain shielded (privacy) pool.</p>
     </div>
 </div>
 
@@ -36,7 +36,7 @@ title: BNB NewL1 - High-Performance EVM L1
     </a>
     <a href="./core-concepts/account-abstraction">
         <div>Native Account Abstraction</div>
-        <p>Batched calls, session keys, and sponsored gas — no bundler required</p>
+        <p>Batched calls, session keys, and sponsored gas, with no bundler required</p>
     </a>
     <a href="./core-concepts/tx-preconfirmation">
         <div>Transaction Pre-confirmation</div>
