@@ -1001,7 +1001,7 @@
   <a href="#you-pay-for-your-declared-gas-limit" class="md-nav__link">
     <span class="md-ellipsis">
       
-        You pay for your declared gas limit
+        You Pay for Your Declared Gas Limit
       
     </span>
   </a>
@@ -1012,7 +1012,7 @@
   <a href="#carries-over-unchanged" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Carries over unchanged
+        Carries Over Unchanged
       
     </span>
   </a>
@@ -1034,7 +1034,7 @@
   <a href="#submitting-transactions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Submitting transactions
+        Submitting Transactions
       
     </span>
   </a>
@@ -1045,7 +1045,7 @@
   <a href="#reading-state-and-receipts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Reading state and receipts
+        Reading State and Receipts
       
     </span>
   </a>
@@ -1056,7 +1056,7 @@
   <a href="#indexers-and-explorers" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Indexers and explorers
+        Indexers and Explorers
       
     </span>
   </a>
@@ -2078,7 +2078,7 @@
   <a href="#you-pay-for-your-declared-gas-limit" class="md-nav__link">
     <span class="md-ellipsis">
       
-        You pay for your declared gas limit
+        You Pay for Your Declared Gas Limit
       
     </span>
   </a>
@@ -2089,7 +2089,7 @@
   <a href="#carries-over-unchanged" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Carries over unchanged
+        Carries Over Unchanged
       
     </span>
   </a>
@@ -2111,7 +2111,7 @@
   <a href="#submitting-transactions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Submitting transactions
+        Submitting Transactions
       
     </span>
   </a>
@@ -2122,7 +2122,7 @@
   <a href="#reading-state-and-receipts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Reading state and receipts
+        Reading State and Receipts
       
     </span>
   </a>
@@ -2133,7 +2133,7 @@
   <a href="#indexers-and-explorers" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Indexers and explorers
+        Indexers and Explorers
       
     </span>
   </a>
@@ -2232,22 +2232,22 @@
 
 
 <div><h1 id="migrating-from-bnb-smart-chain">Migrating from BNB Smart Chain<a class="headerlink" href="#migrating-from-bnb-smart-chain" title="Link to this section">¶</a></h1>
-<p>Same gas asset, same Parlia consensus family, same staking and governance contracts at the same addresses, unmodified EVM. Contracts deploy unchanged and standard tooling connects unchanged. The differences are almost all <strong>above</strong> the EVM — fees, mempool, block cadence, and how state is committed.</p>
+<p>Same gas asset, same Parlia consensus family, same staking and governance contracts at the same addresses, unmodified EVM. Contracts deploy unchanged and standard tooling connects unchanged. The differences are almost all above the EVM: fees, mempool, block cadence, and how state is committed.</p>
 <div class="admonition note">
 <p class="admonition-title">No public network yet</p>
 <p>There is no public testnet or mainnet endpoint yet, so treat this as a porting checklist to work through ahead of one. A native BNB NewL1 ↔ BSC bridge is designed and under development but not live; the <code>CrossChain</code> address currently holds a placeholder (see <a href="../../governance/system-contracts/">System Contracts</a>).</p>
 </div>
-<h2 id="you-pay-for-your-declared-gas-limit">You pay for your declared gas limit<a class="headerlink" href="#you-pay-for-your-declared-gas-limit" title="Link to this section">¶</a></h2>
+<h2 id="you-pay-for-your-declared-gas-limit">You Pay for Your Declared Gas Limit<a class="headerlink" href="#you-pay-for-your-declared-gas-limit" title="Link to this section">¶</a></h2>
 <p><strong>A transaction pays its full declared <code>gas_limit</code>, regardless of gas used.</strong> No unused-gas refund, and EIP-3529 refunds are void. Blocks are packed by <em>declared</em> gas before execution, so declared gas is the block space actually sold.</p>
 <ul>
 <li><strong>Padding costs money.</strong> <code>gasLimit = estimate * 1.5</code>, ethers’ default padding, and hardcoded <code>500000</code> are all pure waste here.</li>
-<li><strong><code>eth_estimateGas</code> still measures real usage</strong> — simulation runs with charge-by-limit disabled. Declare its result plus only the headroom your call path genuinely needs.</li>
-<li><strong><code>gasUsed</code> in receipts equals the declared limit</strong>, and so does <code>header.gasUsed</code>. You were charged <code>effectiveGasPrice × gasUsed</code>; actual consumption needs a trace.</li>
-<li><strong>Limit is capped at 16,777,216</strong> (2²⁴, BEP-652 / EIP-7825).</li>
-<li><strong>Same model for <a href="../../developers/transaction-types/"><code>0x76</code> AA transactions</a></strong>, including sponsor charges and session-key spend limits.</li>
+<li><strong><code>eth_estimateGas</code> still measures real usage.</strong> Simulation runs with charge-by-limit disabled. Declare its result plus only the headroom your call path genuinely needs.</li>
+<li><strong><code>gasUsed</code> in receipts equals the declared limit, and so does <code>header.gasUsed</code>.</strong> You were charged <code>effectiveGasPrice × gasUsed</code>; actual consumption needs a trace.</li>
+<li><strong>The limit is capped at 16,777,216 (2²⁴, BEP-652 / EIP-7825).</strong></li>
+<li><strong>The same model applies to <a href="../../developers/transaction-types/"><code>0x76</code> AA transactions</a>.</strong> That includes sponsor charges and session-key spend limits.</li>
 </ul>
 <p>System transactions and read-only simulation keep stock refund behavior.</p>
-<h2 id="carries-over-unchanged">Carries over unchanged<a class="headerlink" href="#carries-over-unchanged" title="Link to this section">¶</a></h2>
+<h2 id="carries-over-unchanged">Carries Over Unchanged<a class="headerlink" href="#carries-over-unchanged" title="Link to this section">¶</a></h2>
 <table>
 <thead>
 <tr>
@@ -2258,7 +2258,7 @@
 <tbody>
 <tr>
 <td>EVM semantics</td>
-<td>Full <strong>Prague</strong> from genesis — no fork ramp.</td>
+<td>Full Prague from genesis, no fork ramp.</td>
 </tr>
 <tr>
 <td>Gas asset</td>
@@ -2283,34 +2283,34 @@
 </tbody>
 </table>
 <h2 id="contracts">Contracts<a class="headerlink" href="#contracts" title="Link to this section">¶</a></h2>
-<p>Bytecode runs as-is. What changes meaning is anything reasoning about <strong>time or block cadence</strong>.</p>
+<p>Bytecode runs as-is. What changes meaning is anything that reasons about time or block cadence.</p>
 <ul>
-<li><strong><code>block.number</code> advances ~5×/second.</strong> Every block-count constant — vesting, <code>blocksPerDay</code>, TWAP windows, auction durations — is off by ~3.75× versus BSC. Recompute them, or switch to timestamp math.</li>
-<li><strong><code>block.timestamp</code> repeats</strong> across roughly five consecutive blocks. <code>require(block.timestamp &gt; lastUpdate)</code>, per-block rate limiting, and timestamp-as-unique-key all break.</li>
-<li><strong><code>block.prevrandao</code> is not randomness</strong> — it’s the millisecond part of the timestamp, <code>0–999</code>. <code>block.difficulty</code> is Parlia’s <code>2</code>/<code>1</code>.</li>
-<li><strong>The fee payer may not be the sender</strong>, and one transaction can carry up to 64 atomic calls (<code>0x76</code>).</li>
+<li><strong><code>block.number</code> advances ~5×/second.</strong> Every block-count constant (vesting, <code>blocksPerDay</code>, TWAP windows, auction durations) is off by ~3.75× versus BSC. Recompute them, or switch to timestamp math.</li>
+<li><strong><code>block.timestamp</code> repeats across roughly five consecutive blocks.</strong> <code>require(block.timestamp &gt; lastUpdate)</code>, per-block rate limiting, and timestamp-as-unique-key all break.</li>
+<li><strong><code>block.prevrandao</code> is not randomness.</strong> It is the millisecond part of the timestamp, <code>0–999</code>. <code>block.difficulty</code> is Parlia’s <code>2</code>/<code>1</code>.</li>
+<li><strong>The fee payer may not be the sender.</strong> One transaction can also carry up to 64 atomic calls (<code>0x76</code>).</li>
 <li><strong>EIP-7702 and EIP-4844 transactions are rejected.</strong> For smart accounts, use the native <a href="../../developers/transaction-types/"><code>0x76</code> envelope</a> and the <code>AccountKeychain</code> precompile instead.</li>
 </ul>
-<h2 id="submitting-transactions">Submitting transactions<a class="headerlink" href="#submitting-transactions" title="Link to this section">¶</a></h2>
+<h2 id="submitting-transactions">Submitting Transactions<a class="headerlink" href="#submitting-transactions" title="Link to this section">¶</a></h2>
 <ul>
-<li><strong>Base fee is pinned to zero (BEP-222), so the tip is the price</strong> — <code>min(maxFeePerGas, maxPriorityFeePerGas)</code>. Tipping <code>0</code> pays nothing and is rejected. Fees route through the system address to <code>ValidatorSet</code>, with BEP-95 burning its share.</li>
+<li><strong>The base fee is pinned to zero (BEP-222), so the tip is the price:</strong> <code>min(maxFeePerGas, maxPriorityFeePerGas)</code>. Tipping <code>0</code> pays nothing and is rejected. Fees route through the system address to <code>ValidatorSet</code>, with BEP-95 burning its share.</li>
 <li><strong>No global mempool.</strong> Transactions go straight to the current and next producer. No <code>txpool_*</code>, and <code>eth_subscribe("newPendingTransactions")</code> shows only this node’s admissions.</li>
-<li><strong>Replace-by-fee needs a 10% bump and is local only</strong> — it displaces the incumbent just in the pools holding it.</li>
-<li><strong>Pooled transactions expire</strong> after 3 hours by default (operator-configurable), and a nonce more than 256 ahead is rejected at submission.</li>
-<li><strong><code>eth_getTransactionCount(addr, "latest")</code> returns the ordered-tip nonce</strong> and does not look ahead. Track nonces client-side when pipelining.</li>
+<li><strong>Replace-by-fee needs a 10% bump and is local only.</strong> It displaces the incumbent just in the pools holding it.</li>
+<li><strong>Pooled transactions expire after 3 hours by default</strong>, and that timeout is operator-configurable. A nonce more than 256 ahead is rejected at submission.</li>
+<li><strong><code>eth_getTransactionCount(addr, "latest")</code> returns the ordered-tip nonce and does not look ahead.</strong> Track nonces client-side when pipelining.</li>
 </ul>
-<h2 id="reading-state-and-receipts">Reading state and receipts<a class="headerlink" href="#reading-state-and-receipts" title="Link to this section">¶</a></h2>
-<p>Where <a href="../../core-concepts/async-execution/">async execution</a> shows up — the biggest behavioral gap versus BSC.</p>
+<h2 id="reading-state-and-receipts">Reading State and Receipts<a class="headerlink" href="#reading-state-and-receipts" title="Link to this section">¶</a></h2>
+<p>This is where <a href="../../core-concepts/async-execution/">async execution</a> shows up, and it is the biggest behavioral gap versus BSC.</p>
 <ul>
 <li><strong><code>latest</code> means executed, not ordered.</strong> State reads trail the head you see on a <code>newHeads</code> subscription. Expected, not a lagging node.</li>
-<li><strong><code>-38004</code> is retryable, <code>-38001</code> is not.</strong> Ordered-but-unexecuted versus no-such-block. <code>eth_getTransactionReceipt</code> uses <code>-38004</code> for “block not executed yet” and <code>null</code> for “unknown transaction” — keep polling on the former.</li>
+<li><strong><code>-38004</code> is retryable, <code>-38001</code> is not.</strong> Ordered-but-unexecuted versus no-such-block. <code>eth_getTransactionReceipt</code> uses <code>-38004</code> for “block not executed yet” and <code>null</code> for “unknown transaction”, so keep polling on the former.</li>
 <li><strong><code>eth_getProof</code> rejects with <code>-32004</code>.</strong> State is committed with an LtHash accumulator, not an MPT (<a href="../../core-concepts/state-db/">State DB</a>). Light clients, proof-based bridges, and similar need a different design; an accumulator-native proof scheme is planned.</li>
-<li><strong><code>eth_syncing</code> is always <code>false</code></strong> — use <code>eth_health</code> plus block-number progress. Snap sync doesn’t exist.</li>
+<li><strong><code>eth_syncing</code> is always <code>false</code>.</strong> Use <code>eth_health</code> plus block-number progress. Snap sync doesn’t exist.</li>
 </ul>
-<h2 id="indexers-and-explorers">Indexers and explorers<a class="headerlink" href="#indexers-and-explorers" title="Link to this section">¶</a></h2>
+<h2 id="indexers-and-explorers">Indexers and Explorers<a class="headerlink" href="#indexers-and-explorers" title="Link to this section">¶</a></h2>
 <ul>
-<li><strong>System transactions are invisible in the block body.</strong> Slashing, deposits, finality rewards, validator-set updates, and shielded drains are not in the transaction list and not counted in <code>header.gasUsed</code>. Read them via <a href="../../developers/json_rpc/newl1-api-list/#newl1_getsystemreceiptsbyblock"><code>newl1_getSystemReceiptsByBlock</code></a> — they never appear in <code>eth_getBlockReceipts</code>.</li>
-<li><strong>Blocks carry <code>systemTransactionsRoot</code> and <code>commitments</code></strong>, and <code>stateRoot</code> / <code>receiptsRoot</code> / <code>logsBloom</code> / <code>gasUsed</code> are <code>null</code> while a block is ordered but unexecuted. Strict deserializers fail at the tip.</li>
+<li><strong>System transactions are invisible in the block body.</strong> Slashing, deposits, finality rewards, validator-set updates, and shielded drains are not in the transaction list and not counted in <code>header.gasUsed</code>. Read them via <a href="../../developers/json_rpc/newl1-api-list/#newl1_getsystemreceiptsbyblock"><code>newl1_getSystemReceiptsByBlock</code></a>; they never appear in <code>eth_getBlockReceipts</code>.</li>
+<li><strong>Blocks carry <code>systemTransactionsRoot</code> and <code>commitments</code>.</strong> <code>stateRoot</code>, <code>receiptsRoot</code>, <code>logsBloom</code>, and <code>gasUsed</code> are <code>null</code> while a block is ordered but unexecuted, and strict deserializers fail at the tip.</li>
 <li><strong><code>newl1_subscribeNewHeads</code></strong> delivers head, justified, and finalized numbers and hashes in one frame per canonical advance.</li>
 </ul>
 <p>Once you’re ported, the <a href="../../developers/quick-guide/">Quick Guide</a> covers what BNB NewL1 adds on top: pre-confirmation, Multi-Lane, native account abstraction, and the shielded pool.</p></div>
@@ -2334,7 +2334,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 2, 2026 06:15:24 UTC">September 2, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 4, 2026 01:45:28 UTC">September 4, 2026</span>
   </span>
 
     

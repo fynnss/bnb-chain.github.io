@@ -1482,7 +1482,7 @@
   <a href="#confirmation-ladder" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Confirmation ladder
+        Confirmation Ladder
       
     </span>
   </a>
@@ -1493,12 +1493,12 @@
   <a href="#how-to-use-it" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How to use it
+        How to Use It
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="How to use it">
+    <nav class="md-nav" aria-label="How to Use It">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1527,7 +1527,7 @@
   <a href="#self-verification" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Self-verification
+        Self-Verification
       
     </span>
   </a>
@@ -2106,7 +2106,7 @@
   <a href="#confirmation-ladder" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Confirmation ladder
+        Confirmation Ladder
       
     </span>
   </a>
@@ -2117,12 +2117,12 @@
   <a href="#how-to-use-it" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How to use it
+        How to Use It
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="How to use it">
+    <nav class="md-nav" aria-label="How to Use It">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2151,7 +2151,7 @@
   <a href="#self-verification" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Self-verification
+        Self-Verification
       
     </span>
   </a>
@@ -2266,16 +2266,16 @@
 
 
 <div><h1 id="transaction-pre-confirmation">Transaction Pre-confirmation<a class="headerlink" href="#transaction-pre-confirmation" title="Link to this section">¶</a></h1>
-<p>Transaction pre-confirmation lets a client learn — in roughly <strong>20 milliseconds</strong>, compared to waiting a full block interval or more — that the validator currently building a block has committed to including their transaction at a specific position within it. It is always-on network infrastructure (every node relays and serves it), not a per-operator opt-in, though only the current block producer originates a stream at any given moment.</p>
+<p>Transaction pre-confirmation lets a client learn in roughly 20 milliseconds, rather than after a full block interval or more, that the validator currently building a block has committed to including their transaction at a specific position within it. It is always-on network infrastructure (every node relays and serves it), not a per-operator opt-in, though only the current block producer originates a stream at any given moment.</p>
 <h2 id="guarantees">Guarantees<a class="headerlink" href="#guarantees" title="Link to this section">¶</a></h2>
-<p>Pre-confirmation is a <strong>best-effort, validator-signed ordering-inclusion promise</strong>. It says nothing about execution success and nothing about finality:</p>
+<p>Pre-confirmation is a best-effort, validator-signed promise about ordering and inclusion. It says nothing about execution success and nothing about finality:</p>
 <ul>
-<li>It never touches the vote pool, fork choice, or finality logic — it’s purely advisory and read-only with respect to consensus.</li>
+<li>It never touches the vote pool, fork choice, or finality logic; it is purely advisory and read-only with respect to consensus.</li>
 <li>A bad or dishonest stream can mislead a subscriber, but it can never affect the chain itself.</li>
-<li>Pre-confirmations <strong>can and do get revoked</strong> (reported as <code>aborted</code> or <code>superseded</code> on the same subscription) — this is expected, normal behavior, not a fault. Applications must handle revocation rather than treating “pre-confirmed” as final.</li>
+<li>Pre-confirmations can and do get revoked, reported as <code>aborted</code> or <code>superseded</code> on the same subscription. That is expected behavior, not a fault. Applications must handle revocation rather than treating “pre-confirmed” as final.</li>
 </ul>
-<h2 id="confirmation-ladder">Confirmation ladder<a class="headerlink" href="#confirmation-ladder" title="Link to this section">¶</a></h2>
-<p>Think of transaction status as progressing through several milestones. Ordering and execution advance independently after inclusion:</p>
+<h2 id="confirmation-ladder">Confirmation Ladder<a class="headerlink" href="#confirmation-ladder" title="Link to this section">¶</a></h2>
+<p>Transaction status progresses through several milestones, and ordering and execution advance independently after inclusion:</p>
 <table>
 <thead>
 <tr>
@@ -2298,7 +2298,7 @@
 <tr>
 <td><code>order-finalized</code></td>
 <td>~1–few block intervals</td>
-<td>Two-thirds of validators voted for the containing block (see <a href="../consensus/">Consensus</a>) — its order is irreversible.</td>
+<td>Two-thirds of validators voted for the containing block (see <a href="../consensus/">Consensus</a>), so its order is irreversible.</td>
 </tr>
 <tr>
 <td><code>executed</code></td>
@@ -2313,18 +2313,18 @@
 </tbody>
 </table>
 <p>Read raw order finality from <code>finalizedNumber</code> on <code>newl1_subscribeNewHeads</code>. For anything that depends on execution success or state changes, wait until the transaction’s block is at or below <code>eth_blockNumber("finalized")</code>, then re-check the canonical block hash.</p>
-<h2 id="how-to-use-it">How to use it<a class="headerlink" href="#how-to-use-it" title="Link to this section">¶</a></h2>
+<h2 id="how-to-use-it">How to Use It<a class="headerlink" href="#how-to-use-it" title="Link to this section">¶</a></h2>
 <h3 id="rpc-websocket">RPC (WebSocket)<a class="headerlink" href="#rpc-websocket" title="Link to this section">¶</a></h3>
 <ul>
-<li><strong><code>newl1_subscribePreconfirmations</code></strong> — subscribe to node-interpreted pre-confirmation events: <code>{txHash, blockNumber, parentHash, subBlockIndex, subBlockHash, position, leader, timestampMs, status}</code>. Accepts an optional <code>{txHash}</code> filter (no sender-level filter). Also emits <code>{"status": "lagged", "dropped": n}</code> flow-control frames if the subscriber falls behind, so a missed revocation is never silent.</li>
-<li><strong><code>newl1_subscribeSubBlocks</code></strong> — subscribe to the raw, signed sub-blocks as gossiped, for clients that prefer to independently verify rather than trust the node’s interpretation.</li>
+<li><strong><code>newl1_subscribePreconfirmations</code></strong> streams node-interpreted pre-confirmation events: <code>{txHash, blockNumber, parentHash, subBlockIndex, subBlockHash, position, leader, timestampMs, status}</code>. Accepts an optional <code>{txHash}</code> filter (no sender-level filter). Also emits <code>{"status": "lagged", "dropped": n}</code> flow-control frames if the subscriber falls behind, so a missed revocation is never silent.</li>
+<li><strong><code>newl1_subscribeSubBlocks</code></strong> streams the raw, signed sub-blocks as gossiped, for clients that prefer to verify independently rather than trust the node’s interpretation.</li>
 </ul>
 <h3 id="rpc-http">RPC (HTTP)<a class="headerlink" href="#rpc-http" title="Link to this section">¶</a></h3>
 <ul>
-<li><strong><code>newl1_getTransactionPreconfirmation(txHash)</code></strong> — one-shot cache lookup. Cache retention is short (roughly 80 blocks); a <code>null</code> result does not mean the transaction was never pre-confirmed, only that it’s outside the retention window or wasn’t tracked.</li>
-<li><strong><code>newl1_getValidatorSchedule</code></strong> — current validator set, RPC endpoints, current leader index, <code>epoch_length</code>/<code>turn_length</code>, and next rotation block — used to independently verify who the leader should be.</li>
+<li><strong><code>newl1_getTransactionPreconfirmation(txHash)</code></strong> is a one-shot cache lookup. Cache retention is short (roughly 80 blocks); a <code>null</code> result does not mean the transaction was never pre-confirmed, only that it’s outside the retention window or wasn’t tracked.</li>
+<li><strong><code>newl1_getValidatorSchedule</code></strong> returns the current validator set, RPC endpoints, current leader index, <code>epoch_length</code>/<code>turn_length</code>, and next rotation block, which is what you need to independently verify who the leader should be.</li>
 </ul>
-<h3 id="self-verification">Self-verification<a class="headerlink" href="#self-verification" title="Link to this section">¶</a></h3>
+<h3 id="self-verification">Self-Verification<a class="headerlink" href="#self-verification" title="Link to this section">¶</a></h3>
 <p>A client that doesn’t want to trust the node’s own interpretation can verify a raw sub-block itself:</p>
 <ol>
 <li>Subscribe to <code>newl1_subscribeSubBlocks</code>.</li>
@@ -2336,7 +2336,7 @@
 <ul>
 <li>Ordering-only: a pre-confirmation never implies execution will succeed.</li>
 <li>Append-only within its ~20 ms window: a later, higher-fee transaction cannot reorder transactions that have already been streamed.</li>
-<li>The promise dies with a leader failover — if the current leader goes offline before finishing its turn, any of its outstanding pre-confirmations may be superseded by the next leader’s block.</li>
+<li>The promise dies with a leader failover. If the current leader goes offline before finishing its turn, any of its outstanding pre-confirmations may be superseded by the next leader’s block.</li>
 <li>Coverage can be incomplete during mixed-version network rollouts.</li>
 <li>A conservative (fail-closed) break rate is expected and is a health metric to monitor, not necessarily a sign of a problem.</li>
 </ul>
@@ -2364,7 +2364,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 1, 2026 10:51:17 UTC">September 1, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 4, 2026 01:45:28 UTC">September 4, 2026</span>
   </span>
 
     

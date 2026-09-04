@@ -2155,7 +2155,7 @@
 <tr>
 <td><code>CrossChain</code></td>
 <td><code>0x0000000000000000000000000000000000002000</code></td>
-<td>Placeholder occupying BSC’s cross-chain address. No bridge traffic and no governance messages today — see the note below.</td>
+<td>Placeholder occupying BSC’s cross-chain address. No bridge traffic and no governance messages today; see the note below.</td>
 </tr>
 <tr>
 <td><code>StakeHub</code></td>
@@ -2175,7 +2175,7 @@
 <tr>
 <td><code>GovToken</code></td>
 <td><code>0x0000000000000000000000000000000000002005</code></td>
-<td>govBNB — the non-transferable voting-power token, minted 1:1 by <code>StakeHub</code>.</td>
+<td>govBNB, the non-transferable voting-power token, minted 1:1 by <code>StakeHub</code>.</td>
 </tr>
 <tr>
 <td><code>Timelock</code></td>
@@ -2190,7 +2190,7 @@
 <tr>
 <td><code>AccountKeychain</code> (precompile)</td>
 <td><code>0x0000000000000000000000000000000000004000</code></td>
-<td><a href="../../core-concepts/account-abstraction/">Account abstraction</a> key registry — authorize/revoke/read delegated keys.</td>
+<td><a href="../../core-concepts/account-abstraction/">Account abstraction</a> key registry for authorizing, revoking, and reading delegated keys.</td>
 </tr>
 <tr>
 <td><code>SignatureVerifier</code> (precompile)</td>
@@ -2200,7 +2200,7 @@
 <tr>
 <td><code>ShieldedPool</code></td>
 <td><code>0x0000000000000000000000000000000000005000</code></td>
-<td><a href="../../core-concepts/privacy/">Privacy</a> system contract — deposit / withdraw / transfer / atomic-call, with an embedded zk-proof verifier.</td>
+<td><a href="../../core-concepts/privacy/">Privacy</a> system contract covering deposit, withdraw, transfer, and atomic-call, with an embedded zk-proof verifier.</td>
 </tr>
 <tr>
 <td><code>ShieldedAuthVerifier</code></td>
@@ -2212,9 +2212,9 @@
 <h2 id="notes">Notes<a class="headerlink" href="#notes" title="Link to this section">¶</a></h2>
 <ul>
 <li><code>ValidatorSet</code>, <code>SlashIndicator</code>, <code>SystemReward</code>, <code>StakeHub</code>, <code>StakeCredit</code>, <code>GovToken</code>, <code>Governor</code>, and <code>Timelock</code> are the staking/governance stack carried over from BNB Smart Chain, kept at the same addresses so their embedded bytecode’s internal cross-references remain valid. <code>Governor</code>/<code>Timelock</code> are recompiled with BNB NewL1’s own governance-timing constants (voting period, proposal threshold, timelock delay), which are still devnet-only values and not finalized for a public network.</li>
-<li><code>CrossChain</code> exists purely so <code>ValidatorSet</code>’s epoch-update logic finds a non-empty contract at that address, mirroring a BSC internal check — it does not carry governance traffic on BNB NewL1.</li>
-<li><code>LaneRegistry</code>, <code>AccountKeychain</code>/<code>SignatureVerifier</code>, and <code>ShieldedPool</code>/<code>ShieldedAuthVerifier</code> are BNB NewL1–original — they have no BNB Smart Chain equivalent.</li>
-<li><code>AccountKeychain</code> and <code>SignatureVerifier</code> are <strong>enshrined precompiles</strong> (Rust logic compiled directly into the EVM’s precompile map), not deployed bytecode, which is why they sit in their own reserved address band separate from the deployed system contracts above.</li>
+<li><code>CrossChain</code> exists purely so <code>ValidatorSet</code>’s epoch-update logic finds a non-empty contract at that address, mirroring a BSC internal check. It does not carry governance traffic on BNB NewL1.</li>
+<li><code>LaneRegistry</code>, <code>AccountKeychain</code>/<code>SignatureVerifier</code>, and <code>ShieldedPool</code>/<code>ShieldedAuthVerifier</code> are BNB NewL1–original, with no BNB Smart Chain equivalent.</li>
+<li><code>AccountKeychain</code> and <code>SignatureVerifier</code> are enshrined precompiles (Rust logic compiled directly into the EVM’s precompile map) rather than deployed bytecode, which is why they sit in their own reserved address band separate from the deployed system contracts above.</li>
 </ul></div>
 
 
@@ -2236,7 +2236,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 18, 2026 06:27:40 UTC">August 18, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 4, 2026 01:45:28 UTC">September 4, 2026</span>
   </span>
 
     

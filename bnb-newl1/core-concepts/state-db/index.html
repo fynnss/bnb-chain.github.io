@@ -1415,12 +1415,12 @@
   <a href="#how-the-commitment-works" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How the commitment works
+        How the Commitment Works
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="How the commitment works">
+    <nav class="md-nav" aria-label="How the Commitment Works">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1438,7 +1438,7 @@
   <a href="#from-entry-to-accumulator" class="md-nav__link">
     <span class="md-ellipsis">
       
-        From entry to accumulator
+        From Entry to Accumulator
       
     </span>
   </a>
@@ -1449,7 +1449,7 @@
   <a href="#the-header-field" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The header field
+        The Header Field
       
     </span>
   </a>
@@ -1460,7 +1460,7 @@
   <a href="#applying-a-block" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Applying a block
+        Applying a Block
       
     </span>
   </a>
@@ -1487,7 +1487,7 @@
   <a href="#forks-reorgs-and-restarts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Forks, reorgs, and restarts
+        Forks, Reorgs, and Restarts
       
     </span>
   </a>
@@ -1498,7 +1498,7 @@
   <a href="#why-cumulative-matters-for-validation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why cumulative matters for validation
+        Why Cumulative Matters for Validation
       
     </span>
   </a>
@@ -1509,7 +1509,7 @@
   <a href="#storage-layout" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Storage layout
+        Storage Layout
       
     </span>
   </a>
@@ -1520,7 +1520,7 @@
   <a href="#what-changes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What changes
+        What Changes
       
     </span>
   </a>
@@ -1531,7 +1531,7 @@
   <a href="#current-status" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Current status
+        Current Status
       
     </span>
   </a>
@@ -2139,12 +2139,12 @@
   <a href="#how-the-commitment-works" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How the commitment works
+        How the Commitment Works
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="How the commitment works">
+    <nav class="md-nav" aria-label="How the Commitment Works">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2162,7 +2162,7 @@
   <a href="#from-entry-to-accumulator" class="md-nav__link">
     <span class="md-ellipsis">
       
-        From entry to accumulator
+        From Entry to Accumulator
       
     </span>
   </a>
@@ -2173,7 +2173,7 @@
   <a href="#the-header-field" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The header field
+        The Header Field
       
     </span>
   </a>
@@ -2184,7 +2184,7 @@
   <a href="#applying-a-block" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Applying a block
+        Applying a Block
       
     </span>
   </a>
@@ -2211,7 +2211,7 @@
   <a href="#forks-reorgs-and-restarts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Forks, reorgs, and restarts
+        Forks, Reorgs, and Restarts
       
     </span>
   </a>
@@ -2222,7 +2222,7 @@
   <a href="#why-cumulative-matters-for-validation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why cumulative matters for validation
+        Why Cumulative Matters for Validation
       
     </span>
   </a>
@@ -2233,7 +2233,7 @@
   <a href="#storage-layout" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Storage layout
+        Storage Layout
       
     </span>
   </a>
@@ -2244,7 +2244,7 @@
   <a href="#what-changes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What changes
+        What Changes
       
     </span>
   </a>
@@ -2255,7 +2255,7 @@
   <a href="#current-status" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Current status
+        Current Status
       
     </span>
   </a>
@@ -2354,8 +2354,8 @@
 
 
 <div><h1 id="state-db">State DB<a class="headerlink" href="#state-db" title="Link to this section">¶</a></h1>
-<p>BNB NewL1 keeps world state in a <strong>flat key-value store</strong> and commits it with a <strong>cumulative lattice hash (LtHash)</strong>: every live account and storage slot is hashed into a fixed-size vector, and the commitment is the sum of them all. The header still carries a 32-byte <code>state_root</code>, so nothing about the field’s shape changes — what changes is how that value is produced, what it costs to produce, and what can be proven from it.</p>
-<p>The property that shapes everything downstream is that the commitment is <strong>updated, not rebuilt</strong>: changing one account costs the same whether the chain holds a thousand accounts or a billion, and the changes in a block can be folded in from any thread, in any order. That is what lets the commitment ride along with <a href="../async-execution/">async execution</a> instead of competing with it for the execution budget.</p>
+<p>BNB NewL1 keeps world state in a flat key-value store and commits it with a cumulative lattice hash (LtHash): every live account and storage slot is hashed into a fixed-size vector, and the commitment is the sum of them all. The header still carries a 32-byte <code>state_root</code>, so nothing about the field’s shape changes. What changes is how that value is produced, what it costs to produce, and what can be proven from it.</p>
+<p>The property that shapes everything downstream is that the commitment is updated rather than rebuilt: changing one account costs the same whether the chain holds a thousand accounts or a billion, and the changes in a block can be folded in from any thread, in any order. That is what lets the commitment ride along with <a href="../async-execution/">async execution</a> instead of competing with it for the execution budget.</p>
 <table>
 <thead>
 <tr>
@@ -2390,7 +2390,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="how-the-commitment-works">How the commitment works<a class="headerlink" href="#how-the-commitment-works" title="Link to this section">¶</a></h2>
+<h2 id="how-the-commitment-works">How the Commitment Works<a class="headerlink" href="#how-the-commitment-works" title="Link to this section">¶</a></h2>
 <h3 id="entries">Entries<a class="headerlink" href="#entries" title="Link to this section">¶</a></h3>
 <p>Every live piece of state is one entry, encoded with a frozen, consensus-critical layout:</p>
 <table>
@@ -2414,46 +2414,46 @@
 </tr>
 </tbody>
 </table>
-<p>Three encoding decisions are worth understanding, because each one is load-bearing:</p>
+<p>Three encoding decisions are load-bearing:</p>
 <ul>
 <li><strong>The leading kind byte is domain separation, not decoration.</strong> Without it, an attacker could choose a 53-byte storage key that re-encodes the bytes of a 21-byte account key, and produce two different states with the same commitment.</li>
 <li><strong>Bytecode is committed by hash, not by content.</strong> Only <code>code_hash</code> is part of an account entry; the code itself is stored content-addressed alongside, so identical bytecode deployed a thousand times is stored once and still commits distinctly per account.</li>
 <li><strong>A slot holding zero is not an entry.</strong> The EVM cannot distinguish an unset slot from an explicitly-zeroed one, so committing them separately would let the same observable state have two different commitments.</li>
 </ul>
-<h3 id="from-entry-to-accumulator">From entry to accumulator<a class="headerlink" href="#from-entry-to-accumulator" title="Link to this section">¶</a></h3>
-<p>Each entry is hashed as <code>BLAKE3(domain_tag ‖ 0x00 ‖ key ‖ 0x00 ‖ value)</code> in extendable-output mode and read out as <strong>1024 little-endian <code>u16</code> elements</strong>. That vector is the entry’s lattice hash. The domain tag and the null separators are part of chain identity — they make it impossible for a different <code>(domain, key, value)</code> triple to concatenate into the same input.</p>
-<p>The <strong>world accumulator</strong> is the element-wise wrapping <code>u16</code> sum of the lattice hashes of every live entry. Empty state is the all-zero vector. Three properties follow, and they are the whole point:</p>
+<h3 id="from-entry-to-accumulator">From Entry to Accumulator<a class="headerlink" href="#from-entry-to-accumulator" title="Link to this section">¶</a></h3>
+<p>Each entry is hashed as <code>BLAKE3(domain_tag ‖ 0x00 ‖ key ‖ 0x00 ‖ value)</code> in extendable-output mode and read out as 1024 little-endian <code>u16</code> elements. That vector is the entry’s lattice hash. The domain tag and the null separators are part of chain identity: they make it impossible for a different <code>(domain, key, value)</code> triple to concatenate into the same input.</p>
+<p>The world accumulator is the element-wise wrapping <code>u16</code> sum of the lattice hashes of every live entry. Empty state is the all-zero vector. Three properties follow:</p>
 <ul>
-<li><strong>Homomorphic.</strong> Adding an entry is wrapping addition (<code>mix_in</code>); removing it is wrapping subtraction (<code>mix_out</code>). They are exact inverses, so updating one entry is <code>mix_out(old) + mix_in(new)</code> — <strong>O(1) regardless of how large the state is</strong>, and reversible: a change can be backed out exactly, given the entry it came from.</li>
-<li><strong>Commutative.</strong> The order in which a block’s state changes are folded in does not affect the result, so a block’s diff can be hashed in parallel shards and reduced without locks — which is what keeps the commitment out of the way of parallel execution.</li>
-<li><strong>Bit-identical everywhere.</strong> Plain <code>wrapping_add</code>/<code>wrapping_sub</code> over <code>[u16; 1024]</code> — no SIMD intrinsics, no floating point, no architecture-dependent behaviour. Every validator on every platform computes the same bytes, which is a hard requirement for something consensus votes on.</li>
+<li><strong>Homomorphic.</strong> Adding an entry is wrapping addition (<code>mix_in</code>); removing it is wrapping subtraction (<code>mix_out</code>). They are exact inverses, so updating one entry is <code>mix_out(old) + mix_in(new)</code>, which is O(1) regardless of how large the state is. It is also reversible: a change can be backed out exactly, given the entry it came from.</li>
+<li><strong>Commutative.</strong> The order in which a block’s state changes are folded in does not affect the result, so a block’s diff can be hashed in parallel shards and reduced without locks, which is what keeps the commitment out of the way of parallel execution.</li>
+<li><strong>Bit-identical everywhere.</strong> Plain <code>wrapping_add</code>/<code>wrapping_sub</code> over <code>[u16; 1024]</code>, with no SIMD intrinsics, no floating point, and no architecture-dependent behavior. Every validator on every platform computes the same bytes, which is a hard requirement for something consensus votes on.</li>
 </ul>
 <p>Security rests on the Short Integer Solution problem: forging a second state set with the same accumulator means finding a short lattice vector that sums to zero. The 1024 × <code>u16</code> dimension targets ~128-bit security, following Bellare–Micciancio (1997) and the same construction Solana adopted in SIMD-0215.</p>
-<h3 id="the-header-field">The header field<a class="headerlink" href="#the-header-field" title="Link to this section">¶</a></h3>
+<h3 id="the-header-field">The Header Field<a class="headerlink" href="#the-header-field" title="Link to this section">¶</a></h3>
 <p>The 2048-byte accumulator is compressed to the header’s 32-byte <code>state_root</code> as <code>BLAKE3(accumulator_bytes)</code>. Nodes keep the full accumulator; the chain publishes its digest, so the header stays the same size and shape as any EVM chain’s.</p>
-<h3 id="applying-a-block">Applying a block<a class="headerlink" href="#applying-a-block" title="Link to this section">¶</a></h3>
-<p>Execution hands the accumulator a <strong>diff</strong>, never a full state scan. When the EVM finishes a block, its post-execution bundle is projected into three kinds of change — account created or updated, account deleted, storage slot written — and each one folds into the parent block’s accumulator. The result is the block’s post-state commitment, published in its <a href="../async-execution/#how-it-works"><code>ExecutionCommitment</code></a>.</p>
+<h3 id="applying-a-block">Applying a Block<a class="headerlink" href="#applying-a-block" title="Link to this section">¶</a></h3>
+<p>Execution hands the accumulator a diff, never a full state scan. When the EVM finishes a block, its post-execution bundle is projected into three kinds of change (account created or updated, account deleted, storage slot written), and each one folds into the parent block’s accumulator. The result is the block’s post-state commitment, published in its <a href="../async-execution/#how-it-works"><code>ExecutionCommitment</code></a>.</p>
 <p>Because the accumulator is bit-identical only when its inputs are, the projection has to be exact about cases where “changed” is subtle:</p>
 <ul>
 <li><strong>No-op writes are skipped.</strong> A storage write whose old and new value are equal contributes nothing; folding it in as a change would be harmless arithmetically but is skipped so the work scales with real changes.</li>
-<li><strong><code>SELFDESTRUCT</code> under EIP-6780</strong> only removes accounts created in the same transaction, whose pre-state storage is empty by construction — so there are no stale slot entries to subtract. A <code>SELFDESTRUCT</code> against a pre-existing contract zeroes its balance and leaves the account in place, which is an ordinary account update.</li>
+<li><strong><code>SELFDESTRUCT</code> under EIP-6780 only removes accounts created in the same transaction.</strong> Their pre-state storage is empty by construction, so there are no stale slot entries to subtract. A <code>SELFDESTRUCT</code> against a pre-existing contract zeroes its balance and leaves the account in place, which is an ordinary account update.</li>
 <li><strong>EIP-161 empty-account cleanup</strong> deletes an account that has no storage, so a single account-entry subtraction is the whole change.</li>
 </ul>
 <h3 id="genesis">Genesis<a class="headerlink" href="#genesis" title="Link to this section">¶</a></h3>
-<p>The genesis accumulator is folded over the chainspec’s <code>alloc</code> under the same rules — every listed account included unconditionally, zero-valued slots excluded — and its digest becomes the genesis header’s <code>state_root</code>. There is no fork-activation gate: the chain has used one commitment scheme since block 0.</p>
-<h2 id="forks-reorgs-and-restarts">Forks, reorgs, and restarts<a class="headerlink" href="#forks-reorgs-and-restarts" title="Link to this section">¶</a></h2>
-<p>Accumulators are tracked <strong>per block hash</strong>, not per height. A node keeps the accumulators for the last 256 blocks in memory, so competing branches each carry their own state commitment simultaneously.</p>
+<p>The genesis accumulator is folded over the chainspec’s <code>alloc</code> under the same rules (every listed account included unconditionally, zero-valued slots excluded), and its digest becomes the genesis header’s <code>state_root</code>. There is no fork-activation gate: the chain has used one commitment scheme since block 0.</p>
+<h2 id="forks-reorgs-and-restarts">Forks, Reorgs, and Restarts<a class="headerlink" href="#forks-reorgs-and-restarts" title="Link to this section">¶</a></h2>
+<p>Accumulators are tracked per block hash, not per height. A node keeps the accumulators for the last 256 blocks in memory, so competing branches each carry their own state commitment simultaneously.</p>
 <p>This makes reorg handling structural rather than expensive. Switching to a sibling branch is a map lookup of that branch’s parent accumulator, not a state rewind and re-hash; and because <code>mix_in</code> and <code>mix_out</code> are exact inverses, backing out a block’s changes is subtraction rather than recomputation. Below that window, only finalized accumulators matter, and those are on disk.</p>
 <p>Two guards are worth knowing about if you run a node:</p>
 <ul>
-<li><strong>Genesis mismatch is fatal at boot.</strong> If the accumulator stored in the datadir disagrees with the one computed from the chainspec — an operator pointing an existing datadir at a different chain, or an edited <code>alloc</code> — the node refuses to start rather than silently forking its view from its peers.</li>
+<li><strong>Genesis mismatch is fatal at boot.</strong> If the accumulator stored in the datadir disagrees with the one computed from the chainspec (an operator pointing an existing datadir at a different chain, or an edited <code>alloc</code>), the node refuses to start rather than silently forking its view from its peers.</li>
 <li><strong>Restart replays a short window.</strong> On boot the node reseeds from the persisted finalized tip and re-executes the trailing persisted blocks, so it needs those blocks’ parent accumulators retained; the restored window is sized to the maximum execution lag.</li>
 </ul>
-<h2 id="why-cumulative-matters-for-validation">Why cumulative matters for validation<a class="headerlink" href="#why-cumulative-matters-for-validation" title="Link to this section">¶</a></h2>
-<p>Because the accumulator is a running sum over all live state, it is not a per-block checksum — every block’s commitment depends on all state that came before it. A single divergent entry anywhere poisons that block’s commitment <em>and every descendant’s</em>, and no subsequent block can quietly repair it.</p>
-<p>That is what makes <a href="../async-execution/#correctness-enforcement">execution-result disputes decidable</a> in a chain where validators vote on ordering rather than on someone else’s execution result: a validator that executes a block locally and computes a different accumulator abstains, and a wrong result can never gather the vote quorum it needs to finalize. Divergence detection itself is a 32-byte comparison — no tree walk, no per-account reconciliation, and it happens within a bounded number of blocks.</p>
-<h2 id="storage-layout">Storage layout<a class="headerlink" href="#storage-layout" title="Link to this section">¶</a></h2>
-<p>The commitment is defined over <strong>plain</strong> keys, so plain state — not keccak-hashed state — is the canonical on-disk representation. Hashing the keys would discard the address preimages, and those preimages are what state sync serves and what an audit re-derives the accumulator from: any node can walk its own plain state, recompute the accumulator from scratch, and compare it against what the chain published.</p>
+<h2 id="why-cumulative-matters-for-validation">Why Cumulative Matters for Validation<a class="headerlink" href="#why-cumulative-matters-for-validation" title="Link to this section">¶</a></h2>
+<p>Because the accumulator is a running sum over all live state, it is not a per-block checksum: every block’s commitment depends on all state that came before it. A single divergent entry anywhere poisons that block’s commitment and every descendant’s, and no subsequent block can quietly repair it.</p>
+<p>That is what makes <a href="../async-execution/#correctness-enforcement">execution-result disputes decidable</a> in a chain where validators vote on ordering rather than on someone else’s execution result: a validator that executes a block locally and computes a different accumulator abstains, and a wrong result can never gather the vote quorum it needs to finalize. Divergence detection itself is a 32-byte comparison, with no tree walk and no per-account reconciliation, and it happens within a bounded number of blocks.</p>
+<h2 id="storage-layout">Storage Layout<a class="headerlink" href="#storage-layout" title="Link to this section">¶</a></h2>
+<p>The commitment is defined over plain keys, so plain state rather than keccak-hashed state is the canonical on-disk representation. Hashing the keys would discard the address preimages, and those preimages are what state sync serves and what an audit re-derives the accumulator from: any node can walk its own plain state, recompute the accumulator from scratch, and compare it against what the chain published.</p>
 <p>State is split across three stores, each matched to its write pattern:</p>
 <table>
 <thead>
@@ -2465,33 +2465,33 @@
 </thead>
 <tbody>
 <tr>
-<td><strong>MDBX</strong></td>
+<td>MDBX</td>
 <td>Plain account and storage state, LtHash accumulators, consensus snapshots</td>
 <td>Canonical state; transactional reads on the execution path</td>
 </tr>
 <tr>
-<td><strong>Static files</strong></td>
+<td>Static files</td>
 <td>Headers, transactions, receipts, senders, account/storage changesets</td>
 <td>Append-only, sequential writes with no index to maintain</td>
 </tr>
 <tr>
-<td><strong>RocksDB</strong></td>
+<td>RocksDB</td>
 <td>History indices, transaction-hash lookup</td>
 <td>Random-keyed writes that degrade a B-tree over time; an LSM absorbs them</td>
 </tr>
 </tbody>
 </table>
-<p>Finalized accumulators are archived one 2 KB row per block, written in the same transaction as the block, its receipts, and its state — roughly 0.9 GB per day at a 200 ms block interval. They are archive data on the same footing as receipts and state history, and are retained in full today; pruning them on the same retention distance as receipts is a scheduled follow-up.</p>
-<h2 id="what-changes">What changes<a class="headerlink" href="#what-changes" title="Link to this section">¶</a></h2>
-<p><strong>If you write contracts or dApps</strong>, nothing does. Contracts, opcodes, gas costs, and ordinary state reads (<code>eth_getBalance</code>, <code>eth_getStorageAt</code>, <code>eth_call</code>) behave exactly as on any EVM chain, and <code>stateRoot</code> is still a 32-byte field on the header.</p>
-<p><strong>If you build bridges, light clients, or anything proof-based</strong>, <code>eth_getProof</code> always rejects with <code>-32004</code>. The commitment is a sum, not a tree, so there is no inclusion path to hand over as a proof: it can attest that a <em>whole state</em> is what it claims to be, but not that one account belongs to it. Until an accumulator-native inclusion proof ships, verification has to rest on the chain’s <a href="../consensus/">BLS finality votes</a> and full-node responses rather than on a self-verifying state proof.</p>
-<p><strong>If you run infrastructure</strong>, two operational differences matter:</p>
+<p>Finalized accumulators are archived one 2 KB row per block, written in the same transaction as the block, its receipts, and its state, which is roughly 0.9 GB per day at a 200 ms block interval. They are archive data on the same footing as receipts and state history, and are retained in full today; pruning them on the same retention distance as receipts is a scheduled follow-up.</p>
+<h2 id="what-changes">What Changes<a class="headerlink" href="#what-changes" title="Link to this section">¶</a></h2>
+<p><strong>If you write contracts or dApps, nothing changes.</strong> Contracts, opcodes, gas costs, and ordinary state reads (<code>eth_getBalance</code>, <code>eth_getStorageAt</code>, <code>eth_call</code>) behave exactly as on any EVM chain, and <code>stateRoot</code> is still a 32-byte field on the header.</p>
+<p><strong>If you build bridges, light clients, or anything proof-based, <code>eth_getProof</code> always rejects with <code>-32004</code>.</strong> The commitment is a sum, not a tree, so there is no inclusion path to hand over as a proof: it can attest that a whole state is what it claims to be, but not that one account belongs to it. Until an accumulator-native inclusion proof ships, verification has to rest on the chain’s <a href="../consensus/">BLS finality votes</a> and full-node responses rather than on a self-verifying state proof.</p>
+<p><strong>If you run infrastructure, two operational differences matter:</strong></p>
 <ul>
 <li><strong>Snap sync does not exist.</strong> It replicates a hashed state tree, and there isn’t one to replicate. New nodes backfill over the chain’s own P2P protocol; a checkpoint-accumulator state sync is planned to replace it.</li>
-<li><strong>Whole-state debug reads reject with <code>-32004</code></strong> — <code>debug_dumpBlock</code>, <code>debug_accountRange</code>, <code>debug_storageRangeAt</code>, <code>debug_stateSize</code>, <code>debug_intermediateRoots</code>. They fail with an explicit “not supported here” rather than <code>-32601</code>, so clients don’t waste a retry against another endpoint. Per-block and per-account reads are unaffected.</li>
+<li><strong>Whole-state debug reads reject with <code>-32004</code>:</strong> <code>debug_dumpBlock</code>, <code>debug_accountRange</code>, <code>debug_storageRangeAt</code>, <code>debug_stateSize</code>, <code>debug_intermediateRoots</code>. They fail with an explicit “not supported here” rather than <code>-32601</code>, so clients don’t waste a retry against another endpoint. Per-block and per-account reads are unaffected.</li>
 </ul>
 <p>See <a href="../../developers/json_rpc/json-rpc-endpoint/">JSON-RPC Endpoint</a> for the complete RPC-surface differences.</p>
-<h2 id="current-status">Current status<a class="headerlink" href="#current-status" title="Link to this section">¶</a></h2>
+<h2 id="current-status">Current Status<a class="headerlink" href="#current-status" title="Link to this section">¶</a></h2>
 <p>The LtHash commitment and the plain-state storage layout are live on the devnet, from genesis onward. Three follow-ups are outstanding: the checkpoint-based state sync that replaces snap sync, a native inclusion-proof scheme that would let <code>eth_getProof</code> be served again, and pruning for the finalized-accumulator archive.</p></div>
 
 
@@ -2513,7 +2513,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 2, 2026 06:15:24 UTC">September 2, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 4, 2026 01:45:28 UTC">September 4, 2026</span>
   </span>
 
     

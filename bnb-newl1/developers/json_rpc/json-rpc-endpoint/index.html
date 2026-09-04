@@ -1325,7 +1325,7 @@
   <a href="#block-tags" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Block tags
+        Block Tags
       
     </span>
   </a>
@@ -1347,7 +1347,7 @@
   <a href="#account-abstraction" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Account abstraction
+        Account Abstraction
       
     </span>
   </a>
@@ -1369,7 +1369,7 @@
   <a href="#transaction-pool-and-system-transactions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Transaction pool and system transactions
+        Transaction Pool and System Transactions
       
     </span>
   </a>
@@ -1380,7 +1380,7 @@
   <a href="#finality-and-other-bsc-compatible-apis" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Finality and other BSC-compatible APIs
+        Finality and Other BSC-Compatible APIs
       
     </span>
   </a>
@@ -2239,7 +2239,7 @@
   <a href="#block-tags" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Block tags
+        Block Tags
       
     </span>
   </a>
@@ -2261,7 +2261,7 @@
   <a href="#account-abstraction" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Account abstraction
+        Account Abstraction
       
     </span>
   </a>
@@ -2283,7 +2283,7 @@
   <a href="#transaction-pool-and-system-transactions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Transaction pool and system transactions
+        Transaction Pool and System Transactions
       
     </span>
   </a>
@@ -2294,7 +2294,7 @@
   <a href="#finality-and-other-bsc-compatible-apis" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Finality and other BSC-compatible APIs
+        Finality and Other BSC-Compatible APIs
       
     </span>
   </a>
@@ -2420,32 +2420,31 @@
 <h2 id="rpc-endpoints-for-bnb-newl1">RPC Endpoints for BNB NewL1<a class="headerlink" href="#rpc-endpoints-for-bnb-newl1" title="Link to this section">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">No public endpoint yet</p>
-<p>BNB NewL1 has no public testnet or mainnet, so there are no hosted RPC endpoints, faucet, or explorer to list here yet. Endpoints will be published on this page and on <a href="../../../get-started/network-info/">Network Information</a> once a network is deployed.</p>
+<p>BNB NewL1 has no public testnet or mainnet, so there are no hosted RPC endpoints, faucet, or explorer to list here yet. Endpoints and the chain ID will be published on this page and on <a href="../../../get-started/network-info/">Network Information</a> once a network is deployed.</p>
 </div>
-<p>Chain ID is <code>48879</code> (<code>0xBEEF</code>) on the current devnet; a public network will use its own registered value.</p>
 <h2 id="transports">Transports<a class="headerlink" href="#transports" title="Link to this section">¶</a></h2>
-<p>HTTP and WebSocket serve the <strong>same method set</strong>, with one exception: <strong>subscriptions are WebSocket-only</strong>. A node operator enables or disables each transport with <code>--http.addr</code> / <code>--ws.addr</code> (passing <code>none</code> disables it).</p>
+<p>HTTP and WebSocket serve the same method set, with one exception: subscriptions are WebSocket-only. A node operator enables or disables each transport with <code>--http.addr</code> / <code>--ws.addr</code> (passing <code>none</code> disables it).</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># HTTP</span>
 curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">"</span><span class="nv">$RPC</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--data<span class="w"> </span><span class="s1">'{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'</span>
 </code></pre></div>
 <h2 id="json-rpc-api-list">JSON-RPC API List<a class="headerlink" href="#json-rpc-api-list" title="Link to this section">¶</a></h2>
-<p>BNB NewL1 is EVM-compatible and strives to be as compatible as possible with the Go-Ethereum API. It also has features of its own — decoupled ordering and execution, transaction pre-confirmation, native account abstraction, Multi-Lane reserved capacity, and a shielded pool — which require their own specialized APIs under a <code>newl1_*</code> namespace.</p>
+<p>BNB NewL1 is EVM-compatible and strives to be as compatible as possible with the Go-Ethereum API. It also has features of its own (decoupled ordering and execution, transaction pre-confirmation, native account abstraction, Multi-Lane reserved capacity, and a shielded pool) that need their own APIs under a <code>newl1_*</code> namespace.</p>
 <h3 id="geth-go-ethereum-api">Geth (Go-Ethereum) API<a class="headerlink" href="#geth-go-ethereum-api" title="Link to this section">¶</a></h3>
 <p>The standard <code>eth_*</code>, <code>net_*</code>, and <code>web3_*</code> methods behave as in Geth, so existing tooling (ethers.js, viem, web3.py, wallets, explorers) connects without modification. If you’re looking for detailed usage of a standard method, you’ll most likely find the answer here:</p>
 <p><a href="https://geth.ethereum.org/docs/interacting-with-geth/rpc">Geth JSON-RPC API documentation</a></p>
-<p>Exceptions and incompatibilities are explicitly listed in <a href="../newl1-api-list/#divergences-from-geth">Divergences from Geth</a> — the short version is no <code>eth_getProof</code>, no public mempool introspection, no EIP-4844/EIP-7702 transactions, and receipts that report the declared gas limit rather than gas consumed.</p>
-<h3 id="block-tags">Block tags<a class="headerlink" href="#block-tags" title="Link to this section">¶</a></h3>
-<p>Because ordering and execution are decoupled, the node tracks two heights and <code>latest</code> resolves to the <strong>executed</strong> one. There are no custom tag strings on the wire, but the standard tags do not mean quite what they mean on a synchronous chain, and two extra error codes distinguish “not executed yet” from “no such block”. Read this before anything else: <a href="../newl1-api-list/#block-tags-and-the-two-tips">Block Tags and the Two Tips</a>.</p>
+<p>Exceptions and incompatibilities are listed in <a href="../newl1-api-list/#divergences-from-geth">Divergences from Geth</a>. The short version: no <code>eth_getProof</code>, no public mempool introspection, no EIP-4844/EIP-7702 transactions, and receipts that report the declared gas limit rather than gas consumed.</p>
+<h3 id="block-tags">Block Tags<a class="headerlink" href="#block-tags" title="Link to this section">¶</a></h3>
+<p>Because ordering and execution are decoupled, the node tracks two heights and <code>latest</code> resolves to the executed one. There are no custom tag strings on the wire, but the standard tags do not mean quite what they mean on a synchronous chain, and two extra error codes distinguish “not executed yet” from “no such block”. See <a href="../newl1-api-list/#block-tags-and-the-two-tips">Block Tags and the Two Tips</a>.</p>
 <h3 id="pre-confirmation">Pre-confirmation<a class="headerlink" href="#pre-confirmation" title="Link to this section">¶</a></h3>
-<p>A validator-signed, sub-block-level signal that the current block producer has committed to including a transaction, available roughly 20 ms after submission — well before the block itself. Advisory and revocable; see <a href="../newl1-api-list/#pre-confirmation-api">Pre-confirmation API</a>.</p>
-<h3 id="account-abstraction">Account abstraction<a class="headerlink" href="#account-abstraction" title="Link to this section">¶</a></h3>
-<p>Delegated-key state for the native <code>0x76</code> transaction type — session keys, admin keys, passkey signers, spend limits — is readable on chain. See <a href="../newl1-api-list/#account-abstraction-api">Account Abstraction API</a>.</p>
+<p>A validator-signed, sub-block-level signal that the current block producer has committed to including a transaction, available roughly 20 ms after submission, well before the block itself. It is advisory and revocable; see <a href="../newl1-api-list/#pre-confirmation-api">Pre-confirmation API</a>.</p>
+<h3 id="account-abstraction">Account Abstraction<a class="headerlink" href="#account-abstraction" title="Link to this section">¶</a></h3>
+<p>Delegated-key state for the native <code>0x76</code> transaction type (session keys, admin keys, passkey signers, spend limits) is readable on chain. See <a href="../newl1-api-list/#account-abstraction-api">Account Abstraction API</a>.</p>
 <h3 id="multi-lane">Multi-Lane<a class="headerlink" href="#multi-lane" title="Link to this section">¶</a></h3>
 <p>The live, governance-resolved reserved-capacity configuration: <a href="../newl1-api-list/#multi-lane-api">Multi-Lane API</a>.</p>
-<h3 id="transaction-pool-and-system-transactions">Transaction pool and system transactions<a class="headerlink" href="#transaction-pool-and-system-transactions" title="Link to this section">¶</a></h3>
+<h3 id="transaction-pool-and-system-transactions">Transaction Pool and System Transactions<a class="headerlink" href="#transaction-pool-and-system-transactions" title="Link to this section">¶</a></h3>
 <p>Pool-plane transaction status, a per-sender debug snapshot, and the receipts for system transactions that never appear in a block’s transaction list: <a href="../newl1-api-list/#transaction-pool-api">Transaction Pool API</a> and <a href="../newl1-api-list/#system-transaction-api">System Transaction API</a>.</p>
-<h3 id="finality-and-other-bsc-compatible-apis">Finality and other BSC-compatible APIs<a class="headerlink" href="#finality-and-other-bsc-compatible-apis" title="Link to this section">¶</a></h3>
+<h3 id="finality-and-other-bsc-compatible-apis">Finality and Other BSC-Compatible APIs<a class="headerlink" href="#finality-and-other-bsc-compatible-apis" title="Link to this section">¶</a></h3>
 <p>BNB NewL1 keeps Parlia’s BLS fast finality, and serves the <code>parlia_*</code> snapshot methods plus the explicit-finality and batch-receipt methods BSC tooling expects: <a href="../newl1-api-list/#finality-api">Finality API</a> and <a href="../newl1-api-list/#others">Others</a>.</p></div>
 
 
@@ -2467,7 +2466,7 @@ curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </spa
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 18, 2026 06:27:40 UTC">August 18, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 4, 2026 01:45:28 UTC">September 4, 2026</span>
   </span>
 
     

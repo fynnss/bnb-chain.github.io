@@ -1626,7 +1626,7 @@
   <a href="#whats-governable" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What&rsquo;s governable
+        What&rsquo;s Governable
       
     </span>
   </a>
@@ -1637,7 +1637,7 @@
   <a href="#voting-power" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Voting power
+        Voting Power
       
     </span>
   </a>
@@ -1659,7 +1659,7 @@
   <a href="#how-to-participate" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How to participate
+        How to Participate
       
     </span>
   </a>
@@ -1670,7 +1670,7 @@
   <a href="#validator-set-rotation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Validator-set rotation
+        Validator-Set Rotation
       
     </span>
   </a>
@@ -2067,7 +2067,7 @@
   <a href="#whats-governable" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What&rsquo;s governable
+        What&rsquo;s Governable
       
     </span>
   </a>
@@ -2078,7 +2078,7 @@
   <a href="#voting-power" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Voting power
+        Voting Power
       
     </span>
   </a>
@@ -2100,7 +2100,7 @@
   <a href="#how-to-participate" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How to participate
+        How to Participate
       
     </span>
   </a>
@@ -2111,7 +2111,7 @@
   <a href="#validator-set-rotation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Validator-set rotation
+        Validator-Set Rotation
       
     </span>
   </a>
@@ -2210,39 +2210,39 @@
 
 
 <div><h1 id="governance">Governance<a class="headerlink" href="#governance" title="Link to this section">¶</a></h1>
-<p>BNB NewL1 uses fully on-chain, token-weighted governance — the same Compound/OpenZeppelin <code>Governor</code> + <code>Timelock</code> engine that powers BNB Smart Chain governance — to control protocol parameters. There is no admin key or externally-owned account that can bypass this process: every governed contract only accepts changes routed through the governance flow.</p>
-<h2 id="whats-governable">What’s governable<a class="headerlink" href="#whats-governable" title="Link to this section">¶</a></h2>
-<p>Protocol and system parameters — for example staking and slashing constants, and BNB NewL1–specific configuration such as the <a href="../../core-concepts/multi-lane/">Multi-Lane</a> quotas in <code>LaneRegistry</code>. Validator-set <strong>membership</strong> itself is not a governance vote; it’s decided automatically by a stake-weighted election that runs once per day (see below), while the parameters that shape staking and elections are governable.</p>
-<h2 id="voting-power">Voting power<a class="headerlink" href="#voting-power" title="Link to this section">¶</a></h2>
+<p>BNB NewL1 controls protocol parameters through fully on-chain, token-weighted governance, running the same Compound/OpenZeppelin <code>Governor</code> + <code>Timelock</code> engine as BNB Smart Chain. There is no admin key or externally-owned account that can bypass this process: every governed contract only accepts changes routed through the governance flow.</p>
+<h2 id="whats-governable">What’s Governable<a class="headerlink" href="#whats-governable" title="Link to this section">¶</a></h2>
+<p>Protocol and system parameters: staking and slashing constants, and BNB NewL1–specific configuration such as the <a href="../../core-concepts/multi-lane/">Multi-Lane</a> quotas in <code>LaneRegistry</code>. Validator-set membership itself is not a governance vote; it’s decided automatically by a stake-weighted election that runs once per day (see below), while the parameters that shape staking and elections are governable.</p>
+<h2 id="voting-power">Voting Power<a class="headerlink" href="#voting-power" title="Link to this section">¶</a></h2>
 <ol>
 <li>Stake bridged BNB with <code>StakeHub</code>.</li>
-<li>Staking mints <strong>govBNB</strong> 1:1 against staked value — a non-transferable <code>ERC20Votes</code> token that exists purely as a voting ledger.</li>
-<li>govBNB only counts as active voting power once <strong>delegated</strong> (to yourself or to a validator). Holding undelegated govBNB carries zero voting weight.</li>
+<li>Staking mints govBNB 1:1 against staked value, a non-transferable <code>ERC20Votes</code> token that exists purely as a voting ledger.</li>
+<li>govBNB only counts as active voting power once delegated, either to yourself or to a validator. Holding undelegated govBNB carries zero voting weight.</li>
 </ol>
 <h2 id="lifecycle">Lifecycle<a class="headerlink" href="#lifecycle" title="Link to this section">¶</a></h2>
 <ol>
-<li><strong>Propose</strong> — a proposer with enough delegated govBNB to clear the proposal threshold submits a proposal targeting <code>GovHub.updateParam(key, value, target)</code>. Multiple parameter changes can be bundled atomically into a single proposal.</li>
-<li><strong>Vote</strong> — govBNB holders cast votes during the voting period.</li>
-<li><strong>Quorum</strong> — the proposal succeeds once quorum is reached and the voting period ends.</li>
-<li><strong>Queue</strong> — a succeeded proposal is queued on the <code>Timelock</code> contract.</li>
-<li><strong>Timelock delay</strong> — a mandatory minimum delay must elapse before the change can execute, giving the community time to react to a passed but not-yet-active change.</li>
-<li><strong>Execute</strong> — the <code>Timelock</code> calls <code>GovHub.updateParam</code>, which forwards <code>updateParam(key, value)</code> to the target system contract.</li>
+<li><strong>Propose.</strong> A proposer with enough delegated govBNB to clear the proposal threshold submits a proposal targeting <code>GovHub.updateParam(key, value, target)</code>. Multiple parameter changes can be bundled atomically into a single proposal.</li>
+<li><strong>Vote.</strong> govBNB holders cast votes during the voting period.</li>
+<li><strong>Quorum.</strong> The proposal succeeds once quorum is reached and the voting period ends.</li>
+<li><strong>Queue.</strong> A succeeded proposal is queued on the <code>Timelock</code> contract.</li>
+<li><strong>Timelock delay.</strong> A mandatory minimum delay must elapse before the change can execute, giving the community time to react to a passed but not-yet-active change.</li>
+<li><strong>Execute.</strong> The <code>Timelock</code> calls <code>GovHub.updateParam</code>, which forwards <code>updateParam(key, value)</code> to the target system contract.</li>
 </ol>
 <p>Two access-control gates make this the only path to change anything governed: every governed target only accepts calls from <code>GovHub</code>, and <code>GovHub</code> only accepts calls from the <code>Timelock</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Some parameters (for example, <a href="../../core-concepts/multi-lane/">Multi-Lane</a> quota changes) take effect only after an additional short activation delay on top of the timelock delay, since node clients read that configuration from a slightly-lagged executed-state checkpoint rather than the very latest block.</p>
 </div>
-<h2 id="how-to-participate">How to participate<a class="headerlink" href="#how-to-participate" title="Link to this section">¶</a></h2>
+<h2 id="how-to-participate">How to Participate<a class="headerlink" href="#how-to-participate" title="Link to this section">¶</a></h2>
 <ul>
-<li><strong>Delegate/stake</strong>: bridge BNB to BNB NewL1, then call <code>StakeHub.delegate(validatorOperator, delegateVotePower=true)</code> — this also mints govBNB automatically.</li>
-<li><strong>Become a validator</strong>: register via <code>StakeHub.createValidator</code>, which verifies your BLS vote key.</li>
-<li><strong>Vote</strong>: delegate your govBNB (to yourself or a validator), then cast votes on active proposals through the <code>Governor</code> contract.</li>
-<li><strong>Propose</strong>: hold or have delegated enough govBNB to clear the proposal threshold, then submit a proposal via <code>Governor.propose</code>.</li>
+<li><strong>Delegate or stake.</strong> Bridge BNB to BNB NewL1, then call <code>StakeHub.delegate(validatorOperator, delegateVotePower=true)</code>, which also mints govBNB automatically.</li>
+<li><strong>Become a validator.</strong> Register via <code>StakeHub.createValidator</code>, which verifies your BLS vote key.</li>
+<li><strong>Vote.</strong> Delegate your govBNB, to yourself or to a validator, then cast votes on active proposals through the <code>Governor</code> contract.</li>
+<li><strong>Propose.</strong> Hold or have delegated enough govBNB to clear the proposal threshold, then submit a proposal via <code>Governor.propose</code>.</li>
 </ul>
-<p><code>Governor</code> and <code>Timelock</code> are compiled from the same OpenZeppelin/Compound contracts BSC uses (with BNB NewL1’s own timing constants), so tooling built against a standard OZ Governor interface — e.g. Tally — should work without changes; this manual hasn’t independently verified any specific third-party tool against a live deployment.</p>
-<h2 id="validator-set-rotation">Validator-set rotation<a class="headerlink" href="#validator-set-rotation" title="Link to this section">¶</a></h2>
-<p>Validator-set membership updates automatically (see <a href="../../core-concepts/consensus/">Consensus</a>): an election runs once per day at a designated block, reading the top validators by voting power from <code>StakeHub</code> and updating the active validator set on-chain, which the next epoch-boundary header then binds — no separate governance proposal is required for this routine rotation.</p>
+<p><code>Governor</code> and <code>Timelock</code> are compiled from the same OpenZeppelin/Compound contracts BSC uses (with BNB NewL1’s own timing constants), so tooling built against a standard OZ Governor interface, Tally for example, should work without changes. This manual hasn’t independently verified any specific third-party tool against a live deployment.</p>
+<h2 id="validator-set-rotation">Validator-Set Rotation<a class="headerlink" href="#validator-set-rotation" title="Link to this section">¶</a></h2>
+<p>Validator-set membership updates automatically (see <a href="../../core-concepts/consensus/">Consensus</a>): an election runs once per day at a designated block, reading the top validators by voting power from <code>StakeHub</code> and updating the active validator set on-chain, which the next epoch-boundary header then binds. No separate governance proposal is required for this routine rotation.</p>
 <p>See <a href="../system-contracts/">System Contracts</a> for the full list of contracts involved and their addresses.</p></div>
 
 
@@ -2264,7 +2264,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 1, 2026 01:33:05 UTC">September 1, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 4, 2026 01:45:28 UTC">September 4, 2026</span>
   </span>
 
     

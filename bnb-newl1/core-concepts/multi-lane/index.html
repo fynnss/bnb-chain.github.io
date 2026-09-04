@@ -1454,7 +1454,7 @@
   <a href="#lane-assignment" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Lane assignment
+        Lane Assignment
       
     </span>
   </a>
@@ -1465,7 +1465,7 @@
   <a href="#quota-configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Quota configuration
+        Quota Configuration
       
     </span>
   </a>
@@ -1476,7 +1476,7 @@
   <a href="#timing-caveat" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Timing caveat
+        Timing Caveat
       
     </span>
   </a>
@@ -1487,7 +1487,7 @@
   <a href="#for-developers" class="md-nav__link">
     <span class="md-ellipsis">
       
-        For developers
+        For Developers
       
     </span>
   </a>
@@ -2078,7 +2078,7 @@
   <a href="#lane-assignment" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Lane assignment
+        Lane Assignment
       
     </span>
   </a>
@@ -2089,7 +2089,7 @@
   <a href="#quota-configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Quota configuration
+        Quota Configuration
       
     </span>
   </a>
@@ -2100,7 +2100,7 @@
   <a href="#timing-caveat" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Timing caveat
+        Timing Caveat
       
     </span>
   </a>
@@ -2111,7 +2111,7 @@
   <a href="#for-developers" class="md-nav__link">
     <span class="md-ellipsis">
       
-        For developers
+        For Developers
       
     </span>
   </a>
@@ -2210,37 +2210,37 @@
 
 
 <div><h1 id="multi-lane">Multi-Lane<a class="headerlink" href="#multi-lane" title="Link to this section">¶</a></h1>
-<p>Multi-Lane reserves guaranteed gas capacity inside every block for specific, latency-sensitive transaction classes — called <strong>lanes</strong> — so a burst of unrelated traffic can’t crowd them out. It’s a BNB NewL1–specific mechanism with no equivalent on BNB Smart Chain.</p>
+<p>Multi-Lane reserves guaranteed gas capacity inside every block for specific latency-sensitive transaction classes, called lanes, so a burst of unrelated traffic can’t crowd them out. It’s a BNB NewL1–specific mechanism with no equivalent on BNB Smart Chain.</p>
 <h2 id="guarantees">Guarantees<a class="headerlink" href="#guarantees" title="Link to this section">¶</a></h2>
-<p>Multi-Lane is a <strong>capacity guarantee, not an inclusion guarantee</strong>:</p>
+<p>Multi-Lane is a capacity guarantee, not an inclusion guarantee:</p>
 <ul>
 <li>A lane’s reserved gas share can never be exceeded by other traffic.</li>
 <li>When eligible transactions for that lane are available, its reserved share is preserved for them.</li>
-<li>Multi-Lane does <strong>not</strong> guarantee that any specific transaction gets included, and it does <strong>not</strong> provide first-in-first-out fairness within a lane — ordering within a lane still follows normal fee-priority rules.</li>
+<li>Multi-Lane does not guarantee that any specific transaction gets included, and it does not provide first-in-first-out fairness within a lane. Ordering within a lane still follows normal fee-priority rules.</li>
 </ul>
-<h2 id="lane-assignment">Lane assignment<a class="headerlink" href="#lane-assignment" title="Link to this section">¶</a></h2>
-<p>Lane classification is deterministic and <strong>address-based</strong>:</p>
+<h2 id="lane-assignment">Lane Assignment<a class="headerlink" href="#lane-assignment" title="Link to this section">¶</a></h2>
+<p>Lane classification is deterministic and address-based:</p>
 <ul>
-<li>Every transaction whose destination (<code>to</code>) address is a <strong>registered</strong> contract is routed to that contract’s configured lane.</li>
-<li>Unregistered addresses and contract-creation transactions fall into the <strong>default (uncapped) lane</strong>.</li>
-<li>There is no calldata- or function-selector-level routing — a lane protects an <em>address</em>, not a “use case.” Any transaction sent to a registered address shares that address’s lane quota, whether or not it’s the kind of traffic the lane was reserved for.</li>
+<li>Every transaction whose destination (<code>to</code>) address is a registered contract is routed to that contract’s configured lane.</li>
+<li>Unregistered addresses and contract-creation transactions fall into the default, uncapped lane.</li>
+<li>There is no calldata- or function-selector-level routing. A lane protects an address, not a use case: any transaction sent to a registered address shares that address’s lane quota, whether or not it’s the kind of traffic the lane was reserved for.</li>
 </ul>
-<h2 id="quota-configuration">Quota configuration<a class="headerlink" href="#quota-configuration" title="Link to this section">¶</a></h2>
-<p>Lane-to-address mappings and reserved shares live in the on-chain <code>LaneRegistry</code> contract (address <code>0x0000000000000000000000000000000000003000</code>), which is governed — changes go through the same <a href="../../governance/overview/">governance process</a> as any other protocol parameter.</p>
+<h2 id="quota-configuration">Quota Configuration<a class="headerlink" href="#quota-configuration" title="Link to this section">¶</a></h2>
+<p>Lane-to-address mappings and reserved shares live in the on-chain <code>LaneRegistry</code> contract (address <code>0x0000000000000000000000000000000000003000</code>), which is governed, so changes go through the same <a href="../../governance/overview/">governance process</a> as any other protocol parameter.</p>
 <ul>
-<li>Each protected lane reserves a <strong>basis-point share of the block gas limit</strong> (for example, a lane configured at 1,500 bps receives 15% of the block’s gas limit).</li>
+<li>Each protected lane reserves a basis-point share of the block gas limit (for example, a lane configured at 1,500 bps receives 15% of the block’s gas limit).</li>
 <li>The default lane absorbs whatever capacity is left over, including any reserved-but-unused capacity from other lanes in that block.</li>
-<li>Lane occupancy is currently measured by each transaction’s <strong>declared gas limit</strong>, not its actual gas used — a consequence of blocks being ordered before they’re executed (see <a href="../consensus/">Consensus</a>). In practice this means a transaction can occupy more of a lane’s quota than it ultimately consumes.</li>
+<li>Lane occupancy is currently measured by each transaction’s declared gas limit, not its actual gas used, a consequence of blocks being ordered before they’re executed (see <a href="../consensus/">Consensus</a>). A transaction can therefore occupy more of a lane’s quota than it ultimately consumes.</li>
 </ul>
-<h2 id="timing-caveat">Timing caveat<a class="headerlink" href="#timing-caveat" title="Link to this section">¶</a></h2>
+<h2 id="timing-caveat">Timing Caveat<a class="headerlink" href="#timing-caveat" title="Link to this section">¶</a></h2>
 <p>Lane configuration is read from a fixed, slightly-lagged checkpoint of executed state rather than the very latest block. A governance-approved change to lane quotas therefore takes effect after a short delay (on the order of the execution lag), not on the very next block. Don’t assume same-block activation when testing a quota change.</p>
 <p>You can read the live, governance-resolved lane configuration via the <a href="../../developers/json_rpc/newl1-api-list/#newl1_laneconfig"><code>newl1_laneConfig</code></a> RPC method.</p>
-<h2 id="for-developers">For developers<a class="headerlink" href="#for-developers" title="Link to this section">¶</a></h2>
+<h2 id="for-developers">For Developers<a class="headerlink" href="#for-developers" title="Link to this section">¶</a></h2>
 <p>If your protocol has latency-sensitive transaction flow (e.g. an AMM’s swap path, a lending protocol’s liquidation calls) that you want protected from unrelated congestion, the practical path is:</p>
 <ol>
 <li>Identify the contract address(es) that should receive lane protection.</li>
 <li>Propose (or request) registration of that address in <code>LaneRegistry</code> with an appropriate basis-point reservation via <a href="../../governance/overview/">governance</a>.</li>
-<li>Remember that protection is per-address, not per-function — anything sent to that address consumes the same reserved quota.</li>
+<li>Protection is per-address, not per-function: anything sent to that address consumes the same reserved quota.</li>
 </ol></div>
 
 
@@ -2262,7 +2262,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 18, 2026 06:27:40 UTC">August 18, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 4, 2026 01:45:28 UTC">September 4, 2026</span>
   </span>
 
     

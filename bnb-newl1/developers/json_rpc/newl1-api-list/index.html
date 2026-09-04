@@ -1559,7 +1559,7 @@
   <a href="#parlia-snapshot-methods" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Parlia snapshot methods
+        Parlia Snapshot Methods
       
     </span>
   </a>
@@ -2657,7 +2657,7 @@
   <a href="#parlia-snapshot-methods" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Parlia snapshot methods
+        Parlia Snapshot Methods
       
     </span>
   </a>
@@ -2845,10 +2845,10 @@
 <h2 id="block-tags-and-the-two-tips">Block Tags and the Two Tips<a class="headerlink" href="#block-tags-and-the-two-tips" title="Link to this section">¶</a></h2>
 <p>Because ordering and execution are decoupled, the node tracks two heights:</p>
 <ul>
-<li><strong>ordered tip</strong> — the freshest block accepted by consensus.</li>
-<li><strong>executed tip</strong> — the highest block whose post-state and receipts are materialized. It trails the ordered tip by the proposer-chosen delay.</li>
+<li><strong>Ordered tip.</strong> The freshest block accepted by consensus.</li>
+<li><strong>Executed tip.</strong> The highest block whose post-state and receipts are materialized. It trails the ordered tip by the proposer-chosen delay.</li>
 </ul>
-<p>There are <strong>no custom tag strings on the wire</strong> — only the five standard Ethereum tags plus an explicit number:</p>
+<p>There are no custom tag strings on the wire, only the five standard Ethereum tags plus an explicit number:</p>
 <table>
 <thead>
 <tr>
@@ -2859,7 +2859,7 @@
 <tbody>
 <tr>
 <td><code>latest</code> / <code>pending</code></td>
-<td>The <strong>executed</strong> tip. <code>pending</code> is an alias for <code>latest</code>; there is no mempool-simulated pending state.</td>
+<td>The executed tip. <code>pending</code> is an alias for <code>latest</code>; there is no mempool-simulated pending state.</td>
 </tr>
 <tr>
 <td><code>safe</code> / <code>finalized</code></td>
@@ -2878,13 +2878,13 @@
 <p>State-dependent reads (<code>eth_call</code>, <code>eth_getBalance</code>, <code>eth_getCode</code>, <code>eth_getStorageAt</code>, <code>eth_estimateGas</code>, <code>eth_getBlockReceipts</code>, <code>eth_getTransactionCount</code>, <code>eth_getLogs</code>, <code>newl1_getKey</code>) also accept an EIP-1898 <code>{"blockHash": "0x…"}</code> object in place of the tag, the same shape BSC and geth accept.</p>
 <p>Two error codes distinguish the failure modes an explicit number can hit:</p>
 <ul>
-<li><strong><code>-38004</code></strong> — the block is ordered but not yet executed. Retry once execution catches up.</li>
-<li><strong><code>-38001</code></strong> — the block number is beyond the ordered head, or an EIP-1898 block hash doesn’t resolve to a canonical block. No such block exists; retrying is pointless.</li>
+<li><code>-38004</code>: the block is ordered but not yet executed. Retry once execution catches up.</li>
+<li><code>-38001</code>: the block number is beyond the ordered head, or an EIP-1898 block hash doesn’t resolve to a canonical block. No such block exists, so retrying is pointless.</li>
 </ul>
-<p>Block <em>header</em> lookups (<code>eth_getBlockByNumber</code> / <code>eth_getBlockByHash</code>) are not execution-gated: an ordered-but-unexecuted block is readable by its explicit number, and its four execution-derived fields (<code>stateRoot</code>, <code>receiptsRoot</code>, <code>logsBloom</code>, <code>gasUsed</code>) are <code>null</code> until a later block publishes the matching commitment.</p>
+<p>Block header lookups (<code>eth_getBlockByNumber</code> / <code>eth_getBlockByHash</code>) are not execution-gated: an ordered-but-unexecuted block is readable by its explicit number, and its four execution-derived fields (<code>stateRoot</code>, <code>receiptsRoot</code>, <code>logsBloom</code>, <code>gasUsed</code>) are <code>null</code> until a later block publishes the matching commitment.</p>
 <div class="admonition warning">
 <p class="admonition-title"><code>eth_getTransactionCount("latest")</code> is the deliberate exception</p>
-<p>It returns the <strong>ordered-tip</strong> nonce, not the executed-tip one, so a sender accounts for its own already-ordered-but-unexecuted transactions instead of reusing a nonce. It does not look ahead into the not-yet-ordered pool — a sender pipelining transactions back-to-back must poll <code>latest</code> and wait for each to be ordered before using the next nonce.</p>
+<p>It returns the ordered-tip nonce, not the executed-tip one, so a sender accounts for its own already-ordered-but-unexecuted transactions instead of reusing a nonce. It does not look ahead into the not-yet-ordered pool, so a sender pipelining transactions back-to-back must poll <code>latest</code> and wait for each to be ordered before using the next nonce.</p>
 </div>
 <div class="highlight"><pre><span></span><code><span class="c1">## executed tip</span>
 curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">"</span><span class="nv">$RPC</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
@@ -2905,11 +2905,11 @@ curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </spa
 <tbody>
 <tr>
 <td><code>eth_getProof</code></td>
-<td><strong>Always rejects</strong> with <code>-32004</code>. State is committed with a cumulative hash accumulator (LtHash), not a Merkle-Patricia trie, so there is no trie inclusion proof to serve (<a href="../../../core-concepts/state-db/">State DB</a>). An accumulator-native scheme is planned.</td>
+<td>Always rejects with <code>-32004</code>. State is committed with a cumulative hash accumulator (LtHash), not a Merkle-Patricia trie, so there is no trie inclusion proof to serve (<a href="../../../core-concepts/state-db/">State DB</a>). An accumulator-native scheme is planned.</td>
 </tr>
 <tr>
 <td>Gas accounting</td>
-<td>A transaction pays its <strong>declared gas limit</strong>, not gas used. <code>gasUsed</code> in a receipt therefore equals the transaction’s <code>gas</code> field, and <code>header.gasUsed</code> is the sum of declared limits. <code>eth_estimateGas</code> and <code>eth_call</code> simulate with this model disabled, so an estimate still measures true usage. Per-transaction gas limit is capped at 16,777,216 (BEP-652 / EIP-7825). See <a href="../../../get-started/migrate-from-bsc/#you-pay-for-your-declared-gas-limit">Migrating from BSC</a>.</td>
+<td>A transaction pays its declared gas limit, not gas used. <code>gasUsed</code> in a receipt therefore equals the transaction’s <code>gas</code> field, and <code>header.gasUsed</code> is the sum of declared limits. <code>eth_estimateGas</code> and <code>eth_call</code> simulate with this model disabled, so an estimate still measures true usage. Per-transaction gas limit is capped at 16,777,216 (BEP-652 / EIP-7825). See <a href="../../../get-started/migrate-from-bsc/#you-pay-for-your-declared-gas-limit">Migrating from BSC</a>.</td>
 </tr>
 <tr>
 <td>Fees</td>
@@ -2917,7 +2917,7 @@ curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </spa
 </tr>
 <tr>
 <td>Mempool</td>
-<td>No global mempool — transactions route directly to the current and next block producer. There is no <code>txpool_*</code> namespace. <code>eth_subscribe("newPendingTransactions")</code> reports only the node’s <strong>own</strong> local-pool admissions.</td>
+<td>No global mempool: transactions route directly to the current and next block producer. There is no <code>txpool_*</code> namespace. <code>eth_subscribe("newPendingTransactions")</code> reports only the node’s own local-pool admissions.</td>
 </tr>
 <tr>
 <td>Replace-by-fee</td>
@@ -2929,11 +2929,11 @@ curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </spa
 </tr>
 <tr>
 <td>Transaction types</td>
-<td>EIP-4844 (blob) and EIP-7702 (set-code) transactions are rejected by the pool’s type gate. Two native types are added — see <a href="../../transaction-types/">Transaction Types</a>.</td>
+<td>EIP-4844 (blob) and EIP-7702 (set-code) transactions are rejected by the pool’s type gate. Two native types are added; see <a href="../../transaction-types/">Transaction Types</a>.</td>
 </tr>
 <tr>
 <td><code>eth_syncing</code></td>
-<td>Always <code>false</code> — there is no staged-sync driver to report progress from.</td>
+<td>Always <code>false</code>: there is no staged-sync driver to report progress from.</td>
 </tr>
 <tr>
 <td>Uncle methods</td>
@@ -2946,13 +2946,13 @@ curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </spa
 </tbody>
 </table>
 <h2 id="pre-confirmation-api">Pre-confirmation API<a class="headerlink" href="#pre-confirmation-api" title="Link to this section">¶</a></h2>
-<p>Pre-confirmations are <strong>soft, revocable advisories</strong> — never proofs, and never a substitute for finality.</p>
+<p>Pre-confirmations are soft, revocable advisories, never proofs and never a substitute for finality.</p>
 <div class="admonition warning">
 <p class="admonition-title">This surface is unauthenticated</p>
 <p><code>newl1_subscribePreconfirmations</code>, <code>newl1_subscribeSubBlocks</code>, and <code>newl1_getTransactionPreconfirmation</code> are unauthenticated by design, and each subscription holds server-side memory. Firewall the RPC bind address, or place this surface behind a separate admin port, on any non-loopback deployment.</p>
 </div>
 <h3 id="newl1_getvalidatorschedule">newl1_getValidatorSchedule<a class="headerlink" href="#newl1_getvalidatorschedule" title="Link to this section">¶</a></h3>
-<p>Returns the current validator set and leader schedule — used to discover where to send transactions, and to independently verify pre-confirmation signers.</p>
+<p>Returns the current validator set and leader schedule, which is what you need to discover where to send transactions and to independently verify pre-confirmation signers.</p>
 <p><strong>Parameters</strong></p>
 <p>None.</p>
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">"</span><span class="nv">$RPC</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
@@ -2975,18 +2975,18 @@ curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </spa
 <p><strong>Parameters</strong></p>
 <p><strong>Hash</strong> String (REQUIRED)</p>
 <ul>
-<li>HEX String — the hash of the transaction</li>
+<li>HEX String - the hash of the transaction</li>
 </ul>
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">"</span><span class="nv">$RPC</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--data<span class="w"> </span><span class="s1">'{"jsonrpc":"2.0","method":"newl1_getTransactionPreconfirmation","params":["0x…"],"id":1}'</span>
 </code></pre></div>
-<p>A <code>null</code> result does <strong>not</strong> mean the transaction was never pre-confirmed — only that it fell outside the retention window or wasn’t tracked.</p>
+<p>A <code>null</code> result does not mean the transaction was never pre-confirmed, only that it fell outside the retention window or wasn’t tracked.</p>
 <h3 id="newl1_subscribepreconfirmations">newl1_subscribePreconfirmations<a class="headerlink" href="#newl1_subscribepreconfirmations" title="Link to this section">¶</a></h3>
 <p>WebSocket only. Streams node-interpreted pre-confirmation events; notification method is <code>newl1_preconfirmation</code>, unsubscribe with <code>newl1_unsubscribePreconfirmations</code>.</p>
 <p><strong>Parameters</strong></p>
 <p><strong>Filter</strong> Object (OPTIONAL)</p>
 <ul>
-<li><code>{"txHash": "0x…"}</code> — stream only this transaction’s events. Omitted or <code>null</code> streams all. There is no sender-level filter.</li>
+<li><code>{"txHash": "0x…"}</code> - stream only this transaction’s events. Omitted or <code>null</code> streams all. There is no sender-level filter.</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span><span class="s1">'{"jsonrpc":"2.0","method":"newl1_subscribePreconfirmations","params":[],"id":1}'</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span><span class="p">|</span><span class="w"> </span>websocat<span class="w"> </span>-n<span class="w"> </span><span class="s2">"</span><span class="nv">$WS</span><span class="s2">"</span>
@@ -3004,7 +3004,7 @@ curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </spa
   "status": "preconfirmed"   // preconfirmed | aborted | superseded
 }
 </code></pre></div>
-<p>If a subscriber falls behind, the node sends <code>{"status": "lagged", "dropped": n}</code> rather than silently dropping a revocation — re-query <code>newl1_getTransactionPreconfirmation</code> when you see it.</p>
+<p>If a subscriber falls behind, the node sends <code>{"status": "lagged", "dropped": n}</code> rather than silently dropping a revocation; re-query <code>newl1_getTransactionPreconfirmation</code> when you see it.</p>
 <p>The producer explicitly feeds its own published slices to local subscribers, so this subscription works against the producer’s RPC and on a single-node devnet.</p>
 <h3 id="newl1_subscribesubblocks">newl1_subscribeSubBlocks<a class="headerlink" href="#newl1_subscribesubblocks" title="Link to this section">¶</a></h3>
 <p>WebSocket only. Streams the raw signed sub-blocks straight from the gossip mesh, for clients that verify signatures themselves rather than trusting the node’s interpretation. Notification method is <code>newl1_subBlock</code>; unsubscribe with <code>newl1_unsubscribeSubBlocks</code>.</p>
@@ -3027,15 +3027,15 @@ curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </spa
 <p>Standard <code>eth_subscribe</code> with <code>"newHeads"</code> or <code>"newPendingTransactions"</code> is also available and behaves as in Geth, except that pending transactions are this node’s own admissions only.</p>
 <h2 id="account-abstraction-api">Account Abstraction API<a class="headerlink" href="#account-abstraction-api" title="Link to this section">¶</a></h2>
 <h3 id="newl1_getkey">newl1_getKey<a class="headerlink" href="#newl1_getkey" title="Link to this section">¶</a></h3>
-<p>Reads the on-chain state of a delegated key in the <code>AccountKeychain</code> precompile — the key registry behind the native <code>0x76</code> <a href="../../transaction-types/">account-abstraction transaction</a>.</p>
+<p>Reads the on-chain state of a delegated key in the <code>AccountKeychain</code> precompile, the key registry behind the native <code>0x76</code> <a href="../../transaction-types/">account-abstraction transaction</a>.</p>
 <p><strong>Parameters</strong></p>
 <p><strong>Account</strong> String (REQUIRED)</p>
 <ul>
-<li>HEX String — the 20-byte account address</li>
+<li>HEX String - the 20-byte account address</li>
 </ul>
 <p><strong>KeyId</strong> String (REQUIRED)</p>
 <ul>
-<li>HEX String — the key identifier</li>
+<li>HEX String - the key identifier</li>
 </ul>
 <p><strong>BlockNumber</strong> QUANTITY|TAG (OPTIONAL)</p>
 <ul>
@@ -3058,7 +3058,7 @@ curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </spa
 <p>This simulates <code>AccountKeychain.getKey</code> against executed state, so it accepts the same block locators as <code>eth_call</code>.</p>
 <h2 id="multi-lane-api">Multi-Lane API<a class="headerlink" href="#multi-lane-api" title="Link to this section">¶</a></h2>
 <h3 id="newl1_laneconfig">newl1_laneConfig<a class="headerlink" href="#newl1_laneconfig" title="Link to this section">¶</a></h3>
-<p>Returns the live, governance-resolved <a href="../../../core-concepts/multi-lane/">Multi-Lane</a> configuration for the current canonical head — the resolver’s view (parent context, anchor depth, branch-aware), not a raw registry dump.</p>
+<p>Returns the live, governance-resolved <a href="../../../core-concepts/multi-lane/">Multi-Lane</a> configuration for the current canonical head: the resolver’s view (parent context, anchor depth, branch-aware), not a raw registry dump.</p>
 <p><strong>Parameters</strong></p>
 <p>None.</p>
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">"</span><span class="nv">$RPC</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
@@ -3079,11 +3079,11 @@ curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </spa
 <p><code>inert: true</code> with empty <code>laneDefs</code> / <code>laneRoutes</code> is the genesis default, until a governance proposal activates a lane.</p>
 <h2 id="transaction-pool-api">Transaction Pool API<a class="headerlink" href="#transaction-pool-api" title="Link to this section">¶</a></h2>
 <h3 id="newl1_gettransactionstatus">newl1_getTransactionStatus<a class="headerlink" href="#newl1_gettransactionstatus" title="Link to this section">¶</a></h3>
-<p>Pool-plane status of a transaction — where it sits in this node’s local pool, which is a different question from “is it in a block” (<code>eth_getTransactionReceipt</code>).</p>
+<p>Pool-plane status of a transaction: where it sits in this node’s local pool, which is a different question from “is it in a block” (<code>eth_getTransactionReceipt</code>).</p>
 <p><strong>Parameters</strong></p>
 <p><strong>Hash</strong> String (REQUIRED)</p>
 <ul>
-<li>HEX String — the hash of the transaction</li>
+<li>HEX String - the hash of the transaction</li>
 </ul>
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">"</span><span class="nv">$RPC</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--data<span class="w"> </span><span class="s1">'{"jsonrpc":"2.0","method":"newl1_getTransactionStatus","params":["0x…"],"id":1}'</span>
@@ -3096,13 +3096,13 @@ curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </spa
   "ageMs": "0xc"
 }
 </code></pre></div>
-<p><code>sender</code>, <code>nonce</code>, and <code>ageMs</code> are <code>null</code> for <code>unknown</code>. That state is ambiguous by design — it covers both “never seen” and “aged out of the bounded status ring”. Treat it as “no information”, not as a negative outcome. This is a <strong>local</strong> view: it answers for the node you asked, not the network. See <a href="../../transaction-lifecycle/#2-pool-states">Transaction Lifecycle</a> for state transitions and terminal reasons.</p>
+<p><code>sender</code>, <code>nonce</code>, and <code>ageMs</code> are <code>null</code> for <code>unknown</code>. That state is ambiguous by design: it covers both “never seen” and “aged out of the bounded status ring”. Treat it as “no information”, not as a negative outcome. This is a local view: it answers for the node you asked, not the network. See <a href="../../transaction-lifecycle/#pool-states">Transaction Lifecycle</a> for state transitions and terminal reasons.</p>
 <h3 id="newl1_debugsendersnapshot">newl1_debugSenderSnapshot<a class="headerlink" href="#newl1_debugsendersnapshot" title="Link to this section">¶</a></h3>
-<p>Debug surface: one sender’s live pool lane — every entry nonce-ascending with its state and age, plus the watermarks the block packer works from (<code>baseAtExecutedTip</code>, <code>orderedNonce</code>). Answers “why isn’t this sender’s transaction being packed” without reading node logs.</p>
+<p>Debug surface for one sender’s live pool lane: every entry nonce-ascending with its state and age, plus the watermarks the block packer works from (<code>baseAtExecutedTip</code>, <code>orderedNonce</code>). Answers “why isn’t this sender’s transaction being packed” without reading node logs.</p>
 <p><strong>Parameters</strong></p>
 <p><strong>Address</strong> String (REQUIRED)</p>
 <ul>
-<li>HEX String — the 20-byte sender address</li>
+<li>HEX String - the 20-byte sender address</li>
 </ul>
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">"</span><span class="nv">$RPC</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--data<span class="w"> </span><span class="s1">'{"jsonrpc":"2.0","method":"newl1_debugSenderSnapshot","params":["0x…"],"id":1}'</span>
@@ -3119,18 +3119,18 @@ curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </spa
 <p><code>baseAtExecutedTip</code> is the sender nonce at the executed tip. <code>orderedNonce</code> additionally accounts for canonical transactions that have not necessarily executed yet. Either watermark may be <code>null</code> when unavailable.</p>
 <h2 id="system-transaction-api">System Transaction API<a class="headerlink" href="#system-transaction-api" title="Link to this section">¶</a></h2>
 <h3 id="newl1_getsystemreceiptsbyblock">newl1_getSystemReceiptsByBlock<a class="headerlink" href="#newl1_getsystemreceiptsbyblock" title="Link to this section">¶</a></h3>
-<p>Receipts for a block’s <strong>system transactions</strong> — slashing, deposits, finality rewards, validator-set updates, and shielded-pool drains. These run in the block executor after ordinary transactions and have no place in <code>transactions_root</code>, so they never appear in <code>eth_getBlockReceipts</code> or in the block’s transaction list. This method is the only way to see them.</p>
+<p>Receipts for a block’s system transactions: slashing, deposits, finality rewards, validator-set updates, and shielded-pool drains. These run in the block executor after ordinary transactions and have no place in <code>transactions_root</code>, so they never appear in <code>eth_getBlockReceipts</code> or in the block’s transaction list. This method is the only way to see them.</p>
 <p><strong>Parameters</strong></p>
 <p><strong>BlockNumber</strong> QUANTITY|TAG (OPTIONAL)</p>
 <ul>
-<li>HEX String — an integer block number</li>
+<li>HEX String - an integer block number</li>
 <li>String <code>"earliest"</code> / <code>"latest"</code> / <code>"pending"</code> / <code>"safe"</code> / <code>"finalized"</code></li>
 </ul>
 <p>Defaults to <code>latest</code>.</p>
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">"</span><span class="nv">$RPC</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--data<span class="w"> </span><span class="s1">'{"jsonrpc":"2.0","method":"newl1_getSystemReceiptsByBlock","params":["latest"],"id":1}'</span>
 </code></pre></div>
-<p>Returns <code>null</code> — distinct from an empty array — when the block’s system transactions haven’t been committed by a descendant block yet. Because the system-tx hash index is populated only at finalized-persist time, a hash returned here can still resolve to <code>null</code> on <code>eth_getTransactionReceipt</code> until finality catches up.</p>
+<p>Returns <code>null</code>, distinct from an empty array, when the block’s system transactions haven’t been committed by a descendant block yet. Because the system-tx hash index is populated only at finalized-persist time, a hash returned here can still resolve to <code>null</code> on <code>eth_getTransactionReceipt</code> until finality catches up.</p>
 <h2 id="finality-api">Finality API<a class="headerlink" href="#finality-api" title="Link to this section">¶</a></h2>
 <p>BNB NewL1 uses Parlia with BLS fast finality: a block becomes irreversible once two-thirds of validators have voted for it, in roughly one block interval rather than by accumulating confirmation depth.</p>
 <p>The standard route is the <code>finalized</code> block tag (see <a href="#block-tags-and-the-two-tips">Block Tags</a>). The methods below are the BSC-compatible explicit form.</p>
@@ -3162,7 +3162,7 @@ curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </spa
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">"</span><span class="nv">$RPC</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--data<span class="w"> </span><span class="s1">'{"jsonrpc":"2.0","method":"eth_getFinalizedBlock","params":[15,false],"id":1}'</span>
 </code></pre></div>
-<h3 id="parlia-snapshot-methods">Parlia snapshot methods<a class="headerlink" href="#parlia-snapshot-methods" title="Link to this section">¶</a></h3>
+<h3 id="parlia-snapshot-methods">Parlia Snapshot Methods<a class="headerlink" href="#parlia-snapshot-methods" title="Link to this section">¶</a></h3>
 <table>
 <thead>
 <tr>
@@ -3201,24 +3201,24 @@ curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </spa
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">"</span><span class="nv">$RPC</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--data<span class="w"> </span><span class="s1">'{"jsonrpc":"2.0","method":"eth_health","params":[],"id":1}'</span>
 </code></pre></div>
-<p>Use this together with block-number progress for health checks — <code>eth_syncing</code> is always <code>false</code> on BNB NewL1 and reports nothing useful.</p>
+<p>Use this together with block-number progress for health checks; <code>eth_syncing</code> is always <code>false</code> on BNB NewL1 and reports nothing useful.</p>
 <h3 id="eth_gettransactionsbyblocknumber">eth_getTransactionsByBlockNumber<a class="headerlink" href="#eth_gettransactionsbyblocknumber" title="Link to this section">¶</a></h3>
 <p>Get all the transactions for the given block number.</p>
 <p><strong>Parameters</strong></p>
 <p><strong>BlockNumber</strong> QUANTITY|TAG</p>
 <ul>
-<li>HEX String — an integer block number</li>
+<li>HEX String - an integer block number</li>
 <li>String <code>"earliest"</code> / <code>"latest"</code> / <code>"pending"</code> / <code>"safe"</code> / <code>"finalized"</code></li>
 </ul>
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">"</span><span class="nv">$RPC</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--data<span class="w"> </span><span class="s1">'{"jsonrpc":"2.0","method":"eth_getTransactionsByBlockNumber","params":["0x539492"],"id":1}'</span>
 </code></pre></div>
 <h3 id="eth_gettransactionreceiptsbyblocknumber">eth_getTransactionReceiptsByBlockNumber<a class="headerlink" href="#eth_gettransactionreceiptsbyblocknumber" title="Link to this section">¶</a></h3>
-<p>Get all receipts for the given block number. Ordinary transactions only — system-transaction receipts come from <a href="#newl1_getsystemreceiptsbyblock"><code>newl1_getSystemReceiptsByBlock</code></a>.</p>
+<p>Get all receipts for the given block number. Ordinary transactions only; system-transaction receipts come from <a href="#newl1_getsystemreceiptsbyblock"><code>newl1_getSystemReceiptsByBlock</code></a>.</p>
 <p><strong>Parameters</strong></p>
 <p><strong>BlockNumber</strong> QUANTITY|TAG</p>
 <ul>
-<li>HEX String — an integer block number</li>
+<li>HEX String - an integer block number</li>
 <li>String <code>"earliest"</code> / <code>"latest"</code> / <code>"pending"</code> / <code>"safe"</code> / <code>"finalized"</code></li>
 </ul>
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">"</span><span class="nv">$RPC</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
@@ -3239,7 +3239,7 @@ curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </spa
 </tr>
 <tr>
 <td style="text-align: right;"><code>-32601</code></td>
-<td>Method not found — also used for “registered but not yet meaningfully implemented”.</td>
+<td>Method not found. Also used for “registered but not yet meaningfully implemented”.</td>
 </tr>
 <tr>
 <td style="text-align: right;"><code>-38004</code></td>
@@ -3247,11 +3247,11 @@ curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </spa
 </tr>
 <tr>
 <td style="text-align: right;"><code>-38001</code></td>
-<td>The requested block doesn’t exist — beyond the ordered head, or a non-canonical hash. Don’t retry.</td>
+<td>The requested block doesn’t exist: beyond the ordered head, or a non-canonical hash. Don’t retry.</td>
 </tr>
 <tr>
 <td style="text-align: right;"><code>-32004</code></td>
-<td>Protocol-shape mismatch — today only <code>eth_getProof</code>.</td>
+<td>Protocol-shape mismatch, today only <code>eth_getProof</code>.</td>
 </tr>
 <tr>
 <td style="text-align: right;"><code>-32000</code></td>
@@ -3283,7 +3283,7 @@ curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </spa
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 2, 2026 06:15:24 UTC">September 2, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 4, 2026 01:45:28 UTC">September 4, 2026</span>
   </span>
 
     

@@ -1134,12 +1134,12 @@
   <a href="#0x76-account-abstraction" class="md-nav__link">
     <span class="md-ellipsis">
       
-        0x76 account abstraction
+        0x76 Account Abstraction
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="0x76 account abstraction">
+    <nav class="md-nav" aria-label="0x76 Account Abstraction">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1184,12 +1184,12 @@
   <a href="#0x77-shielded-transaction" class="md-nav__link">
     <span class="md-ellipsis">
       
-        0x77 shielded transaction
+        0x77 Shielded Transaction
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="0x77 shielded transaction">
+    <nav class="md-nav" aria-label="0x77 Shielded Transaction">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1207,7 +1207,7 @@
   <a href="#the-public-path-no-0x77-needed" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The public path (no 0x77 needed)
+        The Public Path (No 0x77 Needed)
       
     </span>
   </a>
@@ -2123,12 +2123,12 @@
   <a href="#0x76-account-abstraction" class="md-nav__link">
     <span class="md-ellipsis">
       
-        0x76 account abstraction
+        0x76 Account Abstraction
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="0x76 account abstraction">
+    <nav class="md-nav" aria-label="0x76 Account Abstraction">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2173,12 +2173,12 @@
   <a href="#0x77-shielded-transaction" class="md-nav__link">
     <span class="md-ellipsis">
       
-        0x77 shielded transaction
+        0x77 Shielded Transaction
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="0x77 shielded transaction">
+    <nav class="md-nav" aria-label="0x77 Shielded Transaction">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2196,7 +2196,7 @@
   <a href="#the-public-path-no-0x77-needed" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The public path (no 0x77 needed)
+        The Public Path (No 0x77 Needed)
       
     </span>
   </a>
@@ -2344,12 +2344,12 @@
 </tr>
 </tbody>
 </table>
-<p>Both are submitted through plain <code>eth_sendRawTransaction</code> and produce ordinary receipts (with <code>type</code> <code>0x76</code> / <code>0x77</code>). EIP-4844 (<code>0x03</code>) and EIP-7702 (<code>0x04</code>) are rejected — the two types above sit in a high, self-assigned range so a future upstream type can’t collide with them.</p>
+<p>Both are submitted through plain <code>eth_sendRawTransaction</code> and produce ordinary receipts (with <code>type</code> <code>0x76</code> / <code>0x77</code>). EIP-4844 (<code>0x03</code>) and EIP-7702 (<code>0x04</code>) are rejected. The two types above sit in a high, self-assigned range so a future upstream type can’t collide with them.</p>
 <div class="admonition note">
 <p class="admonition-title">No SDK yet</p>
 <p>Neither type is supported by ethers.js/viem today. You build and sign the RLP payload yourself; the client’s own codec is the reference implementation.</p>
 </div>
-<h2 id="0x76-account-abstraction"><code>0x76</code> account abstraction<a class="headerlink" href="#0x76-account-abstraction" title="Link to this section">¶</a></h2>
+<h2 id="0x76-account-abstraction"><code>0x76</code> Account Abstraction<a class="headerlink" href="#0x76-account-abstraction" title="Link to this section">¶</a></h2>
 <p>One transaction, signed by an account or by a delegated key, carrying a batch of calls. Full concept documentation: <a href="../../core-concepts/account-abstraction/">Account Abstraction</a>.</p>
 <h3 id="body">Body<a class="headerlink" href="#body" title="Link to this section">¶</a></h3>
 <table>
@@ -2366,7 +2366,7 @@
 </tr>
 <tr>
 <td><code>nonce_key</code></td>
-<td>2D-nonce lane. <strong>Must be <code>0</code></strong> today.</td>
+<td>2D-nonce lane. Must be <code>0</code> today.</td>
 </tr>
 <tr>
 <td><code>nonce</code></td>
@@ -2378,7 +2378,7 @@
 </tr>
 <tr>
 <td><code>gas_limit</code></td>
-<td>For the whole batch — and what you’re <a href="../../get-started/migrate-from-bsc/#you-pay-for-your-declared-gas-limit">charged</a>.</td>
+<td>For the whole batch, and what you’re <a href="../../get-started/migrate-from-bsc/#you-pay-for-your-declared-gas-limit">charged</a>.</td>
 </tr>
 <tr>
 <td><code>calls</code></td>
@@ -2404,23 +2404,23 @@
 </table>
 <h3 id="signing">Signing<a class="headerlink" href="#signing" title="Link to this section">¶</a></h3>
 <ol>
-<li><strong>Sponsor first, if any.</strong> The fee payer signs <code>fee_payer_signature_hash(sender)</code> — a hash over the transaction body <em>and</em> the sender address, so a sponsorship can’t be lifted onto a different sender. Self-sponsorship is rejected.</li>
+<li><strong>Sponsor first, if any.</strong> The fee payer signs <code>fee_payer_signature_hash(sender)</code>, a hash over the transaction body and the sender address, so a sponsorship can’t be lifted onto a different sender. Self-sponsorship is rejected.</li>
 <li><strong>Then the account.</strong><ul>
-<li>A <strong>root key</strong> signs the transaction’s own signing hash directly.</li>
-<li>A <strong>keychain key</strong> (admin or access) signs an account-bound hash instead — the signing hash re-hashed together with the account address, so a key’s signature can’t be replayed against another account. Secp256k1, P256, and WebAuthn signatures are all accepted.</li>
+<li>A root key signs the transaction’s own signing hash directly.</li>
+<li>A keychain key (admin or access) signs an account-bound hash instead: the signing hash re-hashed together with the account address, so a key’s signature can’t be replayed against another account. Secp256k1, P256, and WebAuthn signatures are all accepted.</li>
 </ul>
 </li>
-<li><strong>Submit</strong> the EIP-2718 payload via <code>eth_sendRawTransaction</code>.</li>
+<li>Submit the EIP-2718 payload via <code>eth_sendRawTransaction</code>.</li>
 </ol>
 <h3 id="gotchas">Gotchas<a class="headerlink" href="#gotchas" title="Link to this section">¶</a></h3>
 <ul>
 <li><strong><code>nonce_key</code> must be zero.</strong> Parallel nonce lanes are reserved but not enabled.</li>
-<li><strong>One nonce per transaction.</strong> An inline <code>key_authorization</code> is prepended as a call, so combining it with a <code>CREATE</code> in the same transaction is rejected — do the authorization first, or deploy from a standalone transaction.</li>
-<li><strong>Session-key spend limits count gas too</strong>, charged at the declared gas limit like everything else.</li>
-<li><strong>Key state is readable</strong> at any time via <a href="../json_rpc/newl1-api-list/#newl1_getkey"><code>newl1_getKey(account, keyId)</code></a>, and keys can be managed from an ordinary transaction by calling <code>authorizeKey</code> / <code>revokeKey</code> on the <code>AccountKeychain</code> precompile at <code>0x…4000</code> — you don’t need an AA transaction to bootstrap one.</li>
+<li><strong>One nonce per transaction.</strong> An inline <code>key_authorization</code> is prepended as a call, so combining it with a <code>CREATE</code> in the same transaction is rejected. Do the authorization first, or deploy from a standalone transaction.</li>
+<li><strong>Session-key spend limits count gas.</strong> It is counted at the declared gas limit, like everything else.</li>
+<li><strong>Key state is readable at any time</strong> via <a href="../json_rpc/newl1-api-list/#newl1_getkey"><code>newl1_getKey(account, keyId)</code></a>. Keys can also be managed from an ordinary transaction by calling <code>authorizeKey</code> / <code>revokeKey</code> on the <code>AccountKeychain</code> precompile at <code>0x…4000</code>, so you don’t need an AA transaction to bootstrap one.</li>
 </ul>
-<h2 id="0x77-shielded-transaction"><code>0x77</code> shielded transaction<a class="headerlink" href="#0x77-shielded-transaction" title="Link to this section">¶</a></h2>
-<p>A self-authenticating transaction against the <a href="../../core-concepts/privacy/">shielded pool</a>: the two embedded zk-proofs <em>are</em> the authorization, so there is <strong>no outer signature and no public sender</strong>. Use it when the sender itself must stay private; use a plain <code>cast send</code> to the pool contract when it doesn’t.</p>
+<h2 id="0x77-shielded-transaction"><code>0x77</code> Shielded Transaction<a class="headerlink" href="#0x77-shielded-transaction" title="Link to this section">¶</a></h2>
+<p>A self-authenticating transaction against the <a href="../../core-concepts/privacy/">shielded pool</a>: the two embedded zk-proofs are the authorization, so there is no outer signature and no public sender. Use it when the sender itself must stay private; use a plain <code>cast send</code> to the pool contract when it doesn’t.</p>
 <h3 id="body_1">Body<a class="headerlink" href="#body_1" title="Link to this section">¶</a></h3>
 <table>
 <thead>
@@ -2436,7 +2436,7 @@
 </tr>
 <tr>
 <td><code>pool_proof</code>, <code>auth_proof</code></td>
-<td>Two PLONK proof blobs, <strong>exactly 864 bytes each</strong> (gnark BN254 <code>MarshalSolidity</code>).</td>
+<td>Two PLONK proof blobs, exactly 864 bytes each (gnark BN254 <code>MarshalSolidity</code>).</td>
 </tr>
 <tr>
 <td><code>pub_signals</code></td>
@@ -2452,30 +2452,30 @@
 </tr>
 </tbody>
 </table>
-<p>There is <strong>no per-gas fee field and no gas-limit field</strong>. Both are public signals — <code>feePerGas</code> at <code>[28]</code> and <code>gasLimit</code> at <code>[29]</code> — and the contract unshields their product to the system address. The fee is therefore committed inside the proof, not bid at submission time, and the same proof cannot be re-broadcast under a different limit. <code>gasFee</code> itself is deliberately not a signal: the circuit bounds the two factors and the contract re-derives the product, so there is exactly one source of truth for it.</p>
+<p>There is no per-gas fee field and no gas-limit field. Both are public signals, <code>feePerGas</code> at <code>[28]</code> and <code>gasLimit</code> at <code>[29]</code>, and the contract unshields their product to the system address. The fee is therefore committed inside the proof, not bid at submission time, and the same proof cannot be re-broadcast under a different limit. <code>gasFee</code> itself is deliberately not a signal: the circuit bounds the two factors and the contract re-derives the product, so there is exactly one source of truth for it.</p>
 <p>Key public signals: <code>[0]</code> Merkle root, <code>[1..2]</code> spend nullifiers, <code>[3..5]</code> output note bodies, <code>[12]</code> operation (<code>0</code> transfer, <code>1</code> withdraw, <code>2</code> atomic call), <code>[13]</code>/<code>[14]</code> public amount and recipient, <code>[20]</code> <code>intentReplayId</code>, <code>[23]</code> <code>validUntil</code> deadline, <code>[24]</code> chain id, <code>[28]</code>/<code>[29]</code> <code>feePerGas</code> and <code>gasLimit</code>.</p>
-<h3 id="the-public-path-no-0x77-needed">The public path (no <code>0x77</code> needed)<a class="headerlink" href="#the-public-path-no-0x77-needed" title="Link to this section">¶</a></h3>
+<h3 id="the-public-path-no-0x77-needed">The Public Path (No <code>0x77</code> Needed)<a class="headerlink" href="#the-public-path-no-0x77-needed" title="Link to this section">¶</a></h3>
 <p>Entering and leaving the pool is ordinary contract interaction with <code>ShieldedPool</code> at <code>0x…5000</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># 1. shield funds — queues a note, doesn't insert it yet</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># 1. shield funds - queues a note, doesn't insert it yet</span>
 cast<span class="w"> </span>send<span class="w"> </span><span class="nv">$POOL</span><span class="w"> </span>--value<span class="w"> </span><span class="nv">$AMOUNT</span><span class="w"> </span><span class="s2">"privDeposit(uint256,uint8,uint256,bytes)"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span><span class="nv">$OWNER_COMMITMENT</span><span class="w"> </span><span class="nv">$SCHEME</span><span class="w"> </span><span class="m">0</span><span class="w"> </span>0x
 
 <span class="c1"># 2. drain the queue into the Merkle tree (permissionless)</span>
 cast<span class="w"> </span>send<span class="w"> </span><span class="nv">$POOL</span><span class="w"> </span><span class="s2">"deferBatchInsert(uint256)"</span><span class="w"> </span><span class="m">100</span>
 
-<span class="c1"># 3. spend — transfer, withdraw, or atomic call</span>
+<span class="c1"># 3. spend - transfer, withdraw, or atomic call</span>
 cast<span class="w"> </span>send<span class="w"> </span><span class="nv">$POOL</span><span class="w"> </span><span class="s2">"transact(bytes,bytes,uint256[30],bytes[3],bytes)"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span><span class="nv">$POOL_PROOF</span><span class="w"> </span><span class="nv">$AUTH_PROOF</span><span class="w"> </span><span class="nv">$PUB_SIGNALS</span><span class="w"> </span><span class="s2">"[0x,0x,0x]"</span><span class="w"> </span>0x
 </code></pre></div>
 <p>Useful reads: <code>merkleRoot()</code>, <code>nullifierSpent(uint256)</code>, <code>pendingCount()</code> / <code>pendingHead()</code>, <code>getPrivacyInfo(address)</code>. Recipients publish their viewing keys with <code>registerPrivacyInfo(...)</code> so senders can encrypt note ciphertexts to them.</p>
 <h3 id="gotchas_1">Gotchas<a class="headerlink" href="#gotchas_1" title="Link to this section">¶</a></h3>
 <ul>
-<li><strong>Deposits are deferred.</strong> <code>privDeposit</code> only queues the note; until someone calls <code>deferBatchInsert</code>, the note is not in the tree and <code>merkleRoot()</code> hasn’t moved — so a proof built against the new root will fail.</li>
+<li><strong>Deposits are deferred.</strong> <code>privDeposit</code> only queues the note; until someone calls <code>deferBatchInsert</code>, the note is not in the tree and <code>merkleRoot()</code> hasn’t moved, so a proof built against the new root will fail.</li>
 <li><strong>Proofs are pinned to a root, a chain, and a deadline.</strong> A stale <code>pub_signals[0]</code> root, a wrong chain id, or an expired <code>validUntil</code> is rejected. Rebuild the proof rather than retrying it.</li>
-<li><strong>Nullifiers are the replay guard</strong> — resubmitting a spent proof fails on <code>nullifierSpent</code>.</li>
+<li><strong>Nullifiers are the replay guard.</strong> Resubmitting a spent proof fails on <code>nullifierSpent</code>.</li>
 <li><strong>The proof blob length is validated at decode.</strong> Anything other than 864 bytes is rejected before execution, so a truncated proof costs a decode, not a transaction.</li>
-<li><strong><code>eth_estimateGas</code> does not apply.</strong> The gas limit is bound inside the proof, so it has to be chosen <em>before</em> proving — read <code>newl1_shieldedGasConstants</code> and size it from there. An accepted <code>0x77</code> is charged its full declared limit.</li>
-<li><strong>An atomic call’s payload does not go to <code>transact</code>.</strong> The spend settles and escrows the payout first; the call itself runs in a second frame, issued as <code>deliver</code>. A reverted call leaves the settlement committed and the escrow retryable — it does not undo the spend or refund the fee.</li>
+<li><strong><code>eth_estimateGas</code> does not apply.</strong> The gas limit is bound inside the proof, so it has to be chosen before proving: read <code>newl1_shieldedGasConstants</code> and size it from there. An accepted <code>0x77</code> is charged its full declared limit.</li>
+<li><strong>An atomic call’s payload does not go to <code>transact</code>.</strong> The spend settles and escrows the payout first; the call itself runs in a second frame, issued as <code>deliver</code>. A reverted call leaves the settlement committed and the escrow retryable; it does not undo the spend or refund the fee.</li>
 </ul>
 <h3 id="tooling">Tooling<a class="headerlink" href="#tooling" title="Link to this section">¶</a></h3>
 <p>A <code>0x77</code> transaction needs more than an RPC client: note encryption and scanning, PLONK proof generation, and encoding the envelope itself all require the shielded-pool circuit tooling, which ships with the client rather than with any general-purpose SDK.</p></div>
@@ -2499,7 +2499,7 @@ cast<span class="w"> </span>send<span class="w"> </span><span class="nv">$POOL</
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 2, 2026 02:58:57 UTC">September 2, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 4, 2026 01:45:28 UTC">September 4, 2026</span>
   </span>
 
     
