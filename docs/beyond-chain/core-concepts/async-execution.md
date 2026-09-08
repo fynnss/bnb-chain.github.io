@@ -1,12 +1,12 @@
 ---
-title: Async Execution - BNB NewL1
+title: Async Execution - Beyond Chain
 ---
 
 # Async Execution
 
 Conventional blockchains interleave execution with consensus: a block proposal carries the post-execution state root, so the leader must execute before proposing and every validator must re-execute before voting. The consequences compound: execution runs twice per block, the gas limit is sized against the slowest node's worst case, and the execution budget shrinks to a fraction of the block time.
 
-At a 200 ms block interval, that architecture isn't viable. BNB NewL1 decouples the two concerns: consensus establishes transaction ordering without executing anything, and execution proceeds asynchronously, several blocks behind. Since a deterministic ordering fully determines every outcome, execution reveals state rather than deciding it.
+At a 200 ms block interval, that architecture isn't viable. Beyond Chain decouples the two concerns: consensus establishes transaction ordering without executing anything, and execution proceeds asynchronously, several blocks behind. Since a deterministic ordering fully determines every outcome, execution reveals state rather than deciding it.
 
 ## How It Works
 
@@ -17,13 +17,13 @@ Concretely, a `NewL1Header` carries the fields known at proposal time, including
 
 ## Adaptive Execution Lag
 
-Block `N`'s results land in the header of block `N+D`. Prior designs fix `D` (EIP-7886 at 1, Monad at 3) and pay worst-case latency at all times. BNB NewL1's `D` adapts to load:
+Block `N`'s results land in the header of block `N+D`. Prior designs fix `D` (EIP-7886 at 1, Monad at 3) and pay worst-case latency at all times. Beyond Chain's `D` adapts to load:
 
 - **Low load.** `D` shrinks toward 1, minimizing time to finality.
 - **High load.** `D` grows, absorbing backlog without stalling consensus.
 - **Catch-up.** One block may carry several `ExecutionCommitment`s, draining the backlog in batches.
 
-![Adaptive execution lag across normal load, heavy load, and catch-up](../../assets/newl1-adaptive-lag.png)
+![Adaptive execution lag across normal load, heavy load, and catch-up](../../assets/beyond-chain-adaptive-lag.png)
 
 Constraints: `1 ≤ D(N) ≤ D_MAX`, at most ±1 change per block, with `D_MAX` [governance-configurable](../governance/overview.md). Validators don't re-derive the proposer's exact lag; they enforce the structure of the commitment list: entries must be contiguous from the previous commitment, strictly increasing, and advance by a bounded amount per block.
 
@@ -56,7 +56,7 @@ Consensus admits transactions against a `D`-lagged view of state, so a transacti
 | Nonce conflicts | Collisions inside the `D`-window are invisible to static checks. |
 | Contract dependencies | Approvals and balances shift between ordering and execution; static checks can't see it. |
 
-BNB NewL1 tracks each account's cumulative in-flight spend across the `D`-window and derives an `effectiveBalance` from it, enforced by four rules:
+Beyond Chain tracks each account's cumulative in-flight spend across the `D`-window and derives an `effectiveBalance` from it, enforced by four rules:
 
 1. **Fee on gas limit.** The sender pays `gas_bid × gas_limit` regardless of actual usage. Unused-gas refunds are disabled and EIP-3529 refunds are voided, so blocks are packed on declared gas, which is the block space actually sold. (System transactions and RPC simulations keep standard refund behavior; see [Migrating from BSC](../get-started/migrate-from-bsc.md#you-pay-for-your-declared-gas-limit).)
 2. **Consensus-time solvency.** A transaction is admitted only if `effectiveBalance ≥ tx_cost`.
@@ -67,11 +67,11 @@ Only an account's own transactions can spend its native balance, so this account
 
 ## System Transactions
 
-Interleaved chains build and sign system transactions (validator-set updates, reward distribution, slashing) at proposal time, because execution results are already on hand. On BNB NewL1 those results don't exist until slot `N+D`, so system transactions don't exist at ordering time at all. They are generated during execution, and their effects land in the block's `ExecutionCommitment`. Validators order and vote on user transactions only.
+Interleaved chains build and sign system transactions (validator-set updates, reward distribution, slashing) at proposal time, because execution results are already on hand. On Beyond Chain those results don't exist until slot `N+D`, so system transactions don't exist at ordering time at all. They are generated during execution, and their effects land in the block's `ExecutionCommitment`. Validators order and vote on user transactions only.
 
 ## State Commitment
 
-Decoupling makes execution the throughput bottleneck, so what execution spends its budget on starts to matter. BNB NewL1 commits state with a cumulative lattice-hash accumulator (LtHash) over a flat key-value store: advancing it costs O(1) per changed entry no matter how large the state is, and because it is cumulative, any divergence propagates into every descendant commitment.
+Decoupling makes execution the throughput bottleneck, so what execution spends its budget on starts to matter. Beyond Chain commits state with a cumulative lattice-hash accumulator (LtHash) over a flat key-value store: advancing it costs O(1) per changed entry no matter how large the state is, and because it is cumulative, any divergence propagates into every descendant commitment.
 
 That choice is what makes `eth_getProof` and snap sync unavailable. See [State DB](./state-db.md) for the construction, the storage layout, and the full list of consequences.
 

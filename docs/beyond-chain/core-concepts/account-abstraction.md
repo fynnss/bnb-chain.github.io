@@ -1,10 +1,10 @@
 ---
-title: Native Account Abstraction - BNB NewL1
+title: Native Account Abstraction - Beyond Chain
 ---
 
 # Native Account Abstraction
 
-BNB NewL1 has a native account-abstraction transaction: EIP-2718 envelope type `0x76`. One transaction can carry a batch of calls, be authorized by a passkey or a delegated key, and have its gas paid by someone else.
+Beyond Chain has a native account-abstraction transaction: EIP-2718 envelope type `0x76`. One transaction can carry a batch of calls, be authorized by a passkey or a delegated key, and have its gas paid by someone else.
 
 There is nothing to deploy or opt into. There is no bundler, no EntryPoint contract, and no smart-contract wallet; the rules below are enforced by every node. An ordinary account keeps its address and simply starts sending `0x76` transactions. Type `0x76` is valid from genesis, and standard transactions are unaffected.
 
@@ -110,7 +110,7 @@ Either path allows at most 64 selectors per scope. Prefer inline authorize-and-u
 
 ### Reading Key State
 
-Call [`newl1_getKey`](../developers/json_rpc/newl1-api-list.md#newl1_getkey) for a key's signature scheme, expiry, revoked and admin flags, scope flag, spend limit, period, and the amount consumed in the current period. A never-authorized key reports blank metadata; a revoked key reports its tombstone.
+Call [`newl1_getKey`](../developers/json_rpc/beyond-chain-api-list.md#newl1_getkey) for a key's signature scheme, expiry, revoked and admin flags, scope flag, spend limit, period, and the amount consumed in the current period. A never-authorized key reports blank metadata; a revoked key reports its tombstone.
 
 ## Gas
 

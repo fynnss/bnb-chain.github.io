@@ -1,10 +1,10 @@
 ---
-title: Consensus - BNB NewL1
+title: Consensus - Beyond Chain
 ---
 
 # Consensus: Parlia PoSA + BLS Fast Finality
 
-BNB NewL1's consensus is derived from Parlia, the Proof-of-Staked-Authority protocol securing BNB Smart Chain. Parlia has run in production for years, through several rounds of block-time reduction, and already has the properties BNB NewL1's latency targets need. BNB NewL1 takes it with tuned parameters and a handful of deliberate divergences, stripped of BSC's accumulated hardfork gating: the chain runs one configuration from genesis, with no activation heights and no feature flags.
+Beyond Chain's consensus is derived from Parlia, the Proof-of-Staked-Authority protocol securing BNB Smart Chain. Parlia has run in production for years, through several rounds of block-time reduction, and already has the properties Beyond Chain's latency targets need. Beyond Chain takes it with tuned parameters and a handful of deliberate divergences, stripped of BSC's accumulated hardfork gating: the chain runs one configuration from genesis, with no activation heights and no feature flags.
 
 ## Parameters
 
@@ -42,10 +42,10 @@ Double-sign evidence is detected automatically and submitted on-chain for slashi
 
 ## For Developers
 
-- Validator admission and rotation are on-chain and queryable (see [`newl1_getValidatorSchedule`](../developers/json_rpc/newl1-api-list.md#newl1_getvalidatorschedule)).
+- Validator admission and rotation are on-chain and queryable (see [`newl1_getValidatorSchedule`](../developers/json_rpc/beyond-chain-api-list.md#newl1_getvalidatorschedule)).
 - Block interval, turn length, and epoch length are chain parameters, not assumptions to hardcode into client code.
 - Applications that need a hard guarantee before acting irreversibly (e.g. a bridge release, a large settlement) should wait for finality rather than for ordering or import alone. See [Transaction Pre-confirmation](./tx-preconfirmation.md) for the faster, best-effort signal available before finality.
 
 ## What's Next
 
-Parlia is the current default rather than a permanent commitment. The properties BNB NewL1 actually depends on are a fixed 200 ms cadence, ordering-only votes, and sub-second finality. Any consensus that preserves those can slot in behind the same interfaces. Next-generation designs are under evaluation, in particular Minimmit, a minimal BFT protocol that reaches finality in fewer communication rounds, as a candidate for Consensus 2.0. The consensus layer sits behind narrow seams in the node architecture precisely so that this migration, if and when it comes, is a component swap rather than a rewrite.
+Parlia is the current default rather than a permanent commitment. The properties Beyond Chain actually depends on are a fixed 200 ms cadence, ordering-only votes, and sub-second finality. Any consensus that preserves those can slot in behind the same interfaces. Next-generation designs are under evaluation, in particular Minimmit, a minimal BFT protocol that reaches finality in fewer communication rounds, as a candidate for Consensus 2.0. The consensus layer sits behind narrow seams in the node architecture precisely so that this migration, if and when it comes, is a component swap rather than a rewrite.
