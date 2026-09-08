@@ -1,14 +1,14 @@
 ---
-title: Governance - BNB NewL1
+title: Governance - Beyond Chain
 ---
 
 # Governance
 
-BNB NewL1 controls protocol parameters through fully on-chain, token-weighted governance, running the same Compound/OpenZeppelin `Governor` + `Timelock` engine as BNB Smart Chain. There is no admin key or externally-owned account that can bypass this process: every governed contract only accepts changes routed through the governance flow.
+Beyond Chain controls protocol parameters through fully on-chain, token-weighted governance, running the same Compound/OpenZeppelin `Governor` + `Timelock` engine as BNB Smart Chain. There is no admin key or externally-owned account that can bypass this process: every governed contract only accepts changes routed through the governance flow.
 
 ## What's Governable
 
-Protocol and system parameters: staking and slashing constants, and BNB NewL1–specific configuration such as the [Multi-Lane](../core-concepts/multi-lane.md) quotas in `LaneRegistry`. Validator-set membership itself is not a governance vote; it's decided automatically by a stake-weighted election that runs once per day (see below), while the parameters that shape staking and elections are governable.
+Protocol and system parameters: staking and slashing constants, and Beyond Chain–specific configuration such as the [Multi-Lane](../core-concepts/multi-lane.md) quotas in `LaneRegistry`. Validator-set membership itself is not a governance vote; it's decided automatically by a stake-weighted election that runs once per day (see below), while the parameters that shape staking and elections are governable.
 
 ## Voting Power
 
@@ -32,12 +32,12 @@ Two access-control gates make this the only path to change anything governed: ev
 
 ## How to Participate
 
-- **Delegate or stake.** Bridge BNB to BNB NewL1, then call `StakeHub.delegate(validatorOperator, delegateVotePower=true)`, which also mints govBNB automatically.
+- **Delegate or stake.** Bridge BNB to Beyond Chain, then call `StakeHub.delegate(validatorOperator, delegateVotePower=true)`, which also mints govBNB automatically.
 - **Become a validator.** Register via `StakeHub.createValidator`, which verifies your BLS vote key.
 - **Vote.** Delegate your govBNB, to yourself or to a validator, then cast votes on active proposals through the `Governor` contract.
 - **Propose.** Hold or have delegated enough govBNB to clear the proposal threshold, then submit a proposal via `Governor.propose`.
 
-`Governor` and `Timelock` are compiled from the same OpenZeppelin/Compound contracts BSC uses (with BNB NewL1's own timing constants), so tooling built against a standard OZ Governor interface, Tally for example, should work without changes. This manual hasn't independently verified any specific third-party tool against a live deployment.
+`Governor` and `Timelock` are compiled from the same OpenZeppelin/Compound contracts BSC uses (with Beyond Chain's own timing constants), so tooling built against a standard OZ Governor interface, Tally for example, should work without changes. This manual hasn't independently verified any specific third-party tool against a live deployment.
 
 ## Validator-Set Rotation
 

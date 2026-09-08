@@ -1,13 +1,13 @@
 ---
-title: Shielded Pool (Privacy) - BNB NewL1
+title: Shielded Pool (Privacy) - Beyond Chain
 ---
 
 # Shielded Pool: Native Transaction Privacy
 
-BNB NewL1 includes a native shielded pool, a system contract that lets users deposit ("shield") funds, transact inside the pool with sender, recipient, and amount all hidden, and later withdraw ("unshield") back to a normal, transparent address. It sits alongside standard, fully transparent EVM transactions as an opt-in privacy layer, built from the established shielded-pool primitives (notes, commitments, nullifiers, zk-SNARKs).
+Beyond Chain includes a native shielded pool, a system contract that lets users deposit ("shield") funds, transact inside the pool with sender, recipient, and amount all hidden, and later withdraw ("unshield") back to a normal, transparent address. It sits alongside standard, fully transparent EVM transactions as an opt-in privacy layer, built from the established shielded-pool primitives (notes, commitments, nullifiers, zk-SNARKs).
 
 !!! warning "Not yet audited or production-ready"
-    The shielded pool is an early-phase feature. As detailed below, its zk-SNARKs trusted setup is currently an imported one rather than a ceremony BNB NewL1 ran, and the circuits are unaudited. Do not treat it as safe for real value.
+    The shielded pool is an early-phase feature. As detailed below, its zk-SNARKs trusted setup is currently an imported one rather than a ceremony Beyond Chain ran, and the circuits are unaudited. Do not treat it as safe for real value.
 
 ## Why It Matters
 
@@ -64,7 +64,7 @@ Not yet implemented: ERC-20/BEP-20 shielding, the reserved post-quantum authoriz
 
 ## Security Assumptions
 
-- **Trusted setup.** PLONK's structured reference string (SRS) is universal: one SRS serves every circuit up to its size bound. The current deployment imports an existing public SRS, which inherits that ceremony's honest-contributor assumption rather than establishing one here. A BNB NewL1 ceremony and a dedicated third-party circuit audit are both still open before mainnet.
+- **Trusted setup.** PLONK's structured reference string (SRS) is universal: one SRS serves every circuit up to its size bound. The current deployment imports an existing public SRS, which inherits that ceremony's honest-contributor assumption rather than establishing one here. A Beyond Chain ceremony and a dedicated third-party circuit audit are both still open before mainnet.
 - **What stays public even in "private" flows.** Deposits reveal sender, amount, and asset. Withdrawals reveal recipient, amount, and asset. Atomic calls reveal the unshielded amount, the call's target and calldata, and the reshielded amount. A `0x77` transaction's fee is public and always native BNB. Only a shielded-to-shielded transfer keeps sender, recipient, amount, and asset all hidden, and on the direct path even that leaves its fee public.
 - **Registration links your EOA to your privacy address.** That is the accepted cost of reusing the EOA key for spend authorization. Individual notes sent to that address remain unlinkable to one another.
 - **The `isOpen` flag is public per note.** Mixing open and standard notes without care can create identifiable patterns.

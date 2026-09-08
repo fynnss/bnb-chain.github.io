@@ -1,5 +1,5 @@
 ---
-title: Migrating from BSC - BNB NewL1
+title: Migrating from BSC - Beyond Chain
 ---
 
 # Migrating from BNB Smart Chain
@@ -7,7 +7,7 @@ title: Migrating from BSC - BNB NewL1
 Same gas asset, same Parlia consensus family, same staking and governance contracts at the same addresses, unmodified EVM. Contracts deploy unchanged and standard tooling connects unchanged. The differences are almost all above the EVM: fees, mempool, block cadence, and how state is committed.
 
 !!! note "No public network yet"
-    There is no public testnet or mainnet endpoint yet, so treat this as a porting checklist to work through ahead of one. A native BNB NewL1 ↔ BSC bridge is designed and under development but not live; the `CrossChain` address currently holds a placeholder (see [System Contracts](../governance/system-contracts.md)).
+    There is no public testnet or mainnet endpoint yet, so treat this as a porting checklist to work through ahead of one. A native Beyond Chain ↔ BSC bridge is designed and under development but not live; the `CrossChain` address currently holds a placeholder (see [System Contracts](../governance/system-contracts.md)).
 
 ## You Pay for Your Declared Gas Limit
 
@@ -61,8 +61,8 @@ This is where [async execution](../core-concepts/async-execution.md) shows up, a
 
 ## Indexers and Explorers
 
-- **System transactions are invisible in the block body.** Slashing, deposits, finality rewards, validator-set updates, and shielded drains are not in the transaction list and not counted in `header.gasUsed`. Read them via [`newl1_getSystemReceiptsByBlock`](../developers/json_rpc/newl1-api-list.md#newl1_getsystemreceiptsbyblock); they never appear in `eth_getBlockReceipts`.
+- **System transactions are invisible in the block body.** Slashing, deposits, finality rewards, validator-set updates, and shielded drains are not in the transaction list and not counted in `header.gasUsed`. Read them via [`newl1_getSystemReceiptsByBlock`](../developers/json_rpc/beyond-chain-api-list.md#newl1_getsystemreceiptsbyblock); they never appear in `eth_getBlockReceipts`.
 - **Blocks carry `systemTransactionsRoot` and `commitments`.** `stateRoot`, `receiptsRoot`, `logsBloom`, and `gasUsed` are `null` while a block is ordered but unexecuted, and strict deserializers fail at the tip.
 - **`newl1_subscribeNewHeads`** delivers head, justified, and finalized numbers and hashes in one frame per canonical advance.
 
-Once you're ported, the [Quick Guide](../developers/quick-guide.md) covers what BNB NewL1 adds on top: pre-confirmation, Multi-Lane, native account abstraction, and the shielded pool.
+Once you're ported, the [Quick Guide](../developers/quick-guide.md) covers what Beyond Chain adds on top: pre-confirmation, Multi-Lane, native account abstraction, and the shielded pool.

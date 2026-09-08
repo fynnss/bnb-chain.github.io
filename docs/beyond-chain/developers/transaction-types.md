@@ -1,10 +1,10 @@
 ---
-title: Transaction Types - BNB NewL1
+title: Transaction Types - Beyond Chain
 ---
 
 # Native Transaction Types
 
-Standard Ethereum transactions (legacy, EIP-2930, EIP-1559) work exactly as you'd expect. On top of them BNB NewL1 adds two native EIP-2718 types of its own:
+Standard Ethereum transactions (legacy, EIP-2930, EIP-1559) work exactly as you'd expect. On top of them Beyond Chain adds two native EIP-2718 types of its own:
 
 | Type | Name | Use it for |
 |---|---|---|
@@ -48,7 +48,7 @@ One transaction, signed by an account or by a delegated key, carrying a batch of
 - **`nonce_key` must be zero.** Parallel nonce lanes are reserved but not enabled.
 - **One nonce per transaction.** An inline `key_authorization` is prepended as a call, so combining it with a `CREATE` in the same transaction is rejected. Do the authorization first, or deploy from a standalone transaction.
 - **Session-key spend limits count gas.** It is counted at the declared gas limit, like everything else.
-- **Key state is readable at any time** via [`newl1_getKey(account, keyId)`](./json_rpc/newl1-api-list.md#newl1_getkey). Keys can also be managed from an ordinary transaction by calling `authorizeKey` / `revokeKey` on the `AccountKeychain` precompile at `0x…4000`, so you don't need an AA transaction to bootstrap one.
+- **Key state is readable at any time** via [`newl1_getKey(account, keyId)`](./json_rpc/beyond-chain-api-list.md#newl1_getkey). Keys can also be managed from an ordinary transaction by calling `authorizeKey` / `revokeKey` on the `AccountKeychain` precompile at `0x…4000`, so you don't need an AA transaction to bootstrap one.
 
 ## `0x77` Shielded Transaction
 

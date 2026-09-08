@@ -1,12 +1,12 @@
 ---
-title: Transaction Lifecycle - BNB NewL1
+title: Transaction Lifecycle - Beyond Chain
 ---
 
 # Transaction Lifecycle
 
 A transaction progresses from submission to pool admission, optional pre-confirmation, ordering, execution, and finality. Each milestone has its own RPC signal.
 
-![BNB NewL1 transaction lifecycle](../../assets/newl1-transaction-lifecycle.svg)
+![Beyond Chain transaction lifecycle](../../assets/beyond-chain-transaction-lifecycle.svg)
 
 ## Submit Through a Gateway
 
@@ -165,7 +165,7 @@ Execution is asynchronous, so an ordered transaction may not have a receipt yet:
 - `eth_getTransactionReceipt` returns `-38004` when the transaction is ordered but not yet executed. Retry.
 - It returns `null` when the hash is unknown. This is not an execution-lag signal.
 
-BNB NewL1 extends `eth_blockNumber` with an optional tag parameter:
+Beyond Chain extends `eth_blockNumber` with an optional tag parameter:
 
 | Call | Result |
 |---|---|
