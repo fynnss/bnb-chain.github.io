@@ -153,32 +153,32 @@ nav:
     - Cross Chain Bridge: ./bnb-smart-chain/cross-chain-bridge.md
     - Benchmark: ./bnb-smart-chain/benchmark/design-reference.md
     - FAQ:  ./bnb-smart-chain/faq/index.md
-  - Beyond Chain:
-    - Beyond Chain: ./beyond-chain/index.md
-    - Overview: ./beyond-chain/overview.md
+  - BNB NewL1:
+    - BNB NewL1: ./bnb-newl1/index.md
+    - Overview: ./bnb-newl1/overview.md
     - Get Started:
-      - Network Information: ./beyond-chain/get-started/network-info.md
-      - Migrating from BSC: ./beyond-chain/get-started/migrate-from-bsc.md
+      - Network Information: ./bnb-newl1/get-started/network-info.md
+      - Migrating from BSC: ./bnb-newl1/get-started/migrate-from-bsc.md
     - Developers:
-      - Quick Guide: ./beyond-chain/developers/quick-guide.md
-      - Transaction Types: ./beyond-chain/developers/transaction-types.md
-      - Transaction Lifecycle: ./beyond-chain/developers/transaction-lifecycle.md
-      - Examples: ./beyond-chain/developers/examples.md
+      - Quick Guide: ./bnb-newl1/developers/quick-guide.md
+      - Transaction Types: ./bnb-newl1/developers/transaction-types.md
+      - Transaction Lifecycle: ./bnb-newl1/developers/transaction-lifecycle.md
+      - Examples: ./bnb-newl1/developers/examples.md
       - JSON-RPC:
-        - Endpoint: ./beyond-chain/developers/json_rpc/json-rpc-endpoint.md
-        - API List: ./beyond-chain/developers/json_rpc/beyond-chain-api-list.md
+        - Endpoint: ./bnb-newl1/developers/json_rpc/json-rpc-endpoint.md
+        - API List: ./bnb-newl1/developers/json_rpc/newl1-api-list.md
     - Core Concepts:
-      - Consensus: ./beyond-chain/core-concepts/consensus.md
-      - Async Execution: ./beyond-chain/core-concepts/async-execution.md
-      - State DB: ./beyond-chain/core-concepts/state-db.md
-      - Multi-Lane: ./beyond-chain/core-concepts/multi-lane.md
-      - Pre-confirmation: ./beyond-chain/core-concepts/tx-preconfirmation.md
-      - Account Abstraction: ./beyond-chain/core-concepts/account-abstraction.md
-      - Privacy: ./beyond-chain/core-concepts/privacy.md
+      - Consensus: ./bnb-newl1/core-concepts/consensus.md
+      - Async Execution: ./bnb-newl1/core-concepts/async-execution.md
+      - State DB: ./bnb-newl1/core-concepts/state-db.md
+      - Multi-Lane: ./bnb-newl1/core-concepts/multi-lane.md
+      - Pre-confirmation: ./bnb-newl1/core-concepts/tx-preconfirmation.md
+      - Account Abstraction: ./bnb-newl1/core-concepts/account-abstraction.md
+      - Privacy: ./bnb-newl1/core-concepts/privacy.md
     - Governance:
-      - Overview: ./beyond-chain/governance/overview.md
-      - System Contracts: ./beyond-chain/governance/system-contracts.md
-    - FAQ: ./beyond-chain/faq.md
+      - Overview: ./bnb-newl1/governance/overview.md
+      - System Contracts: ./bnb-newl1/governance/system-contracts.md
+    - FAQ: ./bnb-newl1/faq.md
   - opBNB:
     - opBNB: ./bnb-opbnb/index.md
     - Overview: ./bnb-opbnb/overview.md

@@ -1,10 +1,10 @@
 ---
-title: Quick Guide - Beyond Chain
+title: Quick Guide - BNB NewL1
 ---
 
 # Developer Quick Guide
 
-If you build on any EVM chain, you can build on Beyond Chain. Solidity, the toolchain (Foundry, Hardhat, Remix), and the SDKs (ethers.js, viem, web3.py) all work unmodified against a node's standard JSON-RPC endpoint.
+If you build on any EVM chain, you can build on BNB NewL1. Solidity, the toolchain (Foundry, Hardhat, Remix), and the SDKs (ethers.js, viem, web3.py) all work unmodified against a node's standard JSON-RPC endpoint.
 
 !!! note "Devnet stage"
     There is no public testnet or mainnet endpoint, no faucet, and no hosted explorer yet. Today you develop against a local devnet built from the client source. Network parameters on these pages reflect the current devnet client and may change before a public launch.
@@ -44,9 +44,9 @@ None of these are required to run a standard EVM app. They are additive, and the
 - **[Examples](./examples.md)** collects runnable demos: watch a pre-confirmation land, find the current leader, drive load, run the end-to-end scenario suite.
 - **[Transaction Types](./transaction-types.md)** documents the two native EIP-2718 types (`0x76` account abstraction, `0x77` shielded), their fields, how to sign them, and what trips people up.
 - **[JSON-RPC Endpoint](./json_rpc/json-rpc-endpoint.md)** covers endpoints, transports, and how the API surface maps onto Geth's.
-- **[Beyond Chain API List](./json_rpc/beyond-chain-api-list.md)** lists every method that goes beyond or differs from Geth, with parameters and `curl` examples.
+- **[BNB NewL1 API List](./json_rpc/newl1-api-list.md)** lists every method that goes beyond or differs from Geth, with parameters and `curl` examples.
 - **[Network Information](../get-started/network-info.md)** holds the network identifiers, protocol parameters, and endpoints.
-- **[System Contracts](../governance/system-contracts.md)** lists every system contract and precompile address, including the BSC carry-overs and the Beyond Chain–original ones.
+- **[System Contracts](../governance/system-contracts.md)** lists every system contract and precompile address, including the BSC carry-overs and the BNB NewL1–original ones.
 - **[Governance](../governance/overview.md)** walks the propose → vote → queue → execute lifecycle that controls protocol parameters.
 - **[FAQ](../faq.md)**
 

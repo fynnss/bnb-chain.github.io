@@ -1,10 +1,10 @@
 ---
-title: System Contracts - Beyond Chain
+title: System Contracts - BNB NewL1
 ---
 
 # System Contracts
 
-Beyond Chain predeploys a set of system contracts at genesis, at fixed addresses, covering staking, governance, and the chain's own novel features (Multi-Lane, the shielded pool, and account abstraction). Most of the staking/governance contracts reuse BNB Smart Chain's audited bytecode directly; the rest are new to Beyond Chain.
+BNB NewL1 predeploys a set of system contracts at genesis, at fixed addresses, covering staking, governance, and the chain's own novel features (Multi-Lane, the shielded pool, and account abstraction). Most of the staking/governance contracts reuse BNB Smart Chain's audited bytecode directly; the rest are new to BNB NewL1.
 
 | Contract | Address | Responsibility |
 |---|---|---|
@@ -26,7 +26,7 @@ Beyond Chain predeploys a set of system contracts at genesis, at fixed addresses
 
 ## Notes
 
-- `ValidatorSet`, `SlashIndicator`, `SystemReward`, `StakeHub`, `StakeCredit`, `GovToken`, `Governor`, and `Timelock` are the staking/governance stack carried over from BNB Smart Chain, kept at the same addresses so their embedded bytecode's internal cross-references remain valid. `Governor`/`Timelock` are recompiled with Beyond Chain's own governance-timing constants (voting period, proposal threshold, timelock delay), which are still devnet-only values and not finalized for a public network.
-- `CrossChain` exists purely so `ValidatorSet`'s epoch-update logic finds a non-empty contract at that address, mirroring a BSC internal check. It does not carry governance traffic on Beyond Chain.
-- `LaneRegistry`, `AccountKeychain`/`SignatureVerifier`, and `ShieldedPool`/`ShieldedAuthVerifier` are Beyond Chain–original, with no BNB Smart Chain equivalent.
+- `ValidatorSet`, `SlashIndicator`, `SystemReward`, `StakeHub`, `StakeCredit`, `GovToken`, `Governor`, and `Timelock` are the staking/governance stack carried over from BNB Smart Chain, kept at the same addresses so their embedded bytecode's internal cross-references remain valid. `Governor`/`Timelock` are recompiled with BNB NewL1's own governance-timing constants (voting period, proposal threshold, timelock delay), which are still devnet-only values and not finalized for a public network.
+- `CrossChain` exists purely so `ValidatorSet`'s epoch-update logic finds a non-empty contract at that address, mirroring a BSC internal check. It does not carry governance traffic on BNB NewL1.
+- `LaneRegistry`, `AccountKeychain`/`SignatureVerifier`, and `ShieldedPool`/`ShieldedAuthVerifier` are BNB NewL1–original, with no BNB Smart Chain equivalent.
 - `AccountKeychain` and `SignatureVerifier` are enshrined precompiles (Rust logic compiled directly into the EVM's precompile map) rather than deployed bytecode, which is why they sit in their own reserved address band separate from the deployed system contracts above.

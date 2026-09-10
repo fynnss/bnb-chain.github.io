@@ -1,10 +1,10 @@
 ---
-title: State DB - Beyond Chain
+title: State DB - BNB NewL1
 ---
 
 # State DB
 
-Beyond Chain keeps world state in a flat key-value store and commits it with a cumulative lattice hash (LtHash): every live account and storage slot is hashed into a fixed-size vector, and the commitment is the sum of them all. The header still carries a 32-byte `state_root`, so nothing about the field's shape changes. What changes is how that value is produced, what it costs to produce, and what can be proven from it.
+BNB NewL1 keeps world state in a flat key-value store and commits it with a cumulative lattice hash (LtHash): every live account and storage slot is hashed into a fixed-size vector, and the commitment is the sum of them all. The header still carries a 32-byte `state_root`, so nothing about the field's shape changes. What changes is how that value is produced, what it costs to produce, and what can be proven from it.
 
 The property that shapes everything downstream is that the commitment is updated rather than rebuilt: changing one account costs the same whether the chain holds a thousand accounts or a billion, and the changes in a block can be folded in from any thread, in any order. That is what lets the commitment ride along with [async execution](./async-execution.md) instead of competing with it for the execution budget.
 

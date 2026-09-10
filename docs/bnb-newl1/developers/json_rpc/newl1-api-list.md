@@ -1,10 +1,10 @@
 ---
-title: API List - Beyond Chain
+title: NewL1 API List - BNB NewL1
 ---
 
-# Beyond Chain API List
+# BNB NewL1 API List
 
-Every method Beyond Chain adds to, or serves differently from, a standard Geth client. For the standard methods themselves, see the [Geth JSON-RPC API documentation](https://geth.ethereum.org/docs/interacting-with-geth/rpc).
+Every method BNB NewL1 serves beyond, or differently from, a standard Geth client. For the standard methods themselves, see the [Geth JSON-RPC API documentation](https://geth.ethereum.org/docs/interacting-with-geth/rpc).
 
 Examples below assume `RPC` is set to a node's HTTP endpoint and `WS` to its WebSocket endpoint.
 
@@ -331,7 +331,7 @@ Returns `null`, distinct from an empty array, when the block's system transactio
 
 ## Finality API
 
-Beyond Chain uses Parlia with BLS fast finality: a block becomes irreversible once two-thirds of validators have voted for it, in roughly one block interval rather than by accumulating confirmation depth.
+BNB NewL1 uses Parlia with BLS fast finality: a block becomes irreversible once two-thirds of validators have voted for it, in roughly one block interval rather than by accumulating confirmation depth.
 
 The standard route is the `finalized` block tag (see [Block Tags](#block-tags-and-the-two-tips)). The methods below are the BSC-compatible explicit form.
 
@@ -346,7 +346,7 @@ Returns the header of the block at `max(fastFinalizedHeight, head - verifiedVali
 * Integer in the range `[2, 21]`.
 
 !!! warning "BSC's `-1` / `-2` / `-3` shorthands are not supported"
-    On BSC these select a fraction of the validator set. On Beyond Chain they are rejected with `-32602`; pass an explicit count in `[2, 21]`.
+    On BSC these select a fraction of the validator set. On BNB NewL1 they are rejected with `-32602`; pass an explicit count in `[2, 21]`.
 
 ```bash
 curl -X POST "$RPC" -H "Content-Type: application/json" \
@@ -397,7 +397,7 @@ curl -X POST "$RPC" -H "Content-Type: application/json" \
   --data '{"jsonrpc":"2.0","method":"eth_health","params":[],"id":1}'
 ```
 
-Use this together with block-number progress for health checks; `eth_syncing` is always `false` on Beyond Chain and reports nothing useful.
+Use this together with block-number progress for health checks; `eth_syncing` is always `false` on BNB NewL1 and reports nothing useful.
 
 ### eth_getTransactionsByBlockNumber
 

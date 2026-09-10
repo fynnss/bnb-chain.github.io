@@ -1,5 +1,5 @@
 ---
-title: Examples - Beyond Chain
+title: Examples - BNB NewL1
 ---
 
 # Examples
@@ -21,7 +21,7 @@ rpc() { curl -s $RPC -H 'content-type: application/json' \
 Needs `curl` and `jq`. Sending transactions uses Foundry's `cast`; the subscription uses any WebSocket client.
 
 !!! note "No endpoint yet"
-    Beyond Chain has no public network, so there is nothing to point `RPC` at today; see [Network Information](../get-started/network-info.md). These are protocol demonstrations, not an ecosystem showcase.
+    BNB NewL1 has no public network, so there is nothing to point `RPC` at today; see [Network Information](../get-started/network-info.md). These are protocol demonstrations, not an ecosystem showcase.
 
 ## Ordering, Execution, and Finality Move Separately
 
@@ -91,4 +91,4 @@ rpc eth_getProof '[]'                                   # -32004: LtHash, not an
 
 `newl1_getSystemReceiptsByBlock` is the only way to see system transactions; they never appear in `eth_getBlockReceipts` or the block's transaction list.
 
-Full method list, parameters, and response shapes: [Beyond Chain API List](./json_rpc/beyond-chain-api-list.md).
+Full method list, parameters, and response shapes: [BNB NewL1 API List](./json_rpc/newl1-api-list.md).

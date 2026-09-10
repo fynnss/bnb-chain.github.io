@@ -1,18 +1,18 @@
 ---
-title: Network Information - Beyond Chain
+title: Network Information - BNB NewL1
 ---
 
 # Network Information
 
 | Name | Value |
 |---|---|
-| Network Name | Beyond Chain |
+| Network Name | BNB NewL1 |
 | Description | High-performance EVM Layer 1 in the BNB Chain ecosystem. |
 | RPC Endpoint | Not available yet |
 | Chain ID | Not finalized yet |
 | Currency Symbol | BNB |
 | Block Explorer | Not available yet |
-| Bridge | Beyond Chain ↔ BSC bridge in development |
+| Bridge | BNB NewL1 ↔ BSC bridge in development |
 
 !!! note "Devnet stage"
     There is no public testnet or mainnet endpoint, faucet, or hosted explorer yet. The values below reflect the current devnet client and may change. Public network details will land on this page once they exist.

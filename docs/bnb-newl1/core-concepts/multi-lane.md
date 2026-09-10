@@ -1,10 +1,10 @@
 ---
-title: Multi-Lane - Beyond Chain
+title: Multi-Lane - BNB NewL1
 ---
 
 # Multi-Lane
 
-Multi-Lane reserves guaranteed gas capacity inside every block for specific latency-sensitive transaction classes, called lanes, so a burst of unrelated traffic can't crowd them out. It's a Beyond Chain–specific mechanism with no equivalent on BNB Smart Chain.
+Multi-Lane reserves guaranteed gas capacity inside every block for specific latency-sensitive transaction classes, called lanes, so a burst of unrelated traffic can't crowd them out. It's a BNB NewL1–specific mechanism with no equivalent on BNB Smart Chain.
 
 ## Guarantees
 
@@ -34,7 +34,7 @@ Lane-to-address mappings and reserved shares live in the on-chain `LaneRegistry`
 
 Lane configuration is read from a fixed, slightly-lagged checkpoint of executed state rather than the very latest block. A governance-approved change to lane quotas therefore takes effect after a short delay (on the order of the execution lag), not on the very next block. Don't assume same-block activation when testing a quota change.
 
-You can read the live, governance-resolved lane configuration via the [`newl1_laneConfig`](../developers/json_rpc/beyond-chain-api-list.md#newl1_laneconfig) RPC method.
+You can read the live, governance-resolved lane configuration via the [`newl1_laneConfig`](../developers/json_rpc/newl1-api-list.md#newl1_laneconfig) RPC method.
 
 ## For Developers
 
