@@ -1,5 +1,5 @@
 ---
-title: Transaction Pre-confirmation - Beyond Chain
+title: Transaction Pre-confirmation - BNB NewL1
 ---
 
 # Transaction Pre-confirmation

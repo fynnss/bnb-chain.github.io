@@ -2,7 +2,7 @@
 hide:
 - toc
 
-title: Beyond Chain - High-Performance EVM L1
+title: BNB NewL1 - High-Performance EVM L1
 ---
 
 <style>
@@ -13,18 +13,18 @@ title: Beyond Chain - High-Performance EVM L1
 
 <div class="section-head">
     <div class="left">
-        <h1>Beyond Chain</h1>
-        <p>Beyond Chain is a high-performance, EVM-compatible Layer 1 built for latency-sensitive on-chain activity: sub-second finality, native account abstraction, transaction pre-confirmation, Multi-Lane reserved capacity, and an on-chain shielded (privacy) pool.</p>
+        <h1>BNB NewL1</h1>
+        <p>BNB NewL1 is a high-performance, EVM-compatible Layer 1 built for latency-sensitive on-chain activity: sub-second finality, native account abstraction, transaction pre-confirmation, Multi-Lane reserved capacity, and an on-chain shielded (privacy) pool.</p>
     </div>
 </div>
 
 !!! note "Status"
-    Beyond Chain is under active development and currently runs as a multi-validator devnet. Interfaces, addresses, and parameters described in this manual are subject to change before mainnet.
+    BNB NewL1 is under active development and currently runs as a multi-validator devnet. Interfaces, addresses, and parameters described in this manual are subject to change before mainnet.
 
 <div class="section-body">
     <a href="./overview">
         <div>Overview</div>
-        <p>What Beyond Chain is and how it's built</p>
+        <p>What BNB NewL1 is and how it's built</p>
     </a>
     <a href="./get-started/network-info">
         <div>Get Started</div>
@@ -56,6 +56,6 @@ title: Beyond Chain - High-Performance EVM L1
     </a>
     <a href="./developers/json_rpc/json-rpc-endpoint">
         <div>JSON-RPC Reference</div>
-        <p>Standard eth_* methods plus Beyond Chain extensions</p>
+        <p>Standard eth_* methods plus BNB NewL1 extensions</p>
     </a>
 </div>
