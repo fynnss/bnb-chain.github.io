@@ -4,7 +4,7 @@ title: BNB NewL1 Overview - BNB NewL1
 
 # BNB NewL1 - High-Performance EVM L1
 
-BNB NewL1 is an EVM-compatible Layer 1 and the newest chain in the BNB Chain family. It targets workloads that need sub-second finality and predictable inclusion: high-frequency trading, real-time payments, confidential finance, and agent-driven activity. Blocks land every 200 ms and become irreversible in roughly one block interval through BLS fast finality, while sub-blocks give a client a pre-confirmation about 20 ms after submission.
+BNB NewL1 is an EVM-compatible Layer 1 and the next generation chain in the BNB Chain family. It targets workloads that need sub-second finality and predictable inclusion, include but not limited to: high-frequency trading, real-time payments, confidential finance, and agent-driven activity. Blocks land every 200 ms and become irreversible in roughly one block interval through BLS fast finality, while sub-blocks give a client a pre-confirmation about 20 ms after submission.
 
 ## Key Features and Advantages
 
@@ -42,7 +42,7 @@ BNB is the native asset of BNB NewL1, and no new token is issued. It is bridged 
 
 ## What This Means for Developers
 
-Existing Solidity contracts and standard wallet flows run unchanged. Contracts, opcodes, and per-operation gas costs behave exactly as on any other EVM chain, since execution builds on [reth](https://github.com/paradigmxyz/reth) and [revm](https://github.com/bluealloy/revm). Four things around it changed:
+Existing Solidity contracts and standard wallet flows run unchanged. Contracts, opcodes, and EVM behave exactly as on any other EVM chain, since execution builds on [reth](https://github.com/paradigmxyz/reth) and [revm](https://github.com/bluealloy/revm). Four things around it changed:
 
 - **You pay for your declared gas limit, not gas used.** Block space is sold by declared gas before execution runs ([details](./get-started/migrate-from-bsc.md#you-pay-for-your-declared-gas-limit)).
 - **There is no global mempool.** Transactions go directly to the current and next block producer, which is part of what makes pre-confirmation and Multi-Lane packing possible.
