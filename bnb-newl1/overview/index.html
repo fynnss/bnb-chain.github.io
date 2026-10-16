@@ -2234,7 +2234,7 @@
 
 
 <div><h1 id="bnb-newl1-high-performance-evm-l1">BNB NewL1 - High-Performance EVM L1<a class="headerlink" href="#bnb-newl1-high-performance-evm-l1" title="Link to this section">¶</a></h1>
-<p>BNB NewL1 is an EVM-compatible Layer 1 and the next generation chain in the BNB Chain family. It targets workloads that need sub-second finality and predictable inclusion, include but not limited to: high-frequency trading, real-time payments, confidential finance, and agent-driven activity. Blocks land every 200 ms and become irreversible in roughly one block interval through BLS fast finality, while sub-blocks give a client a pre-confirmation about 20 ms after submission.</p>
+<p>BNB NewL1 is an EVM-compatible Layer 1 and the next generation chain in the BNB Chain family. It targets workloads that need sub-second finality and predictable inclusion, include but not limited to: high-frequency trading, real-time payments, confidential finance, and agent-driven activity. Under the proposed Parlia design, cross-block BLS votes target transaction-order finality in under one second at the 200 ms block interval. SubBlocks provide an earlier preconfirmation at approximately 20 ms. Execution finality occurs only after a subsequent block records the <code>ExecutionCommitment</code> and that block itself finalizes.</p>
 <h2 id="key-features-and-advantages">Key Features and Advantages<a class="headerlink" href="#key-features-and-advantages" title="Link to this section">¶</a></h2>
 <p>Execution runs off the consensus critical path, so ordering never waits on it. State lives in a flat key-value store under a cumulative lattice-hash commitment, with no Merkle-Patricia trie underneath. Account UX and privacy are protocol primitives, not contracts layered on top of the EVM.</p>
 <h2 id="where-bnb-newl1-fits">Where BNB NewL1 Fits<a class="headerlink" href="#where-bnb-newl1-fits" title="Link to this section">¶</a></h2>
@@ -2303,7 +2303,7 @@
 </tr>
 <tr>
 <td>Consensus</td>
-<td>Enhanced Parlia: 200 ms blocks and BLS fast finality, so blocks become irreversible in roughly one block interval. Sub-blocks stream ordering commitments every 20 ms, and a client sees that pre-confirmation well before the block lands</td>
+<td>Enhanced Parlia uses cross-block BLS votes to target transaction-order finality in under one second, at the target 200 ms block interval. SubBlocks can provide a preconfirmation in approximately 20 ms. Execution finality follows only after a later block records the result and itself finalizes.</td>
 <td><a href="../core-concepts/consensus/">Consensus</a> · <a href="../core-concepts/tx-preconfirmation/">Pre-confirmation</a></td>
 </tr>
 <tr>
@@ -2396,7 +2396,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 23, 2026 06:49:23 UTC">September 23, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 16, 2026 01:31:32 UTC">October 16, 2026</span>
   </span>
 
     

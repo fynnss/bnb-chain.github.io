@@ -2347,7 +2347,7 @@
 <p>Both are submitted through plain <code>eth_sendRawTransaction</code> and produce ordinary receipts (with <code>type</code> <code>0x76</code> / <code>0x77</code>). EIP-4844 (<code>0x03</code>) and EIP-7702 (<code>0x04</code>) are rejected. The two types above sit in a high, self-assigned range so a future upstream type can’t collide with them.</p>
 <div class="admonition note">
 <p class="admonition-title">No SDK yet</p>
-<p>Neither type is supported by ethers.js/viem today. You build and sign the RLP payload yourself; the client’s own codec is the reference implementation.</p>
+<p>This repository does not include a supported NewL1 SDK or a versioned client codec for these transaction types. Use the codec and test vectors for the matching client release, and confirm that your SDK can submit the encoded raw transaction.</p>
 </div>
 <h2 id="0x76-account-abstraction"><code>0x76</code> Account Abstraction<a class="headerlink" href="#0x76-account-abstraction" title="Link to this section">¶</a></h2>
 <p>One transaction, signed by an account or by a delegated key, carrying a batch of calls. Full concept documentation: <a href="../../core-concepts/account-abstraction/">Account Abstraction</a>.</p>
@@ -2499,7 +2499,7 @@ cast<span class="w"> </span>send<span class="w"> </span><span class="nv">$POOL</
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 4, 2026 01:45:28 UTC">September 4, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 16, 2026 01:31:32 UTC">October 16, 2026</span>
   </span>
 
     
